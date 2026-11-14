@@ -230,3 +230,16 @@ UPSTREAM.md: issues 1 open and 2 closed, pull requests 3 open and 24 closed; non
 - The Helius filtered webhook cost over a full day (one hour measured); whether other providers filter before billing.
 - Upstream branch: `just test` end to end (only the python tests and one real generate+cargo check were run); the maintainers' response.
 - The new site card rendered in the live page (it is uploaded by the operator).
+
+## 2026-11-14 ochinimus.app follow-up (deploy folder ~/Desktop/ochinimus-deploy)
+- Proved first: index.html 65,984 B sha256 054411f7848aaf76..., llms.txt 16,553 B sha256 80800e001373f38d... (both read in full; the folder's nine files are all local, none iCloud-evicted).
+- Backups outside the deploy folder: ~/Desktop/ochinimus-deploy-backups/index.html.bak-20261114b and llms.txt.bak-20261114b.
+- index.html: one replacement, asserted: stats row "47 products shipped" to 48 (the page has 48 cards). No other change.
+- llms.txt: one entry added at the end of "## Open source" in the neighbours' format (no parentheses, no personal name, no prices): hosted monitoring for Solana programs, Telegram alerts, Microscope-compatible rules, USDC billing, MIT, links https://specula.ochinimus.app/ and the public repo.
+- New files: index.html 65,984 B sha256 e9844ee4a6f8b6d1...; llms.txt 16,912 B sha256 49c16be05b920081.... Folder holds exactly nine files. Copied index.html to /Volumes/D/specula/site/index.html (hash matches).
+- Not deployed: the operator drags the nine files by dashboard.
+
+## 2026-11-14 Upstream issue 3 opened
+- Re-checked before opening (gh): PR #25 (head 580197d), #28 (10337af) and #30 (fc72f53) are still open; main is still aa514f1. Only #30 changes scripts/generate-decoder.sh (+97 -42, it parameterises the program name for several programs); its patch has no type pruning or undefined-type handling (0 hits for prune, undefined, unresolved, defined, SmallVec, legacy). #25 and #28 do not touch the script. A search of the issues for SmallVec, unresolved, pre-0.30 and generic found 0. So the text was not changed.
+- Opened https://github.com/solana-foundation/solana-microscope/issues/31 as seekdaseek with the exact title and body from UPSTREAM.md item 3 (body verified identical after posting; nothing about specula). No labels yet (only maintainers can apply `accepted`). Their issue templates prefer a `bug: ` title prefix and form fields; the text was posted as written, as instructed.
+- NOT opened: issues 1 and 2, and any pull request. The branch fix/prune-unresolved-idl-types (e10ccad) will need a rebase onto the generator script after PR #30 lands, and a signed commit.

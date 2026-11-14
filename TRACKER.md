@@ -34,11 +34,11 @@ Status legend: [ ] open  [x] done  [~] in progress  [H] waits on the operator
 8l. [ ] solwatch-mcp was redeployed at 12:16Z by someone other than specula (report only)
 8m. [x] Phase 3 prepared 14 Nov: landing page live at specula.ochinimus.app, repo public-ready (not flipped), LISTINGS.md, site/index.html card, UPGRADE-FEED.md (NO-GO)
 8n. [x] DONE 14 Nov: repo recreated public with ONE squashed commit (old SHAs 404 unauthenticated; backup /Volumes/D/specula-history-backup). Was: decide the repo flip: accept history as is (first name, IP, Telegram id, public treasury address appear in old commits) or squash (command in LOG.md); then flip visibility (command in LOG.md)
-8o. [H] Upload site/index.html (card now under Open source, links the public repo; sha256 054411f7...7fa3f) to the ochinimus Worker by dashboard (card sits in "Open source": flip the repo first or move it)
+8o2. [H] Drag the nine files from ~/Desktop/ochinimus-deploy (index.html now 48 products + llms.txt specula entry; index sha e9844ee4a6f8b6d1, llms 49c16be05b920081). Supersedes 8o. Was: upload site/index.html (card now under Open source, links the public repo; sha256 054411f7...7fa3f) to the ochinimus Worker by dashboard (card sits in "Open source": flip the repo first or move it)
 8p. [H] Approve or edit LISTINGS.md before anything is submitted; solana.com form requirements need a browser check
 8q. [ ] WATCH: Microscope PR #30 (several programs per deployment, open since 12 Nov) narrows the main differentiator; keep the upgrade/silence/hosted/billing angle
 8r. [x] Upgrade feed filtered-webhook test 14 Nov: filter does NOT limit billing ($20-43/month), NO-GO, poster not built
-8s. [H] UPSTREAM.md: open the issues (loader upgrades, silence, generator pruning) when ready; re-sign branch commit e10ccad first
+8s. [~] UPSTREAM.md: issue 3 OPENED 14 Nov as solana-microscope#31 (https://github.com/solana-foundation/solana-microscope/issues/31); wait for the `accepted` label before any PR, then rebase the branch onto PR #30's generator and re-sign. Issues 1 and 2 still unopened. Was: open the issues (loader upgrades, silence, generator pruning) when ready; re-sign branch commit e10ccad first
 9. [ ] PHASE 3: repo public, README, X post, Solana Foundation public-goods angle (do not file while the x402-wallet application is pending without his call).
 10. [ ] Surfaces in sync after ship: repo, README, ochinimus.app card, X post.
 
