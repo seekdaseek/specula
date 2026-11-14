@@ -12,3 +12,4 @@ dryrun/*.db*
 live/
 BRIEF-*.md
 site/
+upstream/
