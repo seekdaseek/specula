@@ -1,0 +1,57 @@
+# specula service config example. Copy to service.toml. No secrets here: they live in .env.
+db_path = "data/specula.db"
+backup_dir = "backups"
+port = 3043
+public_url = "https://your-host.example.com"   # public HTTPS URL that reaches this service (Helius webhook + landing page)
+poll_interval_seconds = 300        # reconciler
+stall_seconds = 900
+health_interval_seconds = 60
+
+[helius]
+webhook_min_interval_seconds = 300 # address-list edits cost 100 credits: batch, at most one per 5 min
+
+# Plans live here, not in code (PRICING.md ladder). Program limits confirmed in the Phase 2b brief: Starter 3, Growth 10, Scale 25.
+[trial]
+days = 14
+plan = "starter"
+max_programs = 1
+
+[plans.starter]
+name = "Starter"
+price_usd = 9
+tx_per_month = 100000
+max_programs = 3
+
+[plans.growth]
+name = "Growth"
+price_usd = 39
+tx_per_month = 1000000
+max_programs = 10
+
+[plans.scale]
+name = "Scale"
+price_usd = 149
+tx_per_month = 5000000
+max_programs = 25
+
+# Hidden plan for the live billing proof: only OWNER_CHAT_ID sees it in /plans and can /upgrade it.
+[plans.proof]
+name = "Proof"
+price_usd = 0.10
+tx_per_month = 100000
+max_programs = 3
+hidden = true
+
+# USDC billing. The recipient is a public address; no key for it is needed or held here. Mint and cluster are configurable (devnet for tests).
+[billing]
+cluster = "mainnet-beta"
+recipient = "REPLACE_WITH_YOUR_PUBLIC_USDC_RECIPIENT_ADDRESS"   # a public address you control; specula only receives
+usdc_mint = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+decimals = 6
+period_days = 30
+grace_days = 3
+reminder_days = 3
+order_ttl_minutes = 30
+late_order_days = 14
+
+# The Jupiter Lend operator proof tenant was removed on 14 Nov 2026 (Phase 3). Its block is kept, disabled, in deploy/fixtures/proof-tenant.disabled.toml.

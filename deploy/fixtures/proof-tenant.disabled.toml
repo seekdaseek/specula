@@ -1,0 +1,19 @@
+# DISABLED FIXTURE. Not loaded by the service. Paste this block at the end of service.toml (and set OWNER_CHAT_ID) to re-enable the Jupiter Lend proof tenant.
+# idl_path is relative to service.toml (/opt/specula/idl/jupiter-lend-lending.json on the VPS).
+
+# Operator proof tenant: Jupiter Lend, alerts to the owner chat (OWNER_CHAT_ID). Not metered.
+[tenants.proof.telegram]
+chat_id_env = "OWNER_CHAT_ID"
+
+[[programs]]
+tenant = "proof"
+program_id = "jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9"
+idl_path = "idl/jupiter-lend-lending.json"
+silence_hours = 24
+
+[[programs.alerts]]
+kind = "event"
+name = "log_deposit"
+conditions = [{ field = "data.assets", operator = "gt", value = 50000000 }, { field = "failed", operator = "eq", value = false }]
+severity = "info"
+channels = ["telegram"]

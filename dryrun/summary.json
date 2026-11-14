@@ -1,0 +1,837 @@
+{
+  "minutes": 30.001666666666665,
+  "polls": 105,
+  "pollErrors": 0,
+  "recordsPerProgram": [
+    {
+      "program_id": "SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf",
+      "kind": "program_instruction",
+      "n": 53,
+      "failed": 0
+    },
+    {
+      "program_id": "jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "kind": "program_event",
+      "n": 291,
+      "failed": 19
+    },
+    {
+      "program_id": "jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "kind": "program_instruction",
+      "n": 203,
+      "failed": 15
+    }
+  ],
+  "distinctTxPerProgram": [
+    {
+      "program_id": "SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf",
+      "tx": 29
+    },
+    {
+      "program_id": "jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "tx": 155
+    }
+  ],
+  "checkpoints": [
+    {
+      "program_id": "jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "last_slot": 469182901,
+      "updated_at": 1794628130196
+    },
+    {
+      "program_id": "3zB5SLYJoqDPN21s54MCkLeDPuMKQH9vNCSaZKSWTZZd",
+      "last_slot": 465683950,
+      "updated_at": 1794628130344
+    },
+    {
+      "program_id": "SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf",
+      "last_slot": 469182825,
+      "updated_at": 1794628130462
+    },
+    {
+      "program_id": "Fy3YMJCvwbAXUgUM5b91ucUVA3jYzwWLHL3MwBqKsh8n",
+      "last_slot": 467483086,
+      "updated_at": 1794628130574
+    },
+    {
+      "program_id": "SMPLecH534NA9acpos4G6x7uf3LWbCAwZQE9e8ZekMu",
+      "last_slot": 469138884,
+      "updated_at": 1794628130708
+    },
+    {
+      "program_id": "Q1xCTDDfdfB4jk2Wicw1HdutFVdRik5LMKYMcZdT2rU",
+      "last_slot": 450726538,
+      "updated_at": 1794628130814
+    }
+  ],
+  "alertsReceived": 96,
+  "alerts": [
+    {
+      "at": "2026-11-14T03:19:07.068Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "event log_deposit on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "BQmQPLnjhbaq4918weGECMYXN8YpFx8d8VfPzdPezXWqjensi2boBEpVuU4qYaYgMFx6dXp8ZbovyUoExRWgEEQ",
+      "hmacHeader": "sha256=7c78e36…"
+    },
+    {
+      "at": "2026-11-14T03:20:29.968Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "dLfcGTzUpqpfvHGMcM3LYQZo7mzWpEwiY6zWChUMV4aDcn1t1pTvmyMpTGxPtHSW13EqDEM5ZvDvs4ekaciEtWD",
+      "hmacHeader": "sha256=2bbf426…"
+    },
+    {
+      "at": "2026-11-14T03:21:19.868Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "1uSozcF9Ja4xdahT2Bw2AeyE5DcMZd9F5f6FiLXH52Vu4VECNepNAaZoRA3Z7bqsVvEsCnDFTkGS2Y7yJQZY86",
+      "hmacHeader": "sha256=6a4f03e…"
+    },
+    {
+      "at": "2026-11-14T03:21:20.223Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "3fRYoGFRQ7HzBqFmdRH6Rc3sLC4QVTkPUcd1ZxhB5TixAak1FqKfUWodjyXhvV1ibcLtx2cAoDBpNVdzsgE2dX6Z",
+      "hmacHeader": "sha256=7efcdd2…"
+    },
+    {
+      "at": "2026-11-14T03:21:38.634Z",
+      "kind": "rule",
+      "severity": "warning",
+      "title": "instruction proposal_approve on SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf",
+      "signature": "3PQrtPQi8mSNnw5GGhDiyk3D98bTj4GUrf8BJwzTZKJpCWeQBnrtdZV2veJvdwVEpy2nvRmb8gmyRTrpAsQX7VJL",
+      "hmacHeader": "sha256=f5414c9…"
+    },
+    {
+      "at": "2026-11-14T03:21:55.866Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "2P9JqiaT5iFuwpfDiXqgViU7irpFWny1EiRTrKk2WoQMET4ujdM8Fra2E1syeqVP3Gux6U8Hik2wXgZGNehJSBJD",
+      "hmacHeader": "sha256=da70ae0…"
+    },
+    {
+      "at": "2026-11-14T03:22:29.279Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "5WScdkgyuffwWumstrzowDYdr2uFBxYYPtMHvFVAb1cPUakfiD9h3frKfLj8f2PAihE2mX4dPRjXkGWS4rZm9zAz",
+      "hmacHeader": "sha256=188cc12…"
+    },
+    {
+      "at": "2026-11-14T03:22:29.618Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "event log_deposit on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "5yRg1pkv5w6Qw4GbdjnVd4fdbPLbLSo8mEwtXcfHDaJVxxXEpsycEgn4LMEpgGm1W76dQHCgQwLJi2MGwL5yVVTE",
+      "hmacHeader": "sha256=d501038…"
+    },
+    {
+      "at": "2026-11-14T03:22:46.392Z",
+      "kind": "rule",
+      "severity": "warning",
+      "title": "instruction proposal_approve on SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf",
+      "signature": "2qJdMiiV77uQRFvx1GsWTWH28MpMJsMXtPNuQDSYX2mTPqwtbqS2yTadSoePNXNhWSMmgcFaB9YyCqBTzyK4qmZp",
+      "hmacHeader": "sha256=0ca60e6…"
+    },
+    {
+      "at": "2026-11-14T03:22:46.705Z",
+      "kind": "rule",
+      "severity": "warning",
+      "title": "instruction proposal_approve on SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf",
+      "signature": "2jgM1BxPVf4mSvxRyety9R4quHMa5fJx4RrPi6PJBN6VZZzhoXDyW5BKvFcfVdLAMLV8iD4kHBhdccNKpNWrmsAb",
+      "hmacHeader": "sha256=7aa1ac3…"
+    },
+    {
+      "at": "2026-11-14T03:23:21.055Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "WosNeL1gLxZ6UgQ5tmy8Lan7ikNgLPg1g2sJn6aNsgNdFjWqyrxTEoHkDnz55vEdP3JwVKmqDP7TwcR79hm59RT",
+      "hmacHeader": "sha256=383d086…"
+    },
+    {
+      "at": "2026-11-14T03:23:22.991Z",
+      "kind": "rule",
+      "severity": "warning",
+      "title": "instruction proposal_approve on SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf",
+      "signature": "4YWoeaVmDtD7NmyXjLZBe9wBeFpkUhJykAJLhEvwBnt6jQuruAToxo1LvG9HPDhLq1ga1LowVhH1bJ5SkKSVtYFf",
+      "hmacHeader": "sha256=7782547…"
+    },
+    {
+      "at": "2026-11-14T03:23:23.312Z",
+      "kind": "rule",
+      "severity": "warning",
+      "title": "instruction proposal_approve on SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf",
+      "signature": "58gs6rbQTFhvhmFTQb9bGL7WnrFeU4YZAE2SPF7YmSGhHRmsSjTgwf9LkYp6vV1qLPBtjbycUQ8o3FoFBUv2j8aS",
+      "hmacHeader": "sha256=5e11bff…"
+    },
+    {
+      "at": "2026-11-14T03:23:23.952Z",
+      "kind": "rule",
+      "severity": "warning",
+      "title": "instruction proposal_approve on SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf",
+      "signature": "MtHWeoa4XVT2S2M77BqK833kSPCbEpiRZegGjBjn42keMq2F1ZD4o8xBuw7EfdeWuvMXe5K62VKAjYR67LnJ4wG",
+      "hmacHeader": "sha256=cebfdb7…"
+    },
+    {
+      "at": "2026-11-14T03:23:24.325Z",
+      "kind": "rule",
+      "severity": "warning",
+      "title": "instruction proposal_approve on SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf",
+      "signature": "2c4gLADYWu9HK52K5hNMy8kbE9PBYM9EBd7qt6Jjc7U5R7syQQChka7JaaqXJbAk3XdPiEXNiQQcYpGRo7SjHZFT",
+      "hmacHeader": "sha256=48962c4…"
+    },
+    {
+      "at": "2026-11-14T03:23:25.003Z",
+      "kind": "rule",
+      "severity": "warning",
+      "title": "instruction proposal_approve on SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf",
+      "signature": "2x2h3FBjuEtcHuZs7vz3qj8XZbywSmrckkdQxzBLjptAyByRGVHcseZ8q6APv71q6B71PvyL6AEdqnMUsZuuDqtS",
+      "hmacHeader": "sha256=8e447f5…"
+    },
+    {
+      "at": "2026-11-14T03:23:25.328Z",
+      "kind": "rule",
+      "severity": "warning",
+      "title": "instruction proposal_approve on SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf",
+      "signature": "qGiEUQtSuq7sPQMTjwhgFuo3Hsgc9WcEnKSAWoD4bNn68RFjEeo7TAK8gNpbtS13EkXHUjMAA5RzbibBMzsWg2A",
+      "hmacHeader": "sha256=53b4283…"
+    },
+    {
+      "at": "2026-11-14T03:23:58.322Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "EyuCqYCJ6hRGpwiKvxephiuNBzDM7vBZcKML6Xzh9XSDFTJ4RdLtxVmpwJFk1mWsm357ejkAyQk6oDmzZNeG7JM",
+      "hmacHeader": "sha256=d4279f2…"
+    },
+    {
+      "at": "2026-11-14T03:24:54.162Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "3ovE98Je8xg6EhUC3WiiVPWitWPSt3VF8VFbNoBfe2YFxxcZxPMfYpR9ko8RKCMhSEBDc4qodQwvxDDjMDGTP4vc",
+      "hmacHeader": "sha256=2219f5c…"
+    },
+    {
+      "at": "2026-11-14T03:25:31.219Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "4Sh4THWsrzSMXc7YHtextEKdnRFGzwN7hjJXgr4evv9hhEAV2xZraWSfwoGE1PU95E71ZfUVuPaFc89jzYjRpjSR",
+      "hmacHeader": "sha256=fc7fd91…"
+    },
+    {
+      "at": "2026-11-14T03:26:22.997Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "VsQjfJBPVho1DSNy1BXcDNRafYP4KviQTFHnVrra6yQ8FcSVMiFJqBzUqEqH7UKvsyaML1GTHc76u7VkxakX93n",
+      "hmacHeader": "sha256=f8b2647…"
+    },
+    {
+      "at": "2026-11-14T03:26:23.336Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "2SKBt19d38YMUC9SMeUi2nN8cjF4Xw1dd5pghAJoH5MsRKv9HezwDV9e7SAuZmcXvg42cQmeqpHP4VsWgrpPWDB9",
+      "hmacHeader": "sha256=af60136…"
+    },
+    {
+      "at": "2026-11-14T03:27:30.124Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "3THvjNMJk6uHVYhJfHoXuVpCPf2wNZj61BHQP2tP9bPWBdwkmmBrRP8saEj3WV6ZygTNd2pymg6bx6CELzazfpC7",
+      "hmacHeader": "sha256=cd65f24…"
+    },
+    {
+      "at": "2026-11-14T03:27:48.266Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "xnxm8Bz1oDXxEeyVvMHhQdfCU7VtuwyjydXt1oKVpUdss29JtLGwuRgahhaJYr7Ay9RoLjwk9SYZoTfV8DGzJsw",
+      "hmacHeader": "sha256=5971e13…"
+    },
+    {
+      "at": "2026-11-14T03:28:21.018Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "29gF9LvqxRJztGY2RFRi2KBj3HWJ38b7Q5phyLS3kmNMxBCzuWGyrUvE4uJ6k8pRcLyXGwaR8skkPusCV88zv43t",
+      "hmacHeader": "sha256=c7f28f5…"
+    },
+    {
+      "at": "2026-11-14T03:28:54.037Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "53n3njxSdGHNux1hJeFALTMnFUwk6xWwgf1zdMpkPPrSTetwFemFGXjWXQE8GTZP9YqcT9ZRrxYQnjZa1j6EBQDP",
+      "hmacHeader": "sha256=1c7305d…"
+    },
+    {
+      "at": "2026-11-14T03:30:32.061Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "bkGKpCTxCf4pJeaKrm9BAXi4vhsjUV1h6TqyjfreCf42nY5rs8hMGShkmcEB9gKhn1xL2hs3cgwg763zNAJUCX6",
+      "hmacHeader": "sha256=6030b54…"
+    },
+    {
+      "at": "2026-11-14T03:30:49.023Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "3enjLeT3NBR1LU85ySuPuSLq4WbpcETuNucSHhuqWvnS4rG3xux1392TtBtTeo6dAWoxqLrMXLXKu3o3ooQ794vX",
+      "hmacHeader": "sha256=14c65ef…"
+    },
+    {
+      "at": "2026-11-14T03:31:24.341Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "5awdBC6dojmbV9cKAtWadF8PAaezmx56UV9DvvBaib3UtEwoNdHzaWsrg3kDDEChjkCZU9c587LauMkCTo1ddpgq",
+      "hmacHeader": "sha256=6425d8c…"
+    },
+    {
+      "at": "2026-11-14T03:31:24.698Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "66gkpsZqv7XLxqzmb1yvoAzFrsrmHr5yFBpYA5hDS3TmmMNaSU7rU7dyWB2hCu7jfgWNNwzQa3UWrRR8fP4P6t6t",
+      "hmacHeader": "sha256=bd1a3cd…"
+    },
+    {
+      "at": "2026-11-14T03:31:42.710Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "3VyiGiwqcduKw1fZVw41UpE84wR1RLDNQM7n66j7TBdoDxVaq8EdbKDyoZZ8iB2iMh3URWoJXy2A1vnhkA71dkq1",
+      "hmacHeader": "sha256=2dbff09…"
+    },
+    {
+      "at": "2026-11-14T03:31:43.027Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "2Gtbd1zKok7C7L1ASLftbYuDVqA6wfbsvwkYipuh3ChkP5s7AKF3rS9ZVkK1WNDWrdn1N9nar3ywwuUEzXVTQwMu",
+      "hmacHeader": "sha256=d3bda04…"
+    },
+    {
+      "at": "2026-11-14T03:31:43.341Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "4JmBncrGLeLWcmooC9AvT6Ybe6YdW8DBCuVp8Ncpg7zk96zJRStLfVJYQs1nMiiSCNVVUH1PQcK9baRWnHfPGDBc",
+      "hmacHeader": "sha256=b54a988…"
+    },
+    {
+      "at": "2026-11-14T03:31:43.678Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "3tGVZ42oo9QJtC9qng9duLrCUJJMpL84MzfGRxiY2jhhe21r1AN7RGZSTSMVnUcAQDfPKHXv1nhQj1xXjNKCi22R",
+      "hmacHeader": "sha256=fc9eab0…"
+    },
+    {
+      "at": "2026-11-14T03:32:01.758Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "9tgTpUmyTvDodByH3Wy6p3tEWFKjayVAv5fMPEmMRLVaaGTnYDJhE5g5Vy1yqXVtQtC4iwyYgmxhsh8KKZUwppg",
+      "hmacHeader": "sha256=27d6423…"
+    },
+    {
+      "at": "2026-11-14T03:32:02.117Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "3256ZKRwvG6MB3iM6nStB5fqoHwfdeKLBb8tosmRJRJrBUTBmCYJtJZF4Rdn6Xe52BXBBpGJ8B8HNV6KwC7dcyqG",
+      "hmacHeader": "sha256=813f6dc…"
+    },
+    {
+      "at": "2026-11-14T03:32:20.459Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "53fChe5Ync1dyVFnptkor9kGssktqSvWGnYZ6wuDRAA6A8Q2DCAvsX6HqC57W4Y3VifmSofYjyTWa96UUiGMbyeV",
+      "hmacHeader": "sha256=0e8f590…"
+    },
+    {
+      "at": "2026-11-14T03:32:20.777Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "event log_deposit on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "2cJRwpsd5oj8wpemU1FoB57wCveU4sYJCZnuDcNuywg5Z3tm9rbj5fdSPu4ZRva9gVbBwRbbgr7b3WhKJ5j77mWw",
+      "hmacHeader": "sha256=6753b48…"
+    },
+    {
+      "at": "2026-11-14T03:32:21.112Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "event log_deposit on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "4x6XM4PrQSyKRKa1cGam6XLB6LF2coqUuPpVJEUVNEq5FMmzZvk4UiiS2J2UrgeEBe9zsnfKdWja2hWj6aGNKFyf",
+      "hmacHeader": "sha256=81f7fee…"
+    },
+    {
+      "at": "2026-11-14T03:32:21.444Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "event log_deposit on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "3uN5h9eXcWcTVg13CjoPoMCCjZXsAVbxn1U6NozXSx1Ck3PQQP1RCWu8yMALytaGX5GTYjLCZjpyb1y7gTZ5dqny",
+      "hmacHeader": "sha256=1031554…"
+    },
+    {
+      "at": "2026-11-14T03:32:21.809Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate (failed tx) on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "dFPi5CGCSPzQRBsFVEC2ASJpjrfNdc84egTuU81W9XjDB4za9E8ojcryweLLHS8uVfdQVD8127AZAn54NifoMnG",
+      "hmacHeader": "sha256=e7be5b4…"
+    },
+    {
+      "at": "2026-11-14T03:32:22.141Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "2HPoVzXNELeN3zBRVrpszBZxT3QMkCF2WcFAGt2VPG3Tz5HfxvsbBjeJtNCGKirtXzriDccrwRqMVAWWZ85zV9fZ",
+      "hmacHeader": "sha256=80ec706…"
+    },
+    {
+      "at": "2026-11-14T03:32:22.778Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "55P8y4SLW6oi85BRfMxCGAMG2kusyZP7iqFk52H6qfUgQFYG3tWKR99wPgFWRWRwocVTHkoQr8py5p7otgYNMois",
+      "hmacHeader": "sha256=e20ebe6…"
+    },
+    {
+      "at": "2026-11-14T03:32:23.449Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "4TPW1qDufqt3a21RK3fBKkRDtUgF1mU3MPsmSiaZT559q87tpf9oThB6pvwPJGqHBKmFvReYL7oNuouZXRph8chN",
+      "hmacHeader": "sha256=906d890…"
+    },
+    {
+      "at": "2026-11-14T03:32:23.764Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate (failed tx) on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "2btN5U1fhxAFC3cVb53bCKAhkV1eGpLi74q1JRBaDPxoxFkyU4ToVYvGNvEoT4qnfThRxjUAo5DXgt3JdkfFeR3F",
+      "hmacHeader": "sha256=ec7f418…"
+    },
+    {
+      "at": "2026-11-14T03:32:27.198Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate (failed tx) on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "3LwnF57E2F9CGBpBy3JpiBoGUYECQEt7TV3F4pJEtvQxmsbPNrtkXov4Zq685NMGcUdbwAqUdJpUeDW6fR4F38c9",
+      "hmacHeader": "sha256=28379b0…"
+    },
+    {
+      "at": "2026-11-14T03:32:35.771Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate (failed tx) on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "4wKzUdTSz7f9MTgZqVacYEsFKfNBPGH15mqT9BBAz7VSPXySDxF6W8dViKLZkBH33WmC7b6HfkqZ9SbBGbC6Hnqb",
+      "hmacHeader": "sha256=355918a…"
+    },
+    {
+      "at": "2026-11-14T03:32:36.771Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "5JiftxAA7V968gSq3jKh1adkWHVRQqU4aMbokJWnjwjwzKsubN7hj76ThV6GAknTgMWvqh8AULeNyeHPPutq1AuZ",
+      "hmacHeader": "sha256=e417f1f…"
+    },
+    {
+      "at": "2026-11-14T03:32:37.098Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "35GEUWzDDXFXzJmYzaZdXB9oKvPudiD2ebBwHiBk9SKSQSvQbEyw5zMDhWrgzK2Re1ZeV9AqJkRtU6dkCNDuAvRv",
+      "hmacHeader": "sha256=034ad4b…"
+    },
+    {
+      "at": "2026-11-14T03:32:37.415Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "2AdnoZE3c4HjxuYskzMTogNrsAicNrSSQRHKMMxF7SrJ1mEEGsaedhot1QmKas1mpudCpvyLcy49wbXZYZDqt2gW",
+      "hmacHeader": "sha256=7095880…"
+    },
+    {
+      "at": "2026-11-14T03:32:56.224Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate (failed tx) on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "4wNHyQi5v6C16x3XbVHaHUDZEkxwmtHcvkXYZS7yXu2gSQGC415EWYciHtAMv5cHXDqnV49JEDtA5cQWYhek8jyB",
+      "hmacHeader": "sha256=5218236…"
+    },
+    {
+      "at": "2026-11-14T03:33:14.692Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate (failed tx) on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "5ENWoZmS9H6q9J8hUCd9y5QnejZHna2nykuP2PrHLmwmeJiGwMf5i57EN8g9Q6N7vihY4rLTRf6S374726kE8sLf",
+      "hmacHeader": "sha256=4a79350…"
+    },
+    {
+      "at": "2026-11-14T03:33:15.014Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "2Wkv151fkAHUCKUf68b9ZSqeU8DHRu2CKYWKv1dPL5jMKyKZqFRpok9qq3cocpu5FnYYRQ3VZ3xDBbPcV7jQjzQE",
+      "hmacHeader": "sha256=5667437…"
+    },
+    {
+      "at": "2026-11-14T03:33:15.331Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "3dyroKsXbzRVX4cse3AgqsHF7LqVXfyLSLqNJ9dhYjenz2bf8uRggUkBzJMudig17q8Koky5t9YhFBemYvVFXvbH",
+      "hmacHeader": "sha256=09f62b2…"
+    },
+    {
+      "at": "2026-11-14T03:33:15.645Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate (failed tx) on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "5ocVovS2aunH8DpnWG1L23bM9WW4SMeqDWDmuw2GHZKKWuzWisSM1tvs8cCZqr4SvfMGCfZ2NMvdcdpMsbB6j5kK",
+      "hmacHeader": "sha256=20b22ba…"
+    },
+    {
+      "at": "2026-11-14T03:33:15.965Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate (failed tx) on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "rqinQ4hDrkDmPpWxNHZWAJzma6aq8gZhGnLEpYxTuFkucLYQV77Jvq5gzE3qWoApPRn69nsZqUE4r21fkztX5FJ",
+      "hmacHeader": "sha256=35edcfd…"
+    },
+    {
+      "at": "2026-11-14T03:33:33.457Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "4sdtKicUvMuZUCvdnNmFaCGCtUNtVJXocRXYrq2ZQhhT64wGUxnMtBtdQRpqzG7NpSBDJrKsz9Ta2i3QnXHaTVcH",
+      "hmacHeader": "sha256=213aca0…"
+    },
+    {
+      "at": "2026-11-14T03:33:50.876Z",
+      "kind": "silence",
+      "severity": "warning",
+      "title": "no activity on SMPLecH534NA9acpos4G6x7uf3LWbCAwZQE9e8ZekMu for 0.25h",
+      "hmacHeader": "sha256=bf2e23d…"
+    },
+    {
+      "at": "2026-11-14T03:33:52.245Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "VBUkrHwtdPckL2hnqrjL1LCzZyKebfaqLnaHtDfkSoFroLY3toSGhmqSTkRWNMXPLgUkrDV1Szym8vDZL2Ciuhj",
+      "hmacHeader": "sha256=99b3249…"
+    },
+    {
+      "at": "2026-11-14T03:33:52.552Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "2fYbb7mnc1ntNZkHQi7R4FKGHG4jpXT7HUE7zm7CjjnExcmzN6NEQoFaD4e7rgxhWxPsKu7XLVwCncNWJQCMtZn1",
+      "hmacHeader": "sha256=880f4b7…"
+    },
+    {
+      "at": "2026-11-14T03:33:52.875Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate (failed tx) on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "5hfU8EWQGBLEPf367jivJ9nJZnFC4rU1dZLsRwpRCCbzU3DECgdiu1ofMpWjjBA6kkVwSr5NiGLBMYoiE38LemVo",
+      "hmacHeader": "sha256=8d10d80…"
+    },
+    {
+      "at": "2026-11-14T03:33:53.191Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate (failed tx) on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "5Ga1Wqf8ffiYBZ1kCb4oxsEBA2ADtGBLfvZv7Vrfg3X4sW41jrLMwd82hdTJZGjJFDki6nUpGZxhN8PKPgAer7ym",
+      "hmacHeader": "sha256=c07e03b…"
+    },
+    {
+      "at": "2026-11-14T03:33:53.511Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "3NUMWWH39weMoATQ8to7dSEW5vVYA6BQ1TfYSmmJtrMZ7Z2ydfhGdmjD377LZSFDfee1Gg8PDvXecKSqmQgjJyN5",
+      "hmacHeader": "sha256=cc847b5…"
+    },
+    {
+      "at": "2026-11-14T03:33:53.841Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "isbTUV46cS7b5o2aV4xEpTfcUGgg4zDFW9PzAnc2Fufnjsha3XnT9e6vJAukPQPZLknfjRcFijm4bQbwTRSaos9",
+      "hmacHeader": "sha256=1e09706…"
+    },
+    {
+      "at": "2026-11-14T03:34:10.972Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "event log_deposit on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "5kLBTFjPjcJ4tDjrTcfVC3Y1frGMMpYR3AucatfU3Kz9pF6QB8SujuQctkW7bD7BHHMqDrXDst45jsrLw1hgYneG",
+      "hmacHeader": "sha256=cebce6c…"
+    },
+    {
+      "at": "2026-11-14T03:35:19.851Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "3ERvpu5iuAse8ojyYNmJmVfBUedL8hFszynk4ZUU7KevMGN6aAXc4CVZemzwNimjs6Rva5d25D3Mq7LgYPneCAWF",
+      "hmacHeader": "sha256=5751264…"
+    },
+    {
+      "at": "2026-11-14T03:36:26.779Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "3uKSSPgAkizWxo4PPZxWSBnfX3onPxHAmaiZH5mccgG8YnnKNCe73W3n1piFCGZkwDNVbMAbdgV526xryp8vodZM",
+      "hmacHeader": "sha256=d147bca…"
+    },
+    {
+      "at": "2026-11-14T03:36:27.102Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "58PSAu37QHH4kYdCGtc17CjQYn2v9t2sj2XQ6Zp82yMGtUo5WQVyMMvR4HhBRJh9nDTPzt1B8FZ93tsv844He9s",
+      "hmacHeader": "sha256=f687fdd…"
+    },
+    {
+      "at": "2026-11-14T03:37:02.852Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "2fb4LaF5A8fuBiSg4VtdbdZzvd8LczbYrkEX5BtP91rCrzFm2FgDCseEjVgrTvQGnAEb1rB58vjBRy24KKmh6XjA",
+      "hmacHeader": "sha256=9583802…"
+    },
+    {
+      "at": "2026-11-14T03:37:20.888Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "3sZjGqzFEfVbmLxAKZ9hJiX9sPx2wTxszxiK8jtf6TKxg4aYXLRW7jyuJEHP47v6cfBzApjmaHjoHuYMn5Eh1wwN",
+      "hmacHeader": "sha256=5913cde…"
+    },
+    {
+      "at": "2026-11-14T03:38:28.347Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "TGaiiCzMvGpeFafWwipaK2uyHV2viPPXPfCi1uzWqEidSXiokPfZbdyJpx7nxNbog1aCTVmvL945qSUBkiFD6ha",
+      "hmacHeader": "sha256=d7a42e2…"
+    },
+    {
+      "at": "2026-11-14T03:38:45.621Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "event log_deposit on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "5U8bS1BG1TfF7tiTPvEvMv6jSNm73S7mfpJL4Ld9RuZkzCLaz2w6oqMkvLQ74skWeUoMTEap3r4QqU9ATZ95wU7n",
+      "hmacHeader": "sha256=436aebe…"
+    },
+    {
+      "at": "2026-11-14T03:39:02.276Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "event log_deposit on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "4gUbEfJNHy6BYQz6wgtGPwWd1gvxndyRmrvM7DtZK5wAr2zbd3vFiRuRw2WafxXf1t6efkC3oArrPCr7hNn73qhg",
+      "hmacHeader": "sha256=4e41e97…"
+    },
+    {
+      "at": "2026-11-14T03:39:02.637Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "3dJezsG499VrL31FkMQcEByWkVZt7xHDSYiL7HHza7ftPfuxrSC6HDcaQedNxsh8UKrRE8KfSYv8kBidWnfNS3uz",
+      "hmacHeader": "sha256=7dc2caf…"
+    },
+    {
+      "at": "2026-11-14T03:39:53.056Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "event log_deposit on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "5jQJeXpoqwkvQrBCtbo6LSzwE4qLVgQeGXjzhvr9E8vzrANoAxJcvpiRuHcoEFQeekCQo94xHbagGcHjfd3uJL1v",
+      "hmacHeader": "sha256=ed7ae27…"
+    },
+    {
+      "at": "2026-11-14T03:39:53.700Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "21T7Z4PuEZ4cdGnhRkeejqeYczXvhuCAiZqDAvyq3KMfeZdm3hSNb8PkEuMx42rTXB6x4MfrtDngjGc4N62i6yR6",
+      "hmacHeader": "sha256=aab6e1c…"
+    },
+    {
+      "at": "2026-11-14T03:40:27.605Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "423RyhgWuiM6van8qFYx7mPVGRYZER7zgbUi4rLui8gwVWT1AHA8yidPPsu3SNVAWutQukcwpEuZvbumFrxLpHfA",
+      "hmacHeader": "sha256=295e073…"
+    },
+    {
+      "at": "2026-11-14T03:41:33.203Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "2oYtkxJ6WogLwdrxQnGjnBtaxftkuWYoWMSPYrCSZFbtfRxtDvVfoqsWPXP4XALVZKwGvRnK2erAVYroX7damSjM",
+      "hmacHeader": "sha256=17687e6…"
+    },
+    {
+      "at": "2026-11-14T03:41:33.531Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "5QdzSSWN8xhfN9uzwjxPcaKsuQMcLYy9QWWBUvXipo396PAFzoUGgYpFxwrygPDEHqzFT1CPyvhihHRr2gCmrT4r",
+      "hmacHeader": "sha256=5094ac4…"
+    },
+    {
+      "at": "2026-11-14T03:41:33.841Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "event log_deposit on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "27QQD75Qv96j9F9y9xrYgszdjJdzCXNYBLFCEDm2rwxNYBc3uuwhyLTMibU9eBV4YWNw7Y2dqtNUJr2HgsGiwibp",
+      "hmacHeader": "sha256=e5caf71…"
+    },
+    {
+      "at": "2026-11-14T03:42:07.273Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "4aAC4MLEvG2BhxMyeEeGZMMHPvtyNAbxGQuWqtikwhnLbCBupHYkqsMFPkeBxmnp2fnQzSjwDcaZZxxRqkLGRL5g",
+      "hmacHeader": "sha256=0907d20…"
+    },
+    {
+      "at": "2026-11-14T03:42:07.602Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "2UnFmEZ3GXGBG7DL5fuJyhTZQBGYKk29xSxGirLtTAy1JJ4VYG1gyj7DrJ23bVaimJVq6HvFNnFrn38ERU6cBK9A",
+      "hmacHeader": "sha256=47555e6…"
+    },
+    {
+      "at": "2026-11-14T03:42:24.552Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "4hi54F2a4RWrf4zpLT3jgGQKRRUiAkS6W8TvE3a8YRPEq8pbwevVPJbKivPPwUcaVqrH3Dq3cjg7qrwdWiqvtDFd",
+      "hmacHeader": "sha256=4284b2b…"
+    },
+    {
+      "at": "2026-11-14T03:42:58.265Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "38oECGwVv7hSHhhout8W7cuDZG3XUM36k9wtWFbKUMrQDoHfvtS2rBLQiwsEZEewPtAPHNxxq1dhkXVUZCLAfprn",
+      "hmacHeader": "sha256=5a64fb4…"
+    },
+    {
+      "at": "2026-11-14T03:43:30.997Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "5EPq7fzFr1RUTSPb6eJSCSUkDaqkbdVJ18kU5ZyaimodcB9phDLfUpWzpij9pVMwEXcAcHUN9uNW6G9gGnHPXbLV",
+      "hmacHeader": "sha256=f75ffbf…"
+    },
+    {
+      "at": "2026-11-14T03:43:47.577Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "3TnqHXaY5k59tcnQTwW47mLBdacdAY8TB3eFHxyyYVCjeVTvXjSPSEHt5PmFWnYdwBYzcATwWaHdZRZ8aGwsgg6w",
+      "hmacHeader": "sha256=256360b…"
+    },
+    {
+      "at": "2026-11-14T03:45:26.960Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "3PNZm472P2kibnvo5t4wsFmxZ9tKJhfAtHEKqnG31rKvf5T4MnzoQiiWzqTvhz4Kg1j11bohn9gieqHcNGvVwqjt",
+      "hmacHeader": "sha256=364ecb6…"
+    },
+    {
+      "at": "2026-11-14T03:46:00.340Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "4NWuFo5ySB8mk7UMPcYbKN1m69G2wJAimmSisSXQYVojJ5RTRs8fJQojeVGXyMrFhaUgDFtZ57Cd2GZrGa2CJGF6",
+      "hmacHeader": "sha256=e02ab6b…"
+    },
+    {
+      "at": "2026-11-14T03:46:01.280Z",
+      "kind": "rule",
+      "severity": "warning",
+      "title": "instruction proposal_approve on SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf",
+      "signature": "4TYtu5C7J5LnazDhjRKWnEJNNJVrbk1datH5STC5fyvZYK9kwgT2P1A7BcHi7mZMYqwNVJfWK4PVNcDRqHuhGorR",
+      "hmacHeader": "sha256=e183e8d…"
+    },
+    {
+      "at": "2026-11-14T03:46:17.923Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "2YTgpiXTyGyrRh4uLRYtZWQ5h1Q2zCbsRYoWziduvXRVEb92oKS9EP4mn1FWRwZpgj4gnyByAYMDxPUVCWPZbcKt",
+      "hmacHeader": "sha256=84b0c83…"
+    },
+    {
+      "at": "2026-11-14T03:46:34.918Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "52cFYH77mmfJikZWtYizBsoEbArofyaJX7j4z3oSs9ev1M6wtDTFPEEvFqdCxeqSkV65VLVjVoEMKmqr7rYYR51e",
+      "hmacHeader": "sha256=680113a…"
+    },
+    {
+      "at": "2026-11-14T03:47:24.816Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "3vaLCfzE7UmLfG33u4Z12Eb7U3r8zXSryZUttZ2ifRX19AhrnXnc9KaJeA2PLZ1A55ZKXzTfEbqYt8nf9XeXiw7f",
+      "hmacHeader": "sha256=f4d1041…"
+    },
+    {
+      "at": "2026-11-14T03:48:31.450Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "5No2dj7TtRZxeumHMpRPLz51AXVwGxzyPccyqEumQGVgTH9HgWxg3nXCk1dGWHo7hR22HkS921Xry7HwiqfEkSpK",
+      "hmacHeader": "sha256=7760bb2…"
+    },
+    {
+      "at": "2026-11-14T03:48:32.091Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "event log_deposit on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "xiSzfCNYBHQo2Am41Hc7iJmH7KRQr4sFFLqa7R3FxRkCeneqpVJBToEbW5BS29nkrNWH5fSucEQLJENjwvwPpP4",
+      "hmacHeader": "sha256=b8cb271…"
+    },
+    {
+      "at": "2026-11-14T03:48:32.417Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "event log_deposit on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "5HWEwzmvpA8Rp2ywSfzPR36zXQZyDW4VfdniVmuJi2AhkAFEfoQcEiiWM5VTnp5pprV3VovgeUAEffRHK2G8xHzz",
+      "hmacHeader": "sha256=4b76a86…"
+    },
+    {
+      "at": "2026-11-14T03:48:49.941Z",
+      "kind": "rule",
+      "severity": "info",
+      "title": "instruction update_rate on jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "signature": "556DCWE4sCb2x38t9xj242ZC6DnpfCU2k6QpQm4fZbc82eUDF1Ak462X94kwsG9WXMSatT1afjBoQNLyETURDjJ9",
+      "hmacHeader": "sha256=b902dd4…"
+    }
+  ]
+}

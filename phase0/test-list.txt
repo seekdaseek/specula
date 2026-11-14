@@ -1,0 +1,57 @@
+ ✓ test/rules.test.ts > operators (semantics from Microscope alerting.rs condition_filter) > exists: missing, null and "" do not match; 0, false and "x" do 3ms
+ ✓ test/rules.test.ts > operators (semantics from Microscope alerting.rs condition_filter) > contains: substring on string, needs the field; "" never matches 0ms
+ ✓ test/rules.test.ts > operators (semantics from Microscope alerting.rs condition_filter) > eq number: numeric; missing/null/""/non-numeric never match 1ms
+ ✓ test/rules.test.ts > operators (semantics from Microscope alerting.rs condition_filter) > eq string / boolean compare label text 1ms
+ ✓ test/rules.test.ts > operators (semantics from Microscope alerting.rs condition_filter) > ne string/boolean requires the field to be present; ne number needs a numer
+ ✓ test/rules.test.ts > operators (semantics from Microscope alerting.rs condition_filter) > gt 5 vs 6 -> true 0ms
+ ✓ test/rules.test.ts > operators (semantics from Microscope alerting.rs condition_filter) > gt 5 vs 5 -> false 0ms
+ ✓ test/rules.test.ts > operators (semantics from Microscope alerting.rs condition_filter) > gte 5 vs 5 -> true 0ms
+ ✓ test/rules.test.ts > operators (semantics from Microscope alerting.rs condition_filter) > gte 5 vs 4 -> false 1ms
+ ✓ test/rules.test.ts > operators (semantics from Microscope alerting.rs condition_filter) > lt 5 vs 4 -> true 0ms
+ ✓ test/rules.test.ts > operators (semantics from Microscope alerting.rs condition_filter) > lt 5 vs 5 -> false 0ms
+ ✓ test/rules.test.ts > operators (semantics from Microscope alerting.rs condition_filter) > lte 5 vs 5 -> true 0ms
+ ✓ test/rules.test.ts > operators (semantics from Microscope alerting.rs condition_filter) > lte 5 vs 6 -> false 0ms
+ ✓ test/rules.test.ts > operators (semantics from Microscope alerting.rs condition_filter) > gt/lt: missing, null, "" and non-numeric do not match (Loki __error__ drops
+ ✓ test/rules.test.ts > operators (semantics from Microscope alerting.rs condition_filter) > numeric strings are compared numerically (Loki label conversion) 0ms
+ ✓ test/rules.test.ts > operators (semantics from Microscope alerting.rs condition_filter) > nested path data.data.args 0ms
+ ✓ test/rules.test.ts > match all vs any, name/kind scoping > all needs every condition; any needs one, and a missing field in one branch does not hide the other 0ms
+ ✓ test/rules.test.ts > match all vs any, name/kind scoping > no conditions matches every record with that name; wrong name or kind does not 0ms
+ ✓ test/rules.test.ts > validation and pasted Microscope TOML > rejects the same invalid combinations Microscope rejects 2ms
+ ✓ test/rules.test.ts > validation and pasted Microscope TOML > parses the exact block from Microscope microscope.toml.example and the Jupiter Lend example 3ms
+ ✓ test/rules.test.ts > validation and pasted Microscope TOML > kind defaults to event; multisig is rejected with a plain message; unknown keys rejected 0ms
+ ✓ test/golden.test.ts > golden: Jupiter Lend mainnet fixtures vs the IDL, checked by an independent byte reader > has >= 5 real transactions, >= 3 distinct instruction
+ ✓ test/golden.test.ts > golden: Jupiter Lend mainnet fixtures vs the IDL, checked by an independent byte reader > every instruction name equals the IDL name found by r
+ ✓ test/golden.test.ts > golden: Jupiter Lend mainnet fixtures vs the IDL, checked by an independent byte reader > deposit: assets arg and every account equal the raw b
+ ✓ test/golden.test.ts > golden: Jupiter Lend mainnet fixtures vs the IDL, checked by an independent byte reader > log_deposit event: sender, receiver, assets, shares_m
+ ✓ test/golden.test.ts > golden: Jupiter Lend mainnet fixtures vs the IDL, checked by an independent byte reader > inner (CPI) instruction paths are recorded, e.g. depo
+ ✓ test/golden.test.ts > golden: Jupiter Lend mainnet fixtures vs the IDL, checked by an independent byte reader > two events in one tx get distinct keys; update_rate +
+ ✓ test/golden.test.ts > golden: Jupiter Lend mainnet fixtures vs the IDL, checked by an independent byte reader > failed transactions are recorded with failed = true (
+ ✓ test/golden.test.ts > golden: Jupiter Lend mainnet fixtures vs the IDL, checked by an independent byte reader > negative control: a transaction that never touches th
+ ✓ test/golden.test.ts > snake_case matches heck for names Microscope would produce > LogDeposit 0ms
+ ✓ test/golden.test.ts > snake_case matches heck for names Microscope would produce > updateAuthority 0ms
+ ✓ test/golden.test.ts > snake_case matches heck for names Microscope would produce > deposit_with_min_amount_out 0ms
+ ✓ test/golden.test.ts > snake_case matches heck for names Microscope would produce > ProposalActivate 0ms
+ ✓ test/golden.test.ts > snake_case matches heck for names Microscope would produce > XMLHttp 0ms
+ ✓ test/golden.test.ts > snake_case matches heck for names Microscope would produce > setRewardsRateModel 0ms
+ ✓ test/golden.test.ts > snake_case matches heck for names Microscope would produce > IDL event/instruction names all come out snake_case 1ms
+ ✓ test/legacy.test.ts > pre-0.30 Anchor IDLs (Squads v4) via runtime conversion > is detected as legacy and the engine accepts it directly 12ms
+ ✓ test/legacy.test.ts > pre-0.30 Anchor IDLs (Squads v4) via runtime conversion > real mainnet Squads v4 transactions decode to snake_case names whose discriminator ma
+ ✓ test/legacy.test.ts > pre-0.30 Anchor IDLs (Squads v4) via runtime conversion > negative control: tampering with a discriminator byte stops the decode 8ms
+ ✓ test/ingest.test.ts > polling with a durable per-address checkpoint > first poll starts at the head without backfilling; later polls pick up only newer signatures 8m
+ ✓ test/ingest.test.ts > polling with a durable per-address checkpoint > a restart replays signatures missed while the process was down (file DB, new Engine) 14ms
+ ✓ test/ingest.test.ts > polling with a durable per-address checkpoint > a transaction that cannot be fetched yet is retried next poll, not skipped, and does not advanc
+ ✓ test/ingest.test.ts > polling with a durable per-address checkpoint > an RPC error leaves the heartbeat alone so the stall alert can fire; pollAll reports it 2ms
+ ✓ test/ingest.test.ts > polling with a durable per-address checkpoint > webhook and poll overlap is harmless: same transactions delivered by both produce one record se
+ ✓ test/ingest.test.ts > polling with a durable per-address checkpoint > normalizeWebhookTx accepts {pubkey} account keys and rejects junk 0ms
+ ✓ test/engine.test.ts > dedupe > the same signature delivered twice produces one record set and one alert 38ms
+ ✓ test/engine.test.ts > dedupe > a failed transaction does not trip a rule that requires failed = false 5ms
+ ✓ test/engine.test.ts > dedupe > re-delivery after a delivery failure retries (claim released), then dedupes 10ms
+ ✓ test/engine.test.ts > channels > generic webhook body is signed with HMAC-SHA256 over the exact body 5ms
+ ✓ test/engine.test.ts > channels > discord posts {content}; telegram uses the env token in the URL and never leaks it in errors 5ms
+ ✓ test/engine.test.ts > upgrade / set-authority alert on real historical mainnet transactions > programdata address is read from the program account, not hard-coded 4m
+ ✓ test/engine.test.ts > upgrade / set-authority alert on real historical mainnet transactions > finds Upgrade and SetAuthority touching the programdata account; finds 
+ ✓ test/engine.test.ts > upgrade / set-authority alert on real historical mainnet transactions > fires a critical alert through the engine, once, with the authority cha
+ ✓ test/engine.test.ts > upgrade / set-authority alert on real historical mainnet transactions > can be switched off per program 2ms
+ ✓ test/engine.test.ts > silence and pipeline health with a fake clock > no alert inside the window; one silence alert after N hours; no repeat; a new record resets the
+ ✓ test/engine.test.ts > silence and pipeline health with a fake clock > a stalled ingest raises one pipeline alert and suppresses silence (silence never hides a broken
+ ✓ test/engine.test.ts > silence and pipeline health with a fake clock > negative control: a healthy heartbeat just under the threshold raises no pipeline alert 3ms

@@ -1,0 +1,14 @@
+node_modules
+dist
+ref
+*.db
+*.db-*
+.env
+phase0/pages
+phase0/jl-candidates
+phase0/sq4
+phase0/upgrade-*.json
+dryrun/*.db*
+live/
+BRIEF-*.md
+site/

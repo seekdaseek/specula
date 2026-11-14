@@ -1,0 +1,87 @@
+ ✓ test/rules.test.ts > operators (semantics from Microscope alerting.rs condition_filter) > exists: missing, null and "" do not match; 0, false and "x" do
+ ✓ test/rules.test.ts > operators (semantics from Microscope alerting.rs condition_filter) > contains: substring on string, needs the field; "" never matches
+ ✓ test/rules.test.ts > operators (semantics from Microscope alerting.rs condition_filter) > eq number: numeric; missing/null/""/non-numeric never match
+ ✓ test/rules.test.ts > operators (semantics from Microscope alerting.rs condition_filter) > eq string / boolean compare label text
+ ✓ test/rules.test.ts > operators (semantics from Microscope alerting.rs condition_filter) > ne string/boolean requires the field to be present; ne number needs a numeric field
+ ✓ test/rules.test.ts > operators (semantics from Microscope alerting.rs condition_filter) > gt 5 vs 6 -> true
+ ✓ test/rules.test.ts > operators (semantics from Microscope alerting.rs condition_filter) > gt 5 vs 5 -> false
+ ✓ test/rules.test.ts > operators (semantics from Microscope alerting.rs condition_filter) > gte 5 vs 5 -> true
+ ✓ test/rules.test.ts > operators (semantics from Microscope alerting.rs condition_filter) > gte 5 vs 4 -> false
+ ✓ test/rules.test.ts > operators (semantics from Microscope alerting.rs condition_filter) > lt 5 vs 4 -> true
+ ✓ test/rules.test.ts > operators (semantics from Microscope alerting.rs condition_filter) > lt 5 vs 5 -> false
+ ✓ test/rules.test.ts > operators (semantics from Microscope alerting.rs condition_filter) > lte 5 vs 5 -> true
+ ✓ test/rules.test.ts > operators (semantics from Microscope alerting.rs condition_filter) > lte 5 vs 6 -> false
+ ✓ test/rules.test.ts > operators (semantics from Microscope alerting.rs condition_filter) > gt/lt: missing, null, "" and non-numeric do not match (Loki __error__ drops them)
+ ✓ test/rules.test.ts > operators (semantics from Microscope alerting.rs condition_filter) > numeric strings are compared numerically (Loki label conversion)
+ ✓ test/rules.test.ts > operators (semantics from Microscope alerting.rs condition_filter) > nested path data.data.args
+ ✓ test/rules.test.ts > match all vs any, name/kind scoping > all needs every condition; any needs one, and a missing field in one branch does not hide the other
+ ✓ test/rules.test.ts > match all vs any, name/kind scoping > no conditions matches every record with that name; wrong name or kind does not
+ ✓ test/rules.test.ts > validation and pasted Microscope TOML > rejects the same invalid combinations Microscope rejects
+ ✓ test/rules.test.ts > validation and pasted Microscope TOML > parses the exact block from Microscope microscope.toml.example and the Jupiter Lend example
+ ✓ test/rules.test.ts > validation and pasted Microscope TOML > kind defaults to event; multisig is rejected with a plain message; unknown keys rejected
+ ✓ test/legacy.test.ts > pre-0.30 Anchor IDLs (Squads v4) via runtime conversion > is detected as legacy and the engine accepts it directly
+ ✓ test/legacy.test.ts > pre-0.30 Anchor IDLs (Squads v4) via runtime conversion > real mainnet Squads v4 transactions decode to snake_case names whose discriminator matches sha256("global:<name>") computed here
+ ✓ test/legacy.test.ts > pre-0.30 Anchor IDLs (Squads v4) via runtime conversion > negative control: tampering with a discriminator byte stops the decode
+ ✓ test/ingest.test.ts > polling with a durable per-address checkpoint > first poll starts at the head without backfilling; later polls pick up only newer signatures
+ ✓ test/ingest.test.ts > polling with a durable per-address checkpoint > a restart replays signatures missed while the process was down (file DB, new Engine)
+ ✓ test/ingest.test.ts > polling with a durable per-address checkpoint > a transaction that cannot be fetched yet is retried next poll, not skipped, and does not advance the heartbeat
+ ✓ test/ingest.test.ts > polling with a durable per-address checkpoint > an RPC error leaves the heartbeat alone so the stall alert can fire; pollAll reports it
+ ✓ test/engine.test.ts > dedupe > the same signature delivered twice produces one record set and one alert
+ ✓ test/engine.test.ts > dedupe > a failed transaction does not trip a rule that requires failed = false
+ ✓ test/engine.test.ts > dedupe > re-delivery after a delivery failure retries (claim released), then dedupes
+ ✓ test/engine.test.ts > channels > generic webhook body is signed with HMAC-SHA256 over the exact body
+ ✓ test/telegram.test.ts > telegram delivery > returns the message id from the Bot API response body
+ ✓ test/telegram.test.ts > telegram delivery > 429: waits parameters.retry_after seconds, retries, then delivers (one wait of 2000 ms, two requests)
+ ✓ test/helius.test.ts > real Helius raw webhook payloads > a delivery is a JSON array of getTransaction-shaped transactions, account keys as plain strings
+ ✓ test/helius.test.ts > real Helius raw webhook payloads > webhook and getTransaction decode to identical records (same signature, both feeds)
+ ✓ test/engine.test.ts > channels > discord posts {content}; telegram uses the env token in the URL and never leaks it in errors
+ ✓ test/engine.test.ts > upgrade / set-authority alert on real historical mainnet transactions > programdata address is read from the program account, not hard-coded
+ ✓ test/engine.test.ts > upgrade / set-authority alert on real historical mainnet transactions > finds Upgrade and SetAuthority touching the programdata account; finds nothing for an unrelated programdata
+ ✓ test/ingest.test.ts > polling with a durable per-address checkpoint > webhook and poll overlap is harmless: same transactions delivered by both produce one record set
+ ✓ test/telegram.test.ts > telegram delivery > 429 forever: gives up after 3 retries, error carries status but not the token
+ ✓ test/telegram.test.ts > telegram delivery > retry_after is capped at 60 s
+ ✓ test/telegram.test.ts > telegram delivery > a 400 (bad chat id) is not retried and surfaces the API description
+ ✓ test/telegram.test.ts > telegram delivery > HTTP 200 with ok:false is an error (not a delivery)
+ ✓ test/ingest.test.ts > polling with a durable per-address checkpoint > normalizeWebhookTx accepts {pubkey} account keys and rejects junk
+ ✓ test/ingest.test.ts > reconciler does not re-fetch what the webhook already delivered > a signature already ingested by webhook is skipped (no getTransaction), the checkpoint still advances, and a missed one is fetched
+ ✓ test/helius.test.ts > real Helius raw webhook payloads > FAILED transactions are delivered by the webhook and recorded with failed = true
+ ✓ test/helius.test.ts > real Helius raw webhook payloads > the event fixture yields an instruction and an event record
+ ✓ test/engine.test.ts > upgrade / set-authority alert on real historical mainnet transactions > fires a critical alert through the engine, once, with the authority change in the text
+ ✓ test/engine.test.ts > upgrade / set-authority alert on real historical mainnet transactions > can be switched off per program
+ ✓ test/engine.test.ts > silence and pipeline health with a fake clock > no alert inside the window; one silence alert after N hours; no repeat; a new record resets the episode
+ ✓ test/engine.test.ts > silence and pipeline health with a fake clock > a stalled ingest raises one pipeline alert and suppresses silence (silence never hides a broken pipe)
+ ✓ test/engine.test.ts > silence and pipeline health with a fake clock > negative control: a healthy heartbeat just under the threshold raises no pipeline alert
+ ✓ test/helius.test.ts > real Helius raw webhook payloads > end to end: bearer token required, records stored, re-delivery is a no-op, observation source is webhook
+ ✓ test/codama.test.ts > Codama rootNode IDL (idl/idl1.json, real mainnet txs of De1eg...) > fixtures exist and are real (3 transactions, program is in the account keys)
+ ✓ test/codama.test.ts > Codama rootNode IDL (idl/idl1.json, real mainnet txs of De1eg...) > tx 0: instruction and event fields match an independent byte reader
+ ✓ test/codama.test.ts > Codama rootNode IDL (idl/idl1.json, real mainnet txs of De1eg...) > tx 1: instruction and event fields match an independent byte reader
+ ✓ test/codama.test.ts > Codama rootNode IDL (idl/idl1.json, real mainnet txs of De1eg...) > tx 2: instruction and event fields match an independent byte reader
+ ✓ test/codama.test.ts > Codama rootNode IDL (idl/idl1.json, real mainnet txs of De1eg...) > the engine accepts the Codama IDL and stores the records (idl_kind codama, auto-detected)
+ ✓ test/codama.test.ts > Codama rootNode IDL (idl/idl1.json, real mainnet txs of De1eg...) > negative control: flipping a byte of the amount changes the decoded amount
+ ✓ test/golden.test.ts > golden: Jupiter Lend mainnet fixtures vs the IDL, checked by an independent byte reader > has >= 5 real transactions, >= 3 distinct instructions and >= 1 event
+ ✓ test/golden.test.ts > golden: Jupiter Lend mainnet fixtures vs the IDL, checked by an independent byte reader > every instruction name equals the IDL name found by raw discriminator match (not via anchor)
+ ✓ test/golden.test.ts > golden: Jupiter Lend mainnet fixtures vs the IDL, checked by an independent byte reader > deposit: assets arg and every account equal the raw bytes / account list
+ ✓ test/golden.test.ts > golden: Jupiter Lend mainnet fixtures vs the IDL, checked by an independent byte reader > log_deposit event: sender, receiver, assets, shares_minted equal the raw Program data bytes
+ ✓ test/golden.test.ts > golden: Jupiter Lend mainnet fixtures vs the IDL, checked by an independent byte reader > inner (CPI) instruction paths are recorded, e.g. deposit invoked by another program
+ ✓ test/golden.test.ts > golden: Jupiter Lend mainnet fixtures vs the IDL, checked by an independent byte reader > two events in one tx get distinct keys; update_rate + withdraw in one tx
+ ✓ test/golden.test.ts > golden: Jupiter Lend mainnet fixtures vs the IDL, checked by an independent byte reader > failed transactions are recorded with failed = true (and no events)
+ ✓ test/golden.test.ts > golden: Jupiter Lend mainnet fixtures vs the IDL, checked by an independent byte reader > negative control: a transaction that never touches the program decodes to nothing
+ ✓ test/golden.test.ts > snake_case matches heck for names Microscope would produce > LogDeposit
+ ✓ test/golden.test.ts > snake_case matches heck for names Microscope would produce > updateAuthority
+ ✓ test/golden.test.ts > snake_case matches heck for names Microscope would produce > deposit_with_min_amount_out
+ ✓ test/golden.test.ts > snake_case matches heck for names Microscope would produce > ProposalActivate
+ ✓ test/golden.test.ts > snake_case matches heck for names Microscope would produce > XMLHttp
+ ✓ test/golden.test.ts > snake_case matches heck for names Microscope would produce > setRewardsRateModel
+ ✓ test/golden.test.ts > snake_case matches heck for names Microscope would produce > IDL event/instruction names all come out snake_case
+ ✓ test/shape.test.ts > Microscope JSON shapes > decodes one record named kitchen_sink
+ ✓ test/shape.test.ts > Microscope JSON shapes > u64 above 2^53 is an exact bare JSON number, not a string
+ ✓ test/shape.test.ts > Microscope JSON shapes > u128 and negative i128 are exact bare numbers
+ ✓ test/shape.test.ts > Microscope JSON shapes > safe integers stay plain numbers
+ ✓ test/shape.test.ts > Microscope JSON shapes > 2^53+1 survives exactly in a nested struct
+ ✓ test/shape.test.ts > Microscope JSON shapes > Option: Some is the value, None is null
+ ✓ test/shape.test.ts > Microscope JSON shapes > pubkeys and Option<pubkey> are base58 strings
+ ✓ test/shape.test.ts > Microscope JSON shapes > Vec<u8> and [u8; N] are arrays of numbers
+ ✓ test/shape.test.ts > Microscope JSON shapes > unit enum variant is the PascalCase string
+ ✓ test/shape.test.ts > Microscope JSON shapes > named-field enum variant is {Variant: {snake_fields}}
+ ✓ test/shape.test.ts > Microscope JSON shapes > tuple enum: one field is unwrapped, several are an array
+ ✓ test/shape.test.ts > Microscope JSON shapes > negative control: the string form of a big u64 would NOT match the number form

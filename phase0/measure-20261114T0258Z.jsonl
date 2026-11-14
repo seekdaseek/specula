@@ -1,0 +1,7 @@
+{"id":"hausS13jsjafwWwGqZTUQRmWyvyxn9EQpqMwV1PBBmk","label":"low-auction-house","rpc":"api.mainnet-beta.solana.com","pages":1,"complete_24h":true,"count":2,"failed":0,"span_s":11030,"per_day":2,"extrapolated":false}
+{"id":"SMPLecH534NA9acpos4G6x7uf3LWbCAwZQE9e8ZekMu","label":"low-squads-v3","rpc":"api.mainnet-beta.solana.com","pages":1,"complete_24h":true,"count":55,"failed":0,"span_s":78926,"per_day":55,"extrapolated":false}
+{"id":"jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9","label":"mid-jupiter-lend","rpc":"api.mainnet-beta.solana.com","pages":7,"complete_24h":true,"count":6147,"failed":328,"span_s":86373,"per_day":6147,"extrapolated":false}
+{"id":"SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf","label":"mid-squads-v4","rpc":"api.mainnet-beta.solana.com","pages":7,"complete_24h":true,"count":6512,"failed":7,"span_s":86290,"per_day":6512,"extrapolated":false}
+{"id":"strmRqUCoQUgGUan5YhzUZa6KqdzwX5L6FpUxfmKg5m","label":"mid-high-streamflow","rpc":"api.mainnet-beta.solana.com","pages":14,"complete_24h":true,"count":13732,"failed":2,"span_s":86409,"per_day":13732,"extrapolated":false}
+{"id":"KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD","label":"high-kamino-lend","rpc":"api.mainnet-beta.solana.com","pages":20,"complete_24h":false,"count":20000,"failed":11912,"span_s":14356,"per_day":120368,"extrapolated":true}
+{"id":"CAMMCzo5YL8w4VFF8KVHrK22GGUsp5VTaW7grrKgrWqK","label":"high-raydium-clmm","rpc":"api.mainnet-beta.solana.com","pages":20,"complete_24h":false,"count":20000,"failed":5795,"span_s":275,"per_day":6283636,"extrapolated":true}

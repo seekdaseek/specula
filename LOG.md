@@ -1,0 +1,213 @@
+# specula LOG
+
+## 2026-11-14 Phase 0
+- Created /Volumes/D/specula, ref/solana-microscope (cloned, HEAD aa514f1 confirmed). `gh repo view seekdaseek/specula` returned "Could not resolve" = name free (repo not created yet).
+- /Volumes/D/specula/phase0/measure.mjs: run against api.mainnet-beta.solana.com; known-positive check: Jupiter Lend returned 3,000 sigs on first run, auction-house 2 (page ended inside 24h, so the 24h-cut logic and the "complete" branch both exercised). Output in phase0/measure-*.jsonl.
+- phase0/logsbw.mjs, sizes.mjs: payload size samples (n=4/6).
+- Pages fetched with curl into phase0/pages/ (Helius pricing, credits, webhooks, rate-limits; QuickNode pricing, api-credits/sol; Triton pricing; Chainstack pricing, request-units).
+- /Volumes/D/specula/COSTS.md written. Gate PASS: design A median $0.95/program/month. Chosen: A + polling reconciler.
+- UNTESTED: Helius webhooks delivering failed txs; any real Helius webhook (no account/key used).
+
+## 2026-11-14 Phase 1 (engine v0)
+Stack: Node v24.16 (>=20), TypeScript, better-sqlite3, vitest 5.1, @coral-xyz/anchor 0.32.1, smol-toml, bs58.
+
+Files (all under /Volumes/D/specula): src/{snake,types,decode,rules,db,channels,upgrade,engine,ingest,idl-legacy,config,run,main}.ts; test/{util,golden,rules,engine,ingest,legacy}.test.ts or .ts; scripts/{dry-run,getfix,getfailed,findupgrade,getsq,survey,survey-sq,show}.ts; fixtures/{jupiter-lend (7 raw mainnet txs), squads-v4 (6), upgrade (2), idl}; README.md; LICENSE.
+
+Decisions and findings
+- Anchor coder: `@coral-xyz/anchor` BorshCoder handles Jupiter Lend `lending.json` (spec 0.1.0), verified: 4 instructions and 3 events decoded from 7 real txs.
+- Pre-0.30 Anchor IDLs (Microscope's own Squads v3/v4 IDLs) make BorshCoder throw "Type not found: args". Wrote src/idl-legacy.ts (legacy -> spec 0.1.0); verified on 25 real Squads v4 txs, 0 undecoded, each name's sha256("global:"+name) discriminator re-computed in the test.
+- Codama: NOT supported in v0. @codama/dynamic-codecs 1.3.0 exists (npm modified 2026-10-20) but was not tried. Stated in README.
+- getTransaction must use maxSupportedTransactionVersion 1 (mainnet v1 txs; version 0 returned -32015 during the upgrade-fixture search). Fixed in src/ingest.ts.
+- Names: heck-style snake_case (src/snake.ts) applied to instruction, event and arg/field names. Instruction record `data` mirrors Microscope: { program_id, data: {args}, accounts: {name: pubkey} }.
+- Bug found while testing: my golden test's raw-reader ignored loadedAddresses (ALT accounts) and counted 6 instructions instead of 8; fixed the TEST, decoder was right. Also my first negative control mutated account keys only; logs still named the program, so decode returned records; control now strips both.
+- Mutation check (G1): changing `>` to `>=` in rules and `INSERT OR IGNORE` to `INSERT OR REPLACE` in db each made tests fail (2 failures), then restored; 57/57 pass.
+- Git identity: repo-local user.name seekdaseek and the GitHub noreply email (global config is gmail, never used here).
+
+Test run (npx vitest run, 14 Nov 05:20 local):
+```
+ Test Files  5 passed (5)
+      Tests  57 passed (57)
+```
+Full list of the 57 test names: phase0/test-list.txt.
+Coverage by brief item: golden (Jupiter Lend, 7 txs, 4 instrs, 3 events, incl. 1 failed tx, 1 inner-CPI) = test/golden.test.ts; rule engine (each operator, all/any, missing vs null vs "") = test/rules.test.ts; dedupe + channels (HMAC) + upgrade (2 real Squads v4 mainnet txs: Upgrade 2024-11-20, SetAuthority 2024-11-21) + silence/pipeline with fake clock = test/engine.test.ts; checkpoint replay across restart = test/ingest.test.ts.
+
+UNTESTED (and the test that would prove it)
+- Telegram delivery to the real api.telegram.org: only tested against a local receiver with a fake token (waits for the operator's token, tracker item 6).
+- Discord delivery to a real Discord webhook: local receiver only.
+- Helius (or any provider) raw webhook payload shape and whether failed txs are delivered: webhookServer/normalizeWebhookTx tested with getTransaction-shaped fixtures only. Test: create a real webhook on a free Helius key and POST-capture a delivery.
+- Comparison with Microscope's own decoder output: not run (Rust/Carbon + generator build was not attempted). Test: build microscope-indexer for lending.json and diff `program_instruction`/`program_event` JSON on the 7 fixtures.
+- Codama IDL decoding: unsupported.
+- Enum, u128, byte-array JSON formatting vs Microscope's serde output: not compared.
+- Upgrade alert on a program redeploy through a different path (Close/ExtendProgram) is not detected by design.
+
+## 2026-11-14 Dry run (30 min, Mac, mainnet, poll mode, local webhook receiver)
+Run: 03:18:50Z to 03:48:50Z (30.0 min) with `npx tsx scripts/dry-run.ts 30`; RPC api.mainnet-beta.solana.com; poll every 15 s over 6 watched addresses (3 programs + their programdata accounts); stall threshold 180 s. Raw: dryrun/summary.json, dryrun/dryrun.log. 105 polls, 0 poll errors, 0 log warnings.
+Programs: Jupiter Lend (lending.json), Squads v4 (legacy IDL, converted), Squads v3 (legacy IDL, converted; chosen as a low-traffic program to exercise silence, silence_hours 0.25).
+
+Record counts (records table, kind program_instruction / program_event; failed = failed tx)
+| program | distinct tx | instruction records | event records |
+|---|---|---|---|
+| Jupiter Lend jup3YeL8... | 155 | 203 (15 failed) | 291 (19 failed) |
+| Squads v4 SQDS4ep6... | 29 | 53 (0 failed) | 0 (IDL has no events) |
+| Squads v3 SMPLecH5... | 0 | 0 | 0 |
+Jupiter Lend by name: update_rate 115, withdraw 45, redeem 28, deposit 14, deposit_with_min_amount_out 1; events log_update_rates 203, log_withdraw 73, log_deposit 15.
+Squads v4 by name: proposal_create 14, vault_transaction_create 13, proposal_approve 11, vault_transaction_execute 5, vault_transaction_accounts_close 4, proposal_cancel 2, config_transaction_{create,execute,accounts_close} 1 each, multisig_create_v2 1.
+
+Alerts received by the local receiver: 96 total, none duplicated.
+- 73 rule `instruction update_rate` (63 info + 10 on failed txs; the rule had no failed condition). Matches 73 distinct signatures in the DB.
+- 12 rule `event log_deposit` (assets > 1,000,000 and failed = false). Matches 12 distinct signatures from a DB query with the same condition (independent of the rule engine).
+- 10 rule `instruction proposal_approve` (warning) for 10 distinct signatures although 11 records exist: one alert per rule per signature held.
+- 1 silence: Squads v3 at 03:33:50Z for the 0.25 h threshold (first health tick after the 15 min mark).
+- 0 upgrade alerts (no upgrade or authority change occurred on the watched programdata accounts), 0 pipeline-stall alerts (ingest was healthy; the stall path was only exercised by the fake-clock tests).
+Observations: Squads v4 was quiet for stretches of minutes, 29 tx in 30 min vs the ~6.5k/day (4.5/min, ~135 per 30 min) Phase 0 measured; the 24 h average is not a 30-min expectation, and a direct getSignaturesForAddress at 03:21Z confirmed no new signature in the preceding ~170 s. Not investigated further.
+Not exercised live: upgrade alert (tested on historical fixtures only), webhook feed, Telegram.
+
+## 2026-11-14 Phase 1b (live webhook, Telegram, Microscope compatibility, Codama, pricing)
+Brief: BRIEF-specula-phase1b-20261114.md. Secrets: `.env` is git-ignored (`git check-ignore .env` printed `.env`). Present: TELEGRAM_BOT_TOKEN (46 chars), HELIUS_API_KEY (a 36-char line, works: getHealth HTTP 200). **`.env` contains a second `HELIUS_API_KEY=` line of 128 chars that is not a valid key (curl rejects the URL); a loader that takes the last value gets the bad one. My scripts take the first line with UUID shape. Not edited.** TELEGRAM_CHAT_ID: missing, see below. DISCORD_WEBHOOK_URL: absent. Values were never printed; the saved fixtures and live logs were grep-checked for the key and the token (positive control matched, 0 files contained either).
+
+### 1. Live Helius webhook (design A)
+- brew installed cloudflared; quick tunnel to localhost:8799 (no VPS). ONE raw webhook created via `POST api-mainnet.helius-rpc.com/v0/webhooks` (webhookType raw, transactionTypes ANY, accountAddresses Jupiter Lend + Squads v4, authHeader = random token generated in memory per run, receiver rejects any other `Authorization`).
+- `scripts/live-webhook.ts`, run 08:54:08Z to 09:54:14Z (60.1 min) with the 5-minute reconciler in the same process (poll every 5 min over program + programdata of both programs, 13 polls). New: `observations` table (signature, source webhook|poll, seen_at, block_time, failed); `Engine.processTx(tx, source)`.
+- Report from the DB, `npx tsx scripts/live-report.ts live/<db> 2026-11-14T08:54:10Z 2026-11-14T09:54:00Z`: 273 distinct signatures; both 270; webhook only 0; poll only 3 (block times 23 to 54 s before the first delivery at 08:55:17Z: webhook activation lag after creation; from the first delivery 270 of 270 arrived). Latency receive minus block time: p50 1.2 s, p95 1.8 s, max 2.8 s, min 0.5 s (n=270, block time has 1 s resolution). Poll latency p50 159 s, p95 290 s. **Failed transactions: webhook delivered 7 of the 7 failed ones the poller saw.**
+- Credits: Helius dashboard NOT read (UNVERIFIED). Derived from our own call counts (`scripts/live-credits.ts`): 797 = 52 getSignaturesForAddress + 273 getTransaction + 2 getAccountInfo + 270 webhook events + 200 webhook create/delete.
+- Webhook deleted: `DELETE /v0/webhooks/{id}` HTTP 200, then `GET /v0/webhooks` returned 0 webhooks. Tunnel and run process stopped (pgrep count 0). Limitation of that check: I did not list before the delete, so "0 webhooks" is not a before/after comparison.
+- Raw payload shape: JSON array per delivery (1 transaction each here) of getTransaction-shaped objects: blockTime, indexWithinBlock, meta{err, fee, innerInstructions, loadedAddresses, logMessages, pre/post balances...}, slot, transaction{message{accountKeys as strings, instructions, ...}, signatures}, version. `normalizeWebhookTx` already handled it; no parser change was needed. Fixtures (as received, no headers, nothing secret): fixtures/helius/webhook-{failed,event,squads}.json plus poll-*.json (getTransaction for the same signature).
+- Change from the finding: the reconciler now skips `getTransaction` for a signature the webhook already delivered (`Engine.alreadyObserved`), checkpoint still advances. This run used the old code, so its poll side re-fetched everything (273 getTransaction).
+- Tests added: test/helius.test.ts (5), test/ingest.test.ts (+1).
+
+### 2. Channels
+- Telegram: `deliver` now confirms from the Bot API body (ok:true, message_id), handles 429 with `parameters.retry_after` (cap 60 s, 3 retries), never echoes the token. test/telegram.test.ts (6 tests incl. 429 then success, 429 forever, cap, 400 not retried, 200 with ok:false is an error).
+- **Real Telegram delivery: UNTESTED.** The token is valid (getMe returned @speculaDaBot, no webhook set) but getUpdates returned 0 updates on 5 calls during the session, so there is no chat id to read and I did not guess one. To finish: send /start (or any message) to @speculaDaBot, then run `npx tsx scripts/telegram-prove.ts` (appends TELEGRAM_CHAT_ID to .env, sends one real Jupiter Lend alert from the live DB, prints only the message_id).
+- Discord: UNTESTED (no DISCORD_WEBHOOK_URL in .env).
+
+### 3. Microscope compatibility
+- Read the generated Rust (`scripts/generate-decoder.sh` run with python 3.12 and `npm ci --ignore-scripts` in ref/solana-microscope; wrote ref/solana-microscope/microscope.toml, git-ignored by `ref`): serde derive + `base58` feature. Shapes: u64/u128/i128 exact bare JSON numbers, Pubkey and Option<Pubkey> base58, Option null|value, Vec<u8>/[u8;N] number arrays, unit enum `"Variant"`, struct variant `{"Variant":{..}}`, tuple `{"Variant":x}`/`[..]`. Specula previously emitted integers above 2^53 as strings and enums as Anchor objects; fixed in `src/shape.ts` (BigInt kept, `toJson` writes exact numbers, rules read them as Loki float64 labels, condition values above 2^53 still rejected). test/shape.test.ts (12 tests, incl. u64 max, u128 max, i128 min, 2^53+1, Option, pubkeys, bytes, arrays, all enum forms, negative control).
+- Built Microscope's decoder (not the full indexer: Carbon datasource/Loki/Grafana are irrelevant to decoding) as `tools/ms-harness` with `cargo +stable build --release --ignore-rust-version` (repo pins 1.96.1, stable here is 1.96.0; rustup could not install 1.97 toolchain: cross-device link error). Build 1m37s, target dir ref/ms-target 419 MB, disk was 6 GB free with a guard process. `npx tsx scripts/msdiff.ts` diffs both decoders on the 7 golden fixtures: **8 instructions and 12 events on each side, 0 differences** (name, path, failed, args, named accounts, event data; canonicalised key order). Negative control (mutated args) reports 1 difference. Not compared: Microscope's `remaining` accounts; Vec<Pubkey> nested representation; data with u128, tuple enums or big numbers (covered only by the source reading and unit tests).
+- Codama: `@codama/dynamic-codecs` 1.3.0 (pinned). `src/decode-codama.ts` (`CodamaDecoder`, engine auto-detects `kind: rootNode`), decoder refactored into `TxDecoder` base + `AnchorDecoder`. Tested on 3 real mainnet transactions of program De1egAFMkMWZSN5rYXRj9CAdheBamobVNubTsi9avR44 (idl/idl1.json): decoded transfer_recurring + recurring_transfer_event match an independent byte reader (amount, delegator, mint, delegation) and the event amount equals the instruction amount; negative control flips a byte. test/codama.test.ts (6). **Shipped.** Limits: numeric u8 instruction discriminators and offset-8 event tags only; options/tuple enums not compared with Microscope on real data.
+
+### 4. Pricing
+- `PRICING.md`, `phase0/pricing.py` (+ `phase0/pricing-output.md`), COSTS.md section 7. Today's tx/day: auction-house 2, squads-v3 41, jupiter-lend 6,076, squads-v4 6,214, kamino ~75,819 (extrapolated), raydium ~3.5M (extrapolated). VPS cost $10 ASSUMED (UNVERIFIED). Break-even 8 customers at $9 Starter, 2 at $39 Growth.
+
+### Test run (npx vitest run, 14 Nov)
+9 files, **87 tests passed** (57 from Phase 1 + 30 new). Per-test names: phase0/test-list-1b.txt.
+
+### UNTESTED after Phase 1b
+- Telegram real delivery (needs /start sent to @speculaDaBot, then scripts/telegram-prove.ts); Discord real delivery.
+- Helius dashboard credit figure; Helius plan/price facts not re-fetched today.
+- Webhook behaviour over days (one hour on two programs); delivery retries by Helius when our endpoint is down.
+- Microscope comparison for u128, tuple enums, big integers, Vec<Pubkey>; Codama option/enum shapes on real data.
+- Live upgrade alert and live stall alert (historical fixtures and fake clock only).
+- The skip-getTransaction reconciler change was tested with a stub RPC, not live.
+
+### 2026-11-14 follow-up: Telegram proof and .env clean-up
+- `.env`: deleted the invalid 128-char `HELIUS_API_KEY=` line (selected by a UUID-shape test, not by position), kept the 36-char one. Remaining variables by length only: HELIUS_API_KEY 36, TELEGRAM_BOT_TOKEN 46, TELEGRAM_CHAT_ID 10 (added below). No values printed.
+- `scripts/telegram-wait.ts`: long-polls getUpdates (timeout=50, no offset) up to 5 min; the first update arrived (private chat), its chat id (10 chars) was appended to `.env`.
+- `scripts/telegram-prove.ts` then delivered one real Jupiter Lend alert from the live DB: the Bot API response body had ok:true and **message_id = 3**. Telegram real delivery is now TESTED (one message, one chat). Discord remains UNTESTED.
+
+## 2026-11-14 Phase 2a (live on the VPS, self-serve bot)
+Commands are labelled MAC or VPS. Nothing under /opt touched except /opt/specula; /root/.cloudflared/config.yml untouched (only the new specula.yml and the new tunnel credentials file were added); no other PM2 process was restarted, stopped or deleted (`pm2 delete specula` only, never `pm2 restart`).
+
+### Code (MAC)
+- Engine: runtime add/remove of programs and rules (`addRule/removeRule/removeProgram/restore`), rule ids from the DB, hooks `canAlert` / `onTx` / `ownerChannels`; pipeline-stall alerts go to the owner chat only.
+- `src/service.ts` (users, 14-day trial from first /watch, one per Telegram id, quota metering per program per UTC month, 80% warning, 100% pause, rate limit), `src/plans.ts` (plans from config), `src/bot.ts` (commands, buttons, IDL upload), `src/idl-fetch.ts` (on-chain Anchor IDL account, address-mismatch validation), `src/helius.ts` (webhook create/edit, batched), `src/ops.ts` (sqlite3 `.backup`, webhook-silence alerts to owner), `src/daemon.ts` + `specula serve service.toml`, `deploy/service.toml`.
+- Tests: **107 pass** (87 + 20 in test/service.test.ts): command parsing, tenant isolation (two users, same program, callbacks from the wrong user/chat), quota metering, trial expiry and no second trial (fake clock), IDL address mismatch (Anchor, Codama, positive control), 1 MB limit, /watch rate limit, owner-only stall alerts, webhook edit batching, webhook-silence alerts, backup retention. Mutation check: forcing `canAlert` to true fails 2 tests.
+- On-chain IDL fetch checked against mainnet: Kamino Lend, Meteora DLMM, Candy Machine, Marinade load; Jupiter Lend has none (asks for a file); Squads v4's on-chain IDL (pre-0.30 format) fails to load.
+- Local load RSS 95 MB (Mac, Node 24).
+
+### Deploy (VPS)
+- Port **3043** (free: `ss -ltn` showed no listener). Files in /opt/specula (dist, package*.json, service.toml, idl/, data/, backups/); `.env` copied by scp from the Mac (HELIUS_API_KEY 36, TELEGRAM_BOT_TOKEN 46, OWNER_CHAT_ID 10 chars) plus WEBHOOK_TOKEN (48 chars) generated on the VPS with openssl; chmod 600. `npm ci --omit=dev`, 125 MB node_modules.
+- Tunnel `specula` (UUID 5ef5dde9-f7f5-45da-a2ce-e988d0d70344), config /root/.cloudflared/specula.yml (ingress only `^/(webhook/helius|health)$` to localhost:3043, else 404), DNS routed with `cloudflared --config /root/.cloudflared/specula.yml tunnel route dns --overwrite-dns <UUID> specula.ochinimus.app`.
+- PM2: `specula-tunnel` and `specula` (`--node-args=--env-file=.env --max-memory-restart 200M`, args `serve service.toml`), `pm2 save`. Redeployed twice with `pm2 delete specula && pm2 start` (message-id logging; quieter proof rule).
+- Helius webhook created by the service at 12:00:58Z: id **1cc70671-7762-4b52-bcc8-b3a0516204d0** (raw, ANY, auth header from WEBHOOK_TOKEN). First Jupiter Lend delivery recorded in the VPS DB at 12:01:49Z (51 s after creation; 3 deliveries by 12:02:18Z). The webhook id survived restarts (kv table), no second webhook was created.
+- Public checks from the Mac: `GET https://specula.ochinimus.app/health` 200 (`{"ok":true,...}`); `/`, `/admin`, `GET /webhook/helius` 404; `POST /webhook/helius` without auth 401.
+- RSS: 98 MB at start, **109 MB after 29 min** (ps rss, VPS), 0 restarts.
+- Backup: in-process daily `sqlite3 .backup` into /opt/specula/backups (7 kept), first file specula-202611141200.db created and opened with sqlite3 (29 schema objects). No crontab edit.
+- Live proof: operator tenant `proof` (Jupiter Lend, alerts to OWNER_CHAT_ID, not metered), rule event log_deposit with data.assets > 5,000,000 then raised to 50,000,000 to stop the chatter. Telegram message ids delivered (Bot API response bodies): 6 7 8 10 11 12 13 14 15 16 17 18 19 20 21 22 23 25 26 27 28 (plus one earlier id before id logging existed). After 30 min: 126 webhook observations, 3 poll-only (the restart replay gap).
+
+### UNTESTED
+- The bot with a real user from Telegram (commands, buttons, IDL upload, /status): only exercised with fake Telegram in tests; the operator's checklist is the first real run.
+- Real Telegram `getFile` download of an uploaded IDL; callback buttons on a real client; the long-poll loop under real traffic beyond "no errors in 30 min".
+- Helius webhook address EDIT (100 credits) against the real API: only the batching logic is tested with a fake API.
+- Webhook-silence alerts live (fake clock only); trial/quota notices live; owner stall alert live.
+- Backup rotation on the VPS (first file only; rotation tested on the Mac).
+- Adding the service to the VPS watchdog (see TRACKER).
+
+## 2026-11-14 Phase 2b (USDC billing, fixes from the 2a report)
+Labels: MAC = this Mac, VPS = ssh solwatch. Rules unchanged: only /opt/specula plus the one requested /opt/watchdog.sh edit; `pm2 delete specula && pm2 start` only; no other PM2 process touched.
+
+### A. Fixes
+1. **Squads v4 on-chain IDL (MAC).** Fetched the real IDL account (owner = the program, 8,952 bytes) from mainnet and saved it as fixtures/onchain-idl/squads-v4.account.json. Cause of "Type not found: accountKeys": the pre-0.30 IDL contains types that reference generic types it does not define (`SmallVec<u8,Pubkey>`), and the Anchor coder builds a layout for every type. Fix in `src/idl-legacy.ts`: `pruneUnresolvable()` drops type definitions with unresolvable references (cascading); on-chain IDLs already went through the same legacy path as uploads. test/onchain-idl.test.ts (4): account address is the IDL PDA, bytes decode, `inspectIdl` accepts it, `/watch` activates the program from a fake RPC serving those bytes, and real Squads v4 transactions decode identically with the on-chain IDL and Microscope's legacy file.
+2. **Plan limits (config).** deploy/service.toml: Starter 3, Growth 10, Scale 25 programs; trial stays 1 program.
+3. **Watchdog (VPS).** Read /opt/watchdog.sh (1,056 lines) first; no per-service pm2 check existed except linewatch and lictor, so I reused its own `pm2st()` helper and its public-URL probe idiom (`curl ... "${RETRY[@]}"`). Backup: /opt/watchdog.sh.bak-20261114. One block inserted before the "REPEAT SUPPRESSION" comment, nothing else changed. `bash -n` OK. Run once by hand under the cron lock: output unchanged apart from the pre-existing pm2-root alert; no specula alert. Negative control (same block, process `specula-nope` and URL `/nope`, no sending): ALERTS=[ | specula-nope: pm2 process is missing | specula: https://specula.ochinimus.app/nope answered 404]. Diff (`diff /opt/watchdog.sh.bak-20261114 /opt/watchdog.sh`):
+```
+987a988,996
+> # specula (14 Nov 2026): pm2 state of the service and its own tunnel, and the public /health through the tunnel.
+> for SP_NAME in specula specula-tunnel; do
+>   SP_ST=$(pm2st "$SP_NAME" | cut -d" " -f1)
+>   if [ -z "$SP_ST" ]; then ALERTS="${ALERTS} | ${SP_NAME}: pm2 state UNMEASURED"
+>   elif [ "$SP_ST" != online ]; then ALERTS="${ALERTS} | ${SP_NAME}: pm2 process is ${SP_ST}"; fi
+> done
+> SP_HC=$(curl -s -o /dev/null -m 10 "${RETRY[@]}" -w "%{http_code}" "https://specula.ochinimus.app/health" || true); SP_HC=${SP_HC:-000}
+> [ "$SP_HC" != 200 ] && ALERTS="${ALERTS} | specula: https://specula.ochinimus.app/health answered ${SP_HC}"
+>
+```
+4. **solwatch-mcp restart cause (VPS, read only, not touched).** `pm2 describe`: restarts 0, created at 2026-11-14T12:16:50.874Z, script /opt/solwatch-mcp/server.js. `ls --time-style=full-iso`: server.js was rewritten at 12:16:50.463Z, 0.41 s before the new PM2 process was created. Its error log's last entry is 12 Oct and the out log shows earlier start lines on 7 Oct, 24 Oct, 4 Nov and 13 Nov 19:35. Conclusion: not a crash and not an OOM kill; someone deployed a new server.js and recreated the process with delete+start (restarts stays 0 because it is a new process) at 12:16:50. That was not specula (my last VPS command before it was at about 12:03, the next at 12:43). Which session did it cannot be told from the box.
+
+### B. Billing
+- Code: `src/billing.ts` (orders, Solana Pay link, QR PNG, finalized verification, exact-amount classification, activation, rejection, late and duplicate handling), `src/service.ts` (paid plan, expiry, 3-day grace, reminders 3 days before, on the day and at grace end), `src/bot.ts` (/plans, /upgrade, /billing, /support), config `[billing]` in deploy/service.toml (recipient = Seed Vault treasury <treasury>, USDC mint, cluster, decimals, period 30 d, grace 3 d, reminder 3 d, order TTL 30 min, late-order horizon 14 d), hidden plan `proof` (0.10 USDC, visible only to OWNER_CHAT_ID). No key for the recipient exists anywhere here; specula only reads.
+- Flow: /upgrade PLAN makes a fresh reference keypair (only the public key is stored), stores user/plan/amount/reference/created/expires (+30 min), replies with `solana:RECIPIENT?amount=..&spl-token=..&reference=..&label=specula&message=..` plus a QR image. Poll every 15 s over orders that can still receive money (open ones always; expired ones every 10 min for 14 days, so late payments are honoured). A payment is activated only if: transaction finalized and not failed, the recipient's token balance delta in the expected mint equals the plan price EXACTLY (over-payment is a mismatch too), and `@solana/pay` `validateTransfer` at finalized passes. The payment row is keyed on the signature and inserted in the same SQLite transaction as the activation, so double delivery activates once. Renewal extends from max(now, current expiry). Wrong amount or wrong mint: not activated, plain message to the user, owner gets the signature (refund by hand). A second valid payment for an already paid order is kept, not stacked, and reported to the owner.
+- Deviations to know: (a) `findReference` returns only the OLDEST signature, so a failed attempt would mask a later good one; RealChain makes the same `getSignaturesForAddress` call and returns all of them. (b) `validateTransfer` accepts over-payment (it checks `post - pre < expected`), hence the separate exact check. (c) `validateTransfer` reads with maxSupportedTransactionVersion 0 and static accounts only: it rejects version-1 transactions and v0 transactions with address lookup tables (measured on real mainnet transactions into the treasury's USDC account: "Transaction version (1) is not supported", "missing instruction accounts"). When it fails for exactly those reasons, RealChain falls back to: exact delta already checked + the reference must be one of the transaction's account keys; positive and negative control on 3 real mainnet transactions (reference present: VALID, absent: REJECTED). Wallet-built legacy transactions use the library path; its real-transaction positive case is UNTESTED until the proof payment (the log line says `validateTransfer ok` or `fallback validation ok`).
+- RealChain reads transactions with maxSupportedTransactionVersion 1; live check (scripts/chain-check.ts) of the recipient deltas against an independent read of a real USDC mainnet transaction: MATCH.
+- RSS: importing @solana/kit and @solana/pay costs about 22 MB, so they and `qrcode` are loaded lazily. First deployment of the eager version measured 142 MB right after start (too close to 150); the lazy version measured 104 MB after 15 s on the VPS.
+- Tests: **132 pass, 1 skipped** (111 + 21 in test/billing.test.ts; the skipped one is the opt-in devnet end-to-end, test/billing-devnet.test.ts). Cases: amounts, classify, /plans (hidden plan), /upgrade link and QR and fresh references, owner-only proof plan, activation + confirmation + owner line + /billing, double delivery once, wrong amount (under and over) once-only notices, wrong mint, validateTransfer failure blocks, failed and empty transfers ignored, not-yet-retrievable retried, late payment honoured, horizon, renewal stacking, extra payment, wrong user, reminders and grace with a fake clock, renewal resets reminders, plan limits follow the plan, /support forwarding with the sender's Telegram id and rate limit. Mutation check: changing `mine === expectedRaw` to `>=` in classify fails 2 tests (classify and wrong-amount); restored, 132 pass.
+- Devnet end-to-end: written (test/billing-devnet.test.ts, `RUN_DEVNET=1`, uses a throwaway mint and recipient, cluster and mint configurable) but NOT RUN successfully: devnet's RPC faucet is closed (410) and Helius devnet airdrop returned 500. It runs once a payer funded at faucet.solana.com is supplied via DEVNET_PAYER_KEYFILE.
+- Live finding: the operator used the bot while I was working (user <operator telegram id> watching Kamino Lend); the first real webhook address edit happened at 12:41:13Z ("webhook edited"), so the Helius edit against the real API is now TESTED.
+
+### Deploy (MAC then VPS)
+`pm2 delete specula && pm2 start dist/main.js --name specula ... && pm2 save` three times (npm ci --omit=dev for the new dependencies, service.toml with [billing], lazy imports, validation logging). service.toml backup on the box: /opt/specula/service.toml.bak-20261114.
+
+### UNTESTED
+- A real payment end to end (the 0.10 USDC proof is next); the library validateTransfer path on a real wallet-built transaction; the devnet end-to-end; /upgrade, /billing and /support with a real Telegram user; QR image rendering on a real client; reminder and grace messages live.
+
+### 2026-11-14 Billing fallback hardening and the proof payment
+- **Proof payment (VPS DB):** order #1 (proof, 100000 raw = 0.10 USDC) paid; signature 2jVuzdSs2FXeZLeMN7T8MZ4oKvu8MhR8HvuAzn56EHSvvKWUvNe4PHbwrq9AdzxqnaBj3JUJC7CuXuUVSTcShWZ5, activated 13:16:14Z, plan proof until 2026-12-14 13:16:14Z. Activation message_id=54, owner message_id=55. The log line was `validateTransfer ok`, so @solana/pay validated this wallet-built transaction itself: the library path now has one real positive.
+- **Security fix (MAC code, VPS deploy):** the fallback used when @solana/pay cannot read a transaction (version 1, address lookup tables) checked only that the reference was in the account keys. It now runs `strictCheck` on a transaction fetched at finalized commitment (maxSupportedTransactionVersion 1): (1) meta.err is null; (2) finalized (an unfinalized/missing transaction is refused); (3) increase of the recipient owner's balance in the expected mint, from pre/postTokenBalances filtered to mint EPjFWdd5…yTDt1v and owner <treasury>, equals the plan amount exactly (raw integers, `Chain.validate` now carries amountRaw); (4) the reference is among the account keys including lookup-table-loaded addresses (meta.loadedAddresses).
+- Tests added (7, test/billing.test.ts): positive control; failed transaction carrying the reference; fake mint with the same amount; right mint and amount to a different owner; under and over amounts; ALT-loaded reference accepted and a reference nowhere rejected; RealChain.strictValidate sends commitment finalized + version 1 and refuses a not-finalized or failed transaction. Mutation check: deleting the meta.err check fails 2 tests (failed-transaction case and the strictValidate case); restored. Suite: 139 passed, 1 skipped.
+- Deploy: `pm2 delete specula && pm2 start dist/main.js --name specula ... && pm2 save`.
+
+## 2026-11-14 Phase 3 (distribution)
+MAC = this Mac, VPS = ssh solwatch. Nothing was posted, published or submitted.
+
+### 0. Proof tenant removed
+The Jupiter Lend operator proof tenant block moved to deploy/fixtures/proof-tenant.disabled.toml (not loaded); removed from the config on the VPS; its program and rule rows deleted from /opt/specula/data/specula.db before the restart (VPS). The Helius address list drops the Jupiter Lend address at the next batched edit (at most one per 5 minutes). deploy/service.toml was renamed deploy/service.example.toml with placeholders (recipient, public_url); the real /opt/specula/service.toml on the VPS keeps its own values and is no longer overwritten by deploys.
+
+### A. Landing page (MAC code, VPS deploy)
+- src/landing.ts renders one static HTML page at startup from the config (prices, limits, trial, period), so it cannot disagree with the bot; served from the existing service (`webhookServer` pages), no new process. Also /favicon.svg and /og.png (public/). Page is 6.3 KB, no JavaScript, no third-party loads, OG and Twitter tags, canonical, theme-aware. Headers: nosniff, restrictive CSP, no-referrer. Claims are only the measured ones (0 differences on the 7 Jupiter Lend golden transactions, p50 1.2 s / p95 1.8 s over 270 transactions in 1 hour, failed transactions delivered 7 of 7) and are labelled as our own tests. No email, personal name or IP.
+- /webhook/helius and /health behave as before; every other path is 404 (tests: /admin, /index.html, /webhook, GET /webhook/helius, /.env, path traversal forms, /?x=1, POST /).
+- Tunnel (VPS, our own config only): /root/.cloudflared/specula.yml ingress path regex widened to `^/(webhook/helius|health|favicon\.svg|og\.png)?$` (backup specula.yml.bak-20261114); cloudflared does not reload local config, so specula-tunnel was recreated with `pm2 delete specula-tunnel` and `pm2 start` (our own process; specula itself via delete/start). Outside check at 13:27Z: / 200 text/html 6,337 B; /favicon.svg 200; /og.png 200; /health 200; /admin 404; GET /webhook/helius 404; POST /webhook/helius without auth 401. Rendered in Chrome at 390 px wide: layout fine.
+- Tests: test/landing.test.ts (6).
+
+### B. Public-ready repo (nothing flipped)
+- Full-history scan (8 commits, 211 objects). Method check first: a temp repo with a planted value was found by the same `git grep` loop; the first pattern helper was broken (zsh did not split the revision list, so it printed nothing even for a known positive) and was discarded and redone. Results: the actual Helius key, bot token and webhook token values are in 0 commits; no .env, key, pem, keypair or wallet file was ever tracked; no private-key blocks; no emails; no phone numbers. The 88-character matches are public transaction signatures. **No secret in history.** Personal data found in history: the operator's first name in the BRIEF files and LOG/TRACKER; the VPS IP in the Phase 2a brief; the operator's Telegram user id in LOG.md (3 commits); the treasury address in briefs, config and tests. The legal full name and any email were not found.
+- Cleanup at HEAD (history unchanged): BRIEF-*.md untracked and git-ignored (the local files stay); LOG/TRACKER/COSTS/PRICING scrubbed of the first name, Telegram id, IP and treasury address; tests and scripts use no treasury address. History still contains the items above. Decision for the operator before flipping: (a) accept (first name, IP, Telegram id, public treasury address), or (b) publish a squashed history. Ready-to-run (b), NOT run: `cd /Volumes/D/specula && git checkout --orphan public-main && git add -A && git -c user.name=seekdaseek -c user.email=<noreply> commit -m "specula v0" && git push origin public-main:main --force` (then set the default branch, delete old branches).
+- README rewritten for strangers (hosted option, self-hosting quickstart in two modes, config, limits), CONTRIBUTING.md and SECURITY.md (report through the bot's /support) added, LICENSE unchanged (MIT).
+- Flip visibility (NOT run, run it only after deciding (a) or (b)): `gh repo edit seekdaseek/specula --visibility public --accept-visibility-change-consequences`
+
+### C. Listings
+LISTINGS.md: 5 venue blocks (each under 120 words) plus the excluded list; every venue checked live 14 Nov 2026. solana.com blocked automated fetches (HTTP 429), so its requirements are marked UNVERIFIED. New finding: Microscope pull request #30 (opened 12 Nov by a maintainer, still open) adds several programs per deployment, which narrows our main difference.
+
+### D. ochinimus.app card
+Live index.html fetched with curl (64,879 B, sha256 df1d0ea4...a7b38d3d; re-fetched after editing, unchanged). site/index.html = live + one card in the same markup as the neighbouring linked cards, after the last card of the "Open source" section. sha256 of site/index.html: a99127b9...f1237d. Diff is +12 lines (one card). Note: that section's header reads "code you can read" and the repository is still private; flip the repository first or move the card. Never wrangler; upload by dashboard. site/ is git-ignored.
+
+### E. Upgrade feed measurement (UPGRADE-FEED.md)
+24 five-minute cycles, 1.91 h of complete coverage (13:23Z to 15:18Z), 22,930 loader transactions, 33% classified. Write 99.75%; Upgrade about 2.3/h and SetAuthority about 1.6/h (6 classified events: order of magnitude only). Helius `getSignaturesForAddress` refuses the loader address ("Address is not supported"), so signatures came from the public RPC; Helius webhooks accept it (raw and enhanced with type UPGRADE_PROGRAM_INSTRUCTION; both created and deleted within seconds, only the production webhook 1cc70671 remains, checked with a list call). Cost: raw webhook or polling about $43 per month (8.6M credits); enhanced filtered webhook about $0.01 if only delivered events are billed (UNVERIFIED). Verdict NO-GO as a firehose (about 55 to 94 posts a day).
+
+### Test run
+`npx vitest run`: 145 passed, 1 skipped (the opt-in devnet test); 6 new in Phase 3 (test/landing.test.ts). 
+
+### UNTESTED
+- The landing page rendered on a real phone beyond one 390 px Chrome check; link previews (OG image) on Telegram, X and Slack.
+- Every listing requirement that sits behind solana.com (HTTP 429 to automated fetches).
+- Whether the Helius enhanced type filter limits billing, and whether its type list covers SetAuthority.
+- Fresh clone self-hosting quickstart end to end (documented, not executed on a clean machine).
+- Pushing the squashed public history (command prepared, not run).
