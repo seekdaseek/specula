@@ -47,3 +47,23 @@ The third row is the only cheap one and it is UNVERIFIED in two ways: I did not 
 - Risk: a public bot-promoting channel needs ongoing moderation of its own.
 
 If the operator wants to pursue it anyway, the smallest next step is the 30-minute filtered-webhook test (about 100 credits to create and delete, a few events), and a curated version: only upgrades of programs above an activity threshold, posted as a daily digest instead of one message each.
+
+## Phase 3b: the cheap design tested for 60 minutes (14 Nov 2026, 17:10:32Z to 18:11:17Z)
+
+Design: ONE enhanced Helius webhook, address = the loader, `transactionTypes: ["UPGRADE_PROGRAM_INSTRUCTION"]`, delivered to a separate path `/webhook/helius-feed` with its own token.
+
+Type names, from Helius's "Webhook transaction types" page (https://www.helius.dev/docs/webhooks/transaction-types.md): `UPGRADE_PROGRAM_INSTRUCTION` (source `BPF_UPGRADEABLE_LOADER`) and `FINALIZE_PROGRAM_INSTRUCTION` (source `BPF_LOADER`, the old non-upgradeable loader). **SetAuthority has no type on the upgradeable loader**: `SET_AUTHORITY` in that list belongs to Metaplex. So authority changes cannot be filtered this way.
+
+Results:
+- Deliveries: **12**, all `UPGRADE_PROGRAM_INSTRUCTION` (8 of them within 40 seconds at 17:32, a burst). That is higher than the 2.3 per hour estimated earlier from a sample.
+- Loader transactions in the same hour (public RPC, `getSignaturesForAddress`): **5,586**.
+- Credits, read from the Helius usage endpoint `GET https://admin-api.helius.xyz/v0/admin/projects/{id}/usage?api-key=...` before and after: total 91,869 to 106,443 = **14,574**; of which webhooks 14,397 and RPC 177.
+- Subtract what our own DB can account for: the main specula webhook delivered 8,389 transactions in the window (observations table), and creating plus deleting the feed webhook costs 200 credits. Remainder: 14,397 - 8,389 - 200 = **5,808 credits** against 12 deliveries.
+
+**Finding: the type filter does not limit billing.** The remainder (5,808) matches the number of loader transactions in the hour (5,586, within about 4%, the gap being what our DB cannot see of the main webhook), not the 12 delivered events. Helius bills each transaction that matches the watched address; the filter only decides what is sent.
+
+Cost per month with the filter: about 5,600 to 12,000 loader transactions per hour x 720 = 4.0M to 8.6M credits, **$20 to $43 per month** at $5 per million. Far above the $3 threshold.
+
+Verdict: **NO-GO**. The poster was not built. No public channel was needed, so there is no step for the operator. The endpoint, its token and its tunnel path were removed after the test (404 from outside), and only the main webhook remains (confirmed with a list call; the test webhook is deleted).
+
+If this is ever revisited, the only remaining ideas are a different provider whose filter happens before billing, or a self-run validator-side feed; both cost more effort than the channel is worth.

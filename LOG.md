@@ -211,3 +211,22 @@ Live index.html fetched with curl (64,879 B, sha256 df1d0ea4...a7b38d3d; re-fetc
 - Whether the Helius enhanced type filter limits billing, and whether its type list covers SetAuthority.
 - Fresh clone self-hosting quickstart end to end (documented, not executed on a clean machine).
 - Pushing the squashed public history (command prepared, not run).
+
+## 2026-11-14 Phase 3b
+### A. Public repo (flip approved)
+- Backup of the old history: `git clone --mirror` to /Volumes/D/specula-history-backup (12 commits, tips equal to the repo's old main 8cea70b, fsck clean), outside the public repo.
+- Squashed tree: one orphan commit of HEAD (124 files, 1.4 MB), authored seekdaseek <noreply>, no trailers. Scanner `pubscan.py` (scratchpad): first a known-positive self test that plants all 15 categories (the first version of the self test failed because I mis-planted a string; fixed and rerun: 15 of 15 hit), then the real scan: helius key value 0, bot token value 0, token shape 0, 48+ hex 1 file (263 matches, all Cargo.lock crate checksums), api-key param 0, private key block 0, 64-number keypair arrays 0, VPS IP 0, other public IPs 0, Telegram id 0, first/legal name 0, email 0, phone 0, treasury address 0, .env files 0.
+- A force-push to the existing repo was NOT enough: afterwards the old commits were still served by GitHub by full and short SHA (authenticated API returned them), which would have exposed them once public. With the operator's approval: checked nothing on the VPS pulls from GitHub (no cron, no systemd unit, no .git in /opt/specula, no PM2 git process), deleted seekdaseek/specula (0 stars, 0 forks, 0 issues), recreated it PUBLIC with the single commit.
+- Unauthenticated checks (no gh, no token): repo page 200, raw README 200, new commit page 200; all 12 old commits: `github.com/.../commit/<full>` 404, `.../commit/<short>` 404, `api.github.com/.../commits/<full>` 422; fresh unauthenticated clone: 1 commit, 1 author (seekdaseek noreply), 0 trailers, VPS IP 0 commits, Telegram id 0, first name 0, treasury address 0, positive control `seekdaseek` found. Public: https://github.com/seekdaseek/specula
+- Local repo: old branch deleted, old objects pruned from the working repo (backup holds them).
+- ochinimus.app card: re-curled the LIVE index.html (64,879 B, sha256 df1d0ea44ea06267240405ca30c6e32be48e887ac65fa103eed22222b7a38d3d, unchanged since the first fetch), rebuilt site/index.html with the card in the "Open source" format (status open source, links Start in Telegram, Source = the public repo, Details). sha256 of site/index.html: 054411f7848aaf76619e0402b986aad7c0ae9b0fcb362093c23ef5fa42b7fa3f (65,984 B, diff +17 lines).
+### B. Upgrade feed test
+See UPGRADE-FEED.md: 12 deliveries, 5,586 loader transactions in the hour, credits delta 14,574 (remainder 5,808 after the main webhook's 8,389 and 200 management credits), so the filter does not limit billing; $20 to $43 per month; NO-GO; poster not built; feed endpoint, token and tunnel path removed; test webhook deleted and confirmed by a list call (only the main webhook remains). Code kept: `feed` option in webhookServer (disabled without FEED_TOKEN) and a landing-test for it. Tunnel and specula recreated with delete/start.
+### C. Upstream
+UPSTREAM.md: issues 1 open and 2 closed, pull requests 3 open and 24 closed; none of the three gaps is covered or requested. Items: (1) loader upgrade/authority alerts, issue text; (2) silence alert, issue text; (3) generator fails on pre-0.30 IDLs with undefined generic types: evidence 3 compile errors on the real on-chain Squads v4 IDL, branch fix/prune-unresolved-idl-types in /Volumes/D/specula/upstream/solana-microscope (commit e10ccad, 4 files, +106 -1, 5 unit tests pass on Python 3.9 and 3.12, mutation check fails one test, generated decoder compiles after the fix). Nothing pushed or opened; commit is unsigned (their CI requires verified signatures).
+### Tests
+146 passed, 1 skipped (opt-in devnet).
+### UNTESTED
+- The Helius filtered webhook cost over a full day (one hour measured); whether other providers filter before billing.
+- Upstream branch: `just test` end to end (only the python tests and one real generate+cargo check were run); the maintainers' response.
+- The new site card rendered in the live page (it is uploaded by the operator).
