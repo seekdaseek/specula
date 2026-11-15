@@ -6,17 +6,19 @@ Reach is small everywhere. Stars are a proxy only. Expected reach order: 1 solan
 
 ## 1. Solana ecosystem directory
 URL: https://solana.com/ecosystem/submit-project
-Method: web form. Requirements: UNVERIFIED, the site answered HTTP 429 to automated fetches; its archived GitHub repo says to use this form. Open it in a browser first.
+Method: none now. Update 15 Nov 2026 (checked by the operator): solana.com/ecosystem/submit-project redirects to /ecosystem and there is no submission form, so there is nothing to submit. Earlier note: automated fetches got HTTP 429 and its archived GitHub repo pointed to that form.
 Submission text:
 specula sends Telegram alerts for Solana programs, decoded from the program's IDL: upgrade and authority changes, silence, and any instruction or event, with Microscope-compatible rules. Free 14-day trial, then USDC on Solana. Hosted at specula.ochinimus.app and open source under MIT.
 
 ## 2. helius-labs/solana-awesome (554 stars)
+Status: SUBMITTED 15 Nov 2026 as https://github.com/helius-labs/solana-awesome/pull/80 (one row appended to the Dev Tooling table, Tool, link to the public repository).
 URL: https://github.com/helius-labs/solana-awesome
 Method: pull request adding one row to the Dev Tooling table (Title, Type, Author, Link, Description). No CONTRIBUTING file. 37 open pull requests, last merge 6 Mar 2026, so expect a slow or no answer.
 Submission text:
 Row: specula | Tool | seekdaseek | repository link | Telegram alerts for Solana programs from their IDL: upgrades, authority changes, silence, any instruction or event. Microscope-compatible rules.
 
 ## 3. hokage-candidates/awesome-solana (65 stars)
+Status: SUBMITTED 15 Nov 2026 as https://github.com/hokage-candidates/awesome-solana/pull/32 (one line under Indexers in the existing style with the stars badge, author disclosed in the PR body).
 URL: https://github.com/hokage-candidates/awesome-solana
 Method: pull request, one line under Indexers or Code. Active contributors, but only 2 merged pull requests ever and several open ones; low odds.
 Submission text:

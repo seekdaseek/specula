@@ -295,3 +295,10 @@ UPSTREAM.md: issues 1 open and 2 closed, pull requests 3 open and 24 closed; non
   4. /Volumes/D/archive/skrly-20261007/mac-src/skrly-seeker/android/app/build (706 MB)
   5. /Volumes/D/iussum/apps/seeker-probe/android/app/build (509 MB)
 - Not touched: .gradle (4.8 GB), every node_modules, recoup/.venv (checked afterwards, sizes unchanged). Everything deleted comes back with a normal cargo, gradle or venv build.
+
+## 2026-11-15 Listing PRs submitted (LISTINGS.md entries 2 and 3)
+- Neither repo has a CONTRIBUTING file or a PR template (checked through the contents API and the community profile). The merged PRs show the conventions: helius-labs/solana-awesome rows are appended at the end of the Dev Tooling table in the five-column padded format (Title, Type, Author(s), Link, Description); hokage-candidates/awesome-solana lines are `- [name](url) ![](stars badge)` followed by a short description (the same format as the open Envio PR).
+- helius-labs/solana-awesome: fork seekdaseek/solana-awesome, branch add-specula from upstream main, ONE row appended to Dev Tooling: specula, Tool, seekdaseek, the public repo link, the entry-2 description. Signed commit (verified true), PR https://github.com/helius-labs/solana-awesome/pull/80, +1 -0, open. The repo's last merge was 6 Mar 2026 with 37 PRs open, so a slow answer is expected.
+- hokage-candidates/awesome-solana: fork seekdaseek/awesome-solana, branch add-specula, ONE line under Indexers in the existing style with the stars badge and the entry-3 description. Signed commit (verified true), PR https://github.com/hokage-candidates/awesome-solana/pull/32, +1 -0, open. Author disclosure ("I am the author") is in the PR body.
+- Both PR bodies are two plain sentences, no AI trailers, no personal name.
+- LISTINGS.md updated: entries 2 and 3 marked SUBMITTED with the PR links; entry 1 (solana.com) now says there is no form: solana.com/ecosystem/submit-project redirects to /ecosystem (checked by the operator on 15 Nov 2026).
