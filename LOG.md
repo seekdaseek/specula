@@ -285,3 +285,13 @@ UPSTREAM.md: issues 1 open and 2 closed, pull requests 3 open and 24 closed; non
 - sounding repo description changed from "Depth-adjusted collateral sizing for Blend lending pools on Stellar" to "How much of a Stellar asset you can sell at a given size and what it costs, measured every ten minutes across four exit venues." The ochinimus.app sounding card needs the same change on the next site deploy (site not touched).
 - tipjar README: the old one was GitHub's empty profile template (every line commented or placeholder, no real content), replaced with a short true README (what Tip Jar is, the Pages site at https://riskguard.ochinimus.app/tipjar/ with index, privacy and terms, the dApp Store app); all three Pages URLs return 200; signed commit, verified true.
 - Disk on /Volumes/D, 950 MB free. Largest build-output and cache directories (listing only, nothing deleted): .gradle 4,897 MB; stakestreak-near/repo/target 2,138; mensura/app/node_modules 1,551; mensura/app/android/app/build 1,061; recoup/.venv 759; archive/downloads-2026-10-01/quench/.venv 732; archive/skrly-20261007/mac-src/skrly-seeker/android/app/build 706; publisheddapps/SolanaTipJar/node_modules 529; iussum/apps/seeker-probe/android/app/build 509; skrproject/lode/node_modules 403 (then four more near 380 MB: r25/audit-fix, r25/agentfeed, r25/audit-fresh node_modules and pensio/agentfeed/node_modules). 188 directories matched in total.
+
+## 2026-11-15 gh scope refresh cancelled, disk freed
+- The pending `gh auth refresh -s user` (device code 6911-096F) was killed (0 processes left). The operator sets twitter_username himself in GitHub settings; tracker 8u stays open until he confirms.
+- Deleted exactly five regenerable build outputs. Before each one I checked it exists, is a real directory (not a symlink), has a build or cache marker (cargo CACHEDIR.TAG, pyvenv.cfg, Android generated/intermediates), has 0 files tracked by git and is ignored by git. Free space on /Volumes/D: 945 MB before; after each delete 3.0, 3.8, 4.5, 5.2 and finally 5.7 GB.
+  1. /Volumes/D/stakestreak-near/repo/target (2.1 GB)
+  2. /Volumes/D/mensura/app/android/app/build (1.0 GB)
+  3. /Volumes/D/archive/downloads-2026-10-01/quench/.venv (732 MB)
+  4. /Volumes/D/archive/skrly-20261007/mac-src/skrly-seeker/android/app/build (706 MB)
+  5. /Volumes/D/iussum/apps/seeker-probe/android/app/build (509 MB)
+- Not touched: .gradle (4.8 GB), every node_modules, recoup/.venv (checked afterwards, sizes unchanged). Everything deleted comes back with a normal cargo, gradle or venv build.
