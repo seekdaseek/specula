@@ -42,7 +42,9 @@ Status legend: [ ] open  [x] done  [~] in progress  [H] waits on the operator
 8s. [~] UPSTREAM.md: issue 3 OPENED 14 Nov as solana-microscope#31 (https://github.com/solana-foundation/solana-microscope/issues/31); wait for the `accepted` label before any PR, then rebase the branch onto PR #30's generator and re-sign. Issues 1 and 2 still unopened. Was: open the issues (loader upgrades, silence, generator pruning) when ready; re-sign branch commit e10ccad first
 8t. [x] GitHub profile repo seekdaseek/seekdaseek live 15 Nov; 14 repos got descriptions/topics
 8u. [H] twitter_username=ochinimus not set: enter code 6911-096F at https://github.com/login/device (gh auth refresh -s user is waiting), then run `gh api -X PATCH user -f twitter_username=ochinimus`
-8v. [ ] Fix stale Blend wording in the sounding repo description and the ochinimus.app sounding card (README v2 says nothing depends on Blend)
+8v. [~] Blend wording: sounding repo description FIXED 15 Nov; the ochinimus.app sounding card still says Blend, change it on the next site deploy (site untouched)
+8w. [H] Upload /Volumes/D/specula/profile/social-specula.png and social-agentfeed.png in each repo's Settings > Social preview (GitHub has no API)
+8x. [H] Disk on /Volumes/D is at about 0.9 GB free; the build-output list is in LOG.md (largest: .gradle 4.9 GB, stakestreak-near/repo/target 2.1 GB); nothing deleted
 9. [ ] PHASE 3: repo public, README, X post, Solana Foundation public-goods angle (do not file while the x402-wallet application is pending without his call).
 10. [ ] Surfaces in sync after ship: repo, README, ochinimus.app card, X post.
 
