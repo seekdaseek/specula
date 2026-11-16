@@ -1,6 +1,6 @@
 # Solana program upgrade-authority census
 
-Read from mainnet RPC (finalized) on **2026-11-16T06:28:39.592Z**, slots 470030419 to 470030423; activity and Squads depth read 2026-11-16T11:10:21.042Z. 913 RPC calls. Every authority, programdata address, deploy slot, activity count and multisig field below is a chain read (scripts/census.mjs, scripts/census-depth.mjs); nothing comes from memory.
+Read from mainnet RPC (finalized) on **2026-11-16T06:28:39.592Z**, slots 470030419 to 470030423; activity and Squads depth read 2026-11-16T11:10:21.042Z. 1136 RPC calls. Every authority, programdata address, deploy slot, activity count and multisig field below is a chain read (scripts/census.mjs, scripts/census-depth.mjs); nothing comes from memory.
 
 ## How the 50 programs were chosen
 
@@ -11,8 +11,8 @@ Read from mainnet RPC (finalized) on **2026-11-16T06:28:39.592Z**, slots 4700304
 ## Headline
 
 - **18 of 50 upgradeable programs are controlled by a single key** (an ordinary wallet that can replace the program's code alone); 0 of them are named, 18 are other watched programs.
-- 16 sit behind a Squads v4 vault and 6 behind a Squads v3 vault; 8 behind a program-controlled address that is not Squads or Realms, 1 behind governance, 1 behind a program-owned account.
-- **Squads depth** (the multisig behind each vault, read from the chain and accepted only when its vault PDA re-derives to the authority): 21 decoded. Among the 19 named programs behind Squads: **0 are 1-of-N**, **10 have time_lock 0** (of 13 Squads v4 multisigs; v3 has no time lock field: 6 v3). Across all 21: 0 are 1-of-N, 12 of 15 v4 multisigs have time_lock 0, median threshold 3.
+- 19 sit behind a Squads v4 vault and 8 behind a Squads v3 vault; 3 behind a program-controlled address that is not Squads or Realms, 1 behind governance, 1 behind a program-owned account.
+- **Squads depth** (the multisig behind each vault, read from the chain and accepted only when its vault PDA re-derives to the authority): 27 decoded. Among the 24 named programs behind Squads: **0 are 1-of-N**, **10 have time_lock 0** (of 16 Squads v4 multisigs; v3 has no time lock field: 8 v3). Across all 27: 0 are 1-of-N, 13 of 19 v4 multisigs have time_lock 0, median threshold 3.
 - 7 programs in the list are immutable (upgrade authority None): Metaplex Token Metadata, Squads v4, Squads v3, other watched program Toke...Q5DA, other watched program ATok...8knL, other watched program L2TE...3S95, other watched program Memo...fcHr.
 
 Reading a type: "single key" = the authority is on the ed25519 curve and owned by the System program. "Squads vault" = the authority is a PDA (off the curve) whose newest transaction invokes Squads, and (depth) a Squads multisig account exists whose vault PDA equals the authority. "PDA, controller not Squads or Realms" = off the curve, newest transaction invokes neither. Threshold = signatures needed; members = signers on the multisig; time lock = delay between approval and execution (v4 only); config authority = who can change the multisig without a vote (v4: "none (autonomous)" means the multisig governs itself).
@@ -49,7 +49,7 @@ Activity verdict, from the program id's signatures (RPC cap 1,000): **real activ
 | 1 | named | PumpSwap AMM | `pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA` | `7gZufwwAo17y5kg8FMyJy2phgpvv9RSdzWtdXiWHjFr8` | Squads v4 vault (PDA) | 3 of 4 | none | none (autonomous) | 469811067 | docs or GitHub page (id_source) |
 | 2 | named | Pump.fun bonding curve | `6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P` | `7gZufwwAo17y5kg8FMyJy2phgpvv9RSdzWtdXiWHjFr8` | Squads v4 vault (PDA) | 3 of 4 | none | none (autonomous) | 469811025 | docs or GitHub page (id_source) |
 | 3 | named | Meteora DAMM v2 | `cpamdpZCGKUy5JxQXB4dcpGPiikHawvSWAd6mEn1sGG` | `JADaUV8kvDpDbJr55wxXJHVaBS3VCj8thZZHjfeuCVLd` | Squads v3 vault (PDA) | 4 of 7 | n/a (v3) | `n/a (v3: changes go through the multisig itself)` | 457080014 | docs or GitHub page (id_source) |
-| 4 | named | Jupiter Swap v6 | `JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4` | `CvQZZ23qYDWF2RUpxYJ8y9K4skmuvYEEjH7fK58jtipQ` | PDA, controller not Squads or Realms |  |  |  | 468023491 | docs or GitHub page (id_source) |
+| 4 | named | Jupiter Swap v6 | `JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4` | `CvQZZ23qYDWF2RUpxYJ8y9K4skmuvYEEjH7fK58jtipQ` | Squads v3 vault (PDA) | 4 of 7 | n/a (v3) | `n/a (v3: changes go through the multisig itself)` | 468023491 | docs or GitHub page (id_source) |
 | 5 | named | Meteora DLMM | `LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo` | `JADaUV8kvDpDbJr55wxXJHVaBS3VCj8thZZHjfeuCVLd` | Squads v3 vault (PDA) | 4 of 7 | n/a (v3) | `n/a (v3: changes go through the multisig itself)` | 423977638 | docs or GitHub page (id_source) |
 | 6 | named | Orca Whirlpools | `whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc` | `GwH3Hiv5mACLX3ufTw1pFsrhSPon5tdw252DBs4Rx4PV` | Squads v4 vault (PDA) | 5 of 13 | 24 h | none (autonomous) | 457152296 | docs or GitHub page (id_source) |
 | 7 | named | Raydium CLMM | `CAMMCzo5YL8w4VFF8KVHrK22GGUsp5VTaW7grrKgrWqK` | `FytDrVzDybM1TwFQPGb8qaxZR7dBCzNeqT3vtQsceZQK` | Squads v4 vault (PDA) | 3 of 4 | none | none (autonomous) | 459932378 | docs or GitHub page (id_source) |
@@ -57,8 +57,8 @@ Activity verdict, from the program id's signatures (RPC cap 1,000): **real activ
 | 9 | named | Raydium AMM v4 | `675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8` | `FytDrVzDybM1TwFQPGb8qaxZR7dBCzNeqT3vtQsceZQK` | Squads v4 vault (PDA) | 3 of 4 | none | none (autonomous) | 445763204 | docs or GitHub page (id_source) |
 | 10 | named | Raydium CP-Swap | `CPMMoo8L3F4NbTegBCKVNunggL7H1ZpdTHKxQB5qKP1C` | `FytDrVzDybM1TwFQPGb8qaxZR7dBCzNeqT3vtQsceZQK` | Squads v4 vault (PDA) | 3 of 4 | none | none (autonomous) | 463522946 | docs or GitHub page (id_source) |
 | 11 | named | Meteora Dynamic AMM | `Eo7WjKq67rjJQSZxS6z3YkapzY3eMj6Xy8X5EQVn5UaB` | `JADaUV8kvDpDbJr55wxXJHVaBS3VCj8thZZHjfeuCVLd` | Squads v3 vault (PDA) | 4 of 7 | n/a (v3) | `n/a (v3: changes go through the multisig itself)` | 468782174 | docs or GitHub page (id_source) |
-| 12 | named | Kamino Lend | `KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD` | `GzFgdRJXmawPhGeBsyRCDLx4jAKPsvbUqoqitzppkzkW` | PDA, controller not Squads or Realms |  |  |  | 461744249 | docs or GitHub page (id_source) |
-| 13 | named | Kamino Vaults | `KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd` | `GzFgdRJXmawPhGeBsyRCDLx4jAKPsvbUqoqitzppkzkW` | PDA, controller not Squads or Realms |  |  |  | 461660004 | docs or GitHub page (id_source) |
+| 12 | named | Kamino Lend | `KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD` | `GzFgdRJXmawPhGeBsyRCDLx4jAKPsvbUqoqitzppkzkW` | Squads v4 vault (PDA) | 5 of 10 | 24 h | none (autonomous) | 461744249 | docs or GitHub page (id_source) |
+| 13 | named | Kamino Vaults | `KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd` | `GzFgdRJXmawPhGeBsyRCDLx4jAKPsvbUqoqitzppkzkW` | Squads v4 vault (PDA) | 5 of 10 | 24 h | none (autonomous) | 461660004 | docs or GitHub page (id_source) |
 | 14 | named | Kamino Farms | `FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr` | `CivjSDKgTpmkRNL4zYcmv9D9QqPJg6yTxBVxMGcXvMuY` | Squads v4 vault (PDA) | 5 of 10 | 24 h | none (autonomous) | 444035168 | docs or GitHub page (id_source) |
 | 15 | named | Drift v2 | `dRiftyHA39MWEi3m9aunc5MzRF1JYuBsbn6VPcn33UH` | `8jj7zJgdr5bDndc7evM74FMGwzLPmd4u4QxNzFi1BMai` | Squads v4 vault (PDA) | 4 of 6 | 1 h | none (autonomous) | 429731225 | docs or GitHub page (id_source) |
 | 16 | named | Marginfi v2 | `MFv2hWf31Z9kbCa1snEPYctwafyhdvnV7FZnsebVacA` | `J3oBkTkDXU3TcAggJEa3YeBZE5om5yNAdTtLVNXFD47` | Squads v4 vault (PDA) | 7 of 14 | none | none (autonomous) | 465361726 | docs or GitHub page (id_source) |
@@ -69,7 +69,7 @@ Activity verdict, from the program id's signatures (RPC cap 1,000): **real activ
 | 21 | named | Pyth Solana receiver | `rec5EKMGg6MxZYaMdyBfgwp4d5rB9T1VQH5pJv5LtFJ` | `6oXTdojyfDS8m5VtTaYB9xRCxpKGSvKJFndLUPV3V3wT` | PDA, controller not Squads or Realms |  |  |  | 327047637 | docs or GitHub page (id_source) |
 | 22 | named | Squads v4 | `SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf` | none | immutable |  |  |  | 302582236 | docs or GitHub page (id_source) |
 | 23 | named | Squads v3 | `SMPLecH534NA9acpos4G6x7uf3LWbCAwZQE9e8ZekMu` | none | immutable |  |  |  | 178977035 | docs or GitHub page (id_source) |
-| 24 | named | Phoenix v1 | `PhoeNiXZ8ByJGLkxNfZRnkUfjvmuYqLR89jjFHGqdXY` | `8mv7G3fJq5a5ej7E14vgcSGeQKH79emjU9fVfuhyitEq` | PDA, controller not Squads or Realms |  |  |  | 231433470 | docs or GitHub page (id_source) |
+| 24 | named | Phoenix v1 | `PhoeNiXZ8ByJGLkxNfZRnkUfjvmuYqLR89jjFHGqdXY` | `8mv7G3fJq5a5ej7E14vgcSGeQKH79emjU9fVfuhyitEq` | Squads v3 vault (PDA) | 2 of 3 | n/a (v3) | `n/a (v3: changes go through the multisig itself)` | 231433470 | docs or GitHub page (id_source) |
 | 25 | named | OpenBook v2 | `opnb2LAfJYbRMAHHvqjCwQxanZn7ReEHp1k81EohpZb` | `CZoAmQErbMwhSNA5WtbWLcwGE1mhXEv4hTvyvvHXGkrr` | governance |  |  |  | 250859864 | docs or GitHub page (id_source) |
 | 26 | other watched | other watched program Toke...Q5DA | `TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA` | none | immutable |  |  |  | 419472000 | none found |
 | 27 | named | token-2022 (SPL Token-2022) | `TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb` | `AeLmXCbPaQHGWRLr2saFsEVfmMNuKnxRAbWCT9P5twgz` | Squads v3 vault (PDA) | 4 of 6 | n/a (v3) | `n/a (v3: changes go through the multisig itself)` | 460497271 | OtterSec verify registry, verified build: https://github.com/solana-program/token-2022/tree/8867f751c0f69367ba03af4f85510b5611989491 (verify.osec.io/status-all/<id>, read 16 Nov 2026) |
@@ -80,7 +80,7 @@ Activity verdict, from the program id's signatures (RPC cap 1,000): **real activ
 | 32 | other watched | other watched program ojh1...orch | `ojh19ojaKduoJZuaJADhcVGp4xt1TcdAvZmpVsCorch` | `F6qazjHEsMwHowDpLEVbwyJrtczPBecgYtFFTeptz862` | single key |  |  |  | 468079633 | none found |
 | 33 | other watched | other watched program BiSo...Uypi | `BiSoNHVpsVZW2F7rx2eQ59yQwKxzU5NvBcmKshCSUypi` | `6dDjBZdpafRKe7WuVHYTF1HphW1BWiKqioMD5eBGYipS` | single key |  |  |  | 464563291 | none found |
 | 34 | other watched | other watched program Tri3...vSo4 | `Tri3NG4HkZ6DddYPKoX2ehgkqFtDuej9Aspw5BmvSo4` | `thxNtkTCcsZY45eA4R67wkJBEgLi5ERCPm93fZRxY4B` | single key |  |  |  | 452701164 | none found |
-| 35 | other watched | other watched program dijk...1mBu | `dijkbkCAKfFTCxQg3u1pg82gVU1jJGHBBRcteD11mBu` | `BBvfpKqYovhzEjS4Ch1xZXFdxkaoUiXsujR9kgN1t8iR` | PDA, controller not Squads or Realms |  |  |  | 466119099 | none found |
+| 35 | other watched | other watched program dijk...1mBu | `dijkbkCAKfFTCxQg3u1pg82gVU1jJGHBBRcteD11mBu` | `BBvfpKqYovhzEjS4Ch1xZXFdxkaoUiXsujR9kgN1t8iR` | Squads v4 vault (PDA) | 3 of 4 | none | none (autonomous) | 466119099 | none found |
 | 36 | other watched | other watched program tick...WY6N | `tickUcsEQegChaAuo9VYQQztB4ZGApY6ZT4FkULWY6N` | `DzxY3eGHb8qVfxSAmeqkTQEFiQ5XVmEfejNqZtdWyL2x` | single key |  |  |  | 437433498 | none found |
 | 37 | named | jito_tip_distribution | `4R3gSG8BpU4t19KYj8CfnbtRpnT8gtk4dvTHxVRwc2r7` | `4ivLcnNLhe4cKdpV9b4jyEmxgbYWFgktHcTyyBvYavsD` | PDA, controller not Squads or Realms |  |  |  | 403585576 | on-chain IDL |
 | 38 | named | Jito's MEV Tip Distribution NCN Program | `RouterBmuRBkPUbgEDMtdvTZ75GBdSREZR5uGUxxxpb` | `8EP3VommYzMRSdnSn88GnQpxjRwxg6nroTeUNJoqu9b8` | Squads v4 vault (PDA) | 4 of 7 | none | `DG76d6Akr3pzGUkE8gc3anBrSJUzH6EiXmqoX3P7ontL` | 436000011 | security.txt in the program ELF (project_url https://jito.network/) |
@@ -89,7 +89,7 @@ Activity verdict, from the program id's signatures (RPC cap 1,000): **real activ
 | 41 | other watched | other watched program oraf...cwiD | `orafZ4BdfzikRRg498P23vG3EdEyMR7bYoYcD2zcwiD` | `6YrRV52Eq3qmWYyMsq9Wn3kCTokk1xYQJgpKQTWrKj7b` | Squads v4 vault (PDA) | 2 of 2 | none | none (autonomous) | 457296652 | none found |
 | 42 | other watched | other watched program 2DNb...Ksbh | `2DNbzPochEcyCcWMbL4d9S3u9QqQEj5bbe6cSZFvKsbh` | `6dDjBZdpafRKe7WuVHYTF1HphW1BWiKqioMD5eBGYipS` | single key |  |  |  | 456171250 | none found |
 | 43 | other watched | other watched program 8NDj...Mt9m | `8NDj9qLWYzvW7KXaetseTDvTFCZ5NSi3SmoSjFNMMt9m` | `2syEZcxCKfJm1Ht1xaxCENK5Hi5C4kjAh9LHbEabq83j` | single key |  |  |  | 465654030 | none found |
-| 44 | named | Archer Exchange | `Archer8kgiavM61GyusMzaaS2ft5sALtNsD1HxkUPMhy` | `Hfj4HDxLqdj4k9FB3eZeURf4sZtu3w9aJMRfctmXR66P` | Squads v4 vault (PDA) |  |  |  | 460513991 | security.txt in the program ELF (project_url https://archer.exchange) |
+| 44 | named | Archer Exchange | `Archer8kgiavM61GyusMzaaS2ft5sALtNsD1HxkUPMhy` | `Hfj4HDxLqdj4k9FB3eZeURf4sZtu3w9aJMRfctmXR66P` | Squads v4 vault (PDA) | 3 of 5 | 1 h | none (autonomous) | 460513991 | security.txt in the program ELF (project_url https://archer.exchange) |
 | 45 | other watched | other watched program CZqF...6xw5 | `CZqFPJ35PQT1Jx2o3QAirY8pdTQp7tErJsiQm2GD6xw5` | `5uKenX4vksBKurpTeezen9gtJCBpKTzKQEVU52W5gX4y` | single key |  |  |  | 462075912 | none found |
 | 46 | other watched | other watched program 7JwT...94ZG | `7JwTi9ambvCTYwZbNQEZA8hzpG3ymPWRZpAxgKPJ94ZG` | `3ntEpydDjraXrnwWTCJM7DvfBvtYUMc7q1oHADMCoFuK` | single key |  |  |  | 468194880 | none found |
 | 47 | other watched | other watched program W1LD...1bWR | `W1LDCARDa67SPBG7TFpQivHnEZXRtxCFP13ysEd1bWR` | `UPgd1zNpfgYRRcudZyubhKPrrYKL7vKRmw25SR6qto5` | single key |  |  |  | 464575187 | none found |
@@ -115,7 +115,7 @@ Sources tried for the programs without a name: on-chain Anchor IDL (3 had one), 
 | `ojh19ojaKduoJZuaJADhcVGp4xt1TcdAvZmpVsCorch` | single key | 1000+ (cap) | 2025-11-28 (353 d) | real active protocol |
 | `BiSoNHVpsVZW2F7rx2eQ59yQwKxzU5NvBcmKshCSUypi` | single key | 1000+ (cap) | 2026-10-08 (39 d+) | real active protocol |
 | `Tri3NG4HkZ6DddYPKoX2ehgkqFtDuej9Aspw5BmvSo4` | single key | 1000+ (cap) | 2026-07-09 (130 d) | real active protocol |
-| `dijkbkCAKfFTCxQg3u1pg82gVU1jJGHBBRcteD11mBu` | PDA, controller not Squads or Realms | 1000+ (cap) | 2025-12-11 (340 d) | real active protocol |
+| `dijkbkCAKfFTCxQg3u1pg82gVU1jJGHBBRcteD11mBu` | Squads v4 vault (PDA) | 1000+ (cap) | 2025-12-11 (340 d) | real active protocol |
 | `tickUcsEQegChaAuo9VYQQztB4ZGApY6ZT4FkULWY6N` | single key | 1000+ (cap) | 2026-08-05 (103 d) | real active protocol |
 | `DiabLokxisGR8P4Qqp2QL6PmBhhVsdzPstCE4WoLxc5z` | single key | 1000+ (cap) | 2026-10-03 (44 d) | real active protocol |
 | `orafZ4BdfzikRRg498P23vG3EdEyMR7bYoYcD2zcwiD` | Squads v4 vault (PDA) | 1000+ (cap) | 2026-06-03 (166 d) | real active protocol |

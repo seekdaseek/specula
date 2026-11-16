@@ -69,7 +69,17 @@
    "tx_7d": 1000,
    "tx_7d_capped": true,
    "authority_signed_30d": null,
-   "authority_last_signed_utc": null
+   "authority_last_signed_utc": null,
+   "squads": {
+    "version": "v3",
+    "multisig": "7ZyDFzet6sKgZLN4D89JLfo7chu2n7nYdkFt5RCFk8Sf",
+    "threshold": 4,
+    "members": 7,
+    "time_lock_seconds": null,
+    "config_authority": "n/a (v3: changes go through the multisig itself)",
+    "proof_vault_pda": "authority index 1",
+    "sane": true
+   }
   },
   "LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo": {
    "last_deploy_utc": "2026-06-03T07:03:07.000Z",
@@ -219,7 +229,17 @@
    "tx_7d": 1000,
    "tx_7d_capped": true,
    "authority_signed_30d": null,
-   "authority_last_signed_utc": null
+   "authority_last_signed_utc": null,
+   "squads": {
+    "version": "v4",
+    "multisig": "6hhBGCtmg7tPWUSgp3LG6X2rsmYWAc4tNsA6G4CnfQbM",
+    "threshold": 5,
+    "members": 10,
+    "time_lock_seconds": 86400,
+    "config_authority": "none (autonomous)",
+    "proof_vault_pda": "vault index 0",
+    "sane": true
+   }
   },
   "KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd": {
    "last_deploy_utc": "2026-10-26T12:14:12.000Z",
@@ -229,7 +249,17 @@
    "tx_7d": 1000,
    "tx_7d_capped": true,
    "authority_signed_30d": null,
-   "authority_last_signed_utc": null
+   "authority_last_signed_utc": null,
+   "squads": {
+    "version": "v4",
+    "multisig": "6hhBGCtmg7tPWUSgp3LG6X2rsmYWAc4tNsA6G4CnfQbM",
+    "threshold": 5,
+    "members": 10,
+    "time_lock_seconds": 86400,
+    "config_authority": "none (autonomous)",
+    "proof_vault_pda": "vault index 0",
+    "sane": true
+   }
   },
   "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr": {
    "last_deploy_utc": "2026-09-03T18:04:39.000Z",
@@ -349,7 +379,17 @@
    "tx_7d": 1000,
    "tx_7d_capped": true,
    "authority_signed_30d": null,
-   "authority_last_signed_utc": null
+   "authority_last_signed_utc": null,
+   "squads": {
+    "version": "v3",
+    "multisig": "6x3BDkL2n7VjBWxRD95EsbQi2R2E4zxrvcz1VA6pihnK",
+    "threshold": 2,
+    "members": 3,
+    "time_lock_seconds": null,
+    "config_authority": "n/a (v3: changes go through the multisig itself)",
+    "proof_vault_pda": "authority index 1",
+    "sane": true
+   }
   },
   "opnb2LAfJYbRMAHHvqjCwQxanZn7ReEHp1k81EohpZb": {
    "last_deploy_utc": "2024-02-27T22:02:06.000Z",
@@ -480,7 +520,17 @@
    "authority_signed_30d": null,
    "authority_last_signed_utc": null,
    "programdata_bytes": 557,
-   "security_txt": null
+   "security_txt": null,
+   "squads": {
+    "version": "v4",
+    "multisig": "2D6zmpZbSFBWfV4auCcP4WvpxoJPXLhT5KZpN81srJ84",
+    "threshold": 3,
+    "members": 4,
+    "time_lock_seconds": 0,
+    "config_authority": "none (autonomous)",
+    "proof_vault_pda": "vault index 0",
+    "sane": true
+   }
   },
   "tickUcsEQegChaAuo9VYQQztB4ZGApY6ZT4FkULWY6N": {
    "last_deploy_utc": "2026-08-05T18:51:57.000Z",
@@ -614,7 +664,14 @@
     "auditors": "contact@osec.io"
    },
    "squads": {
-    "error": "no Squads multisig account in the authority newest transaction whose vault PDA equals the authority"
+    "version": "v4",
+    "multisig": "2dmbEaXZCwNi3dVfVLpREqJZRLFdQw9LgFs9Nbt7D6uS",
+    "threshold": 3,
+    "members": 5,
+    "time_lock_seconds": 3600,
+    "config_authority": "none (autonomous)",
+    "proof_vault_pda": "vault index 0",
+    "sane": true
    }
   },
   "CZqFPJ35PQT1Jx2o3QAirY8pdTQp7tErJsiQm2GD6xw5": {
@@ -801,7 +858,104 @@
     "proof_vault_pda": "vault index 0",
     "sane": true
    }
+  },
+  "6Vo3245eszAb5wuqEMw8mGdbfRUdKbHhDHP5LcaGuTAB": {
+   "squads": {
+    "version": "v4",
+    "multisig": "2yMoQqQrtbhq3nQ3wFoQQawWS65qcqUXcwHEYha4rshW",
+    "threshold": 3,
+    "members": 4,
+    "time_lock_seconds": 0,
+    "config_authority": "none (autonomous)",
+    "proof_vault_pda": "vault index 0",
+    "sane": true
+   }
+  },
+  "DZNTS5ujuiyx1mazqCPdYPzEyE2VrTPPb6QbqBUftJbY": {
+   "squads": {
+    "version": "v4",
+    "multisig": "BXe3MSPaMYuKu8sPHtYdkjTqhLwEeheiVQBWdPMLXS2E",
+    "threshold": 2,
+    "members": 6,
+    "time_lock_seconds": 0,
+    "config_authority": "none (autonomous)",
+    "proof_vault_pda": "vault index 0",
+    "sane": true
+   }
+  },
+  "goonuddtQRrWqqn5nFyczVKaie28f3kDkHWkHtURSLE": {
+   "squads": {
+    "version": "v4",
+    "multisig": "2D6zmpZbSFBWfV4auCcP4WvpxoJPXLhT5KZpN81srJ84",
+    "threshold": 3,
+    "members": 4,
+    "time_lock_seconds": 0,
+    "config_authority": "none (autonomous)",
+    "proof_vault_pda": "vault index 0",
+    "sane": true
+   }
+  },
+  "HpNfyc2Saw7RKkQd8nEL4khUcuPhQ7WwY1B2qjx8jxFq": {
+   "squads": {
+    "version": "v4",
+    "multisig": "DPCdAZRq6mmyTXdTsvk7GjqoEHLt4iosdnD3sTXjojUc",
+    "threshold": 3,
+    "members": 7,
+    "time_lock_seconds": 172800,
+    "config_authority": "none (autonomous)",
+    "proof_vault_pda": "vault index 0",
+    "sane": true
+   }
+  },
+  "MNFSTqtC93rEfYHB6hF82sKdZpUDFWkViLByLd1k1Ms": {
+   "squads": {
+    "version": "v4",
+    "multisig": "6o29zFofTxn8nM5o83JTY12G3cGgFy7mrtM2Cp3GQJXg",
+    "threshold": 4,
+    "members": 5,
+    "time_lock_seconds": 0,
+    "config_authority": "none (autonomous)",
+    "proof_vault_pda": "vault index 0",
+    "sane": true
+   }
+  },
+  "SAGE2HAwep459SNq61LHvjxPk4pLPEJLoMETef7f7EE": {
+   "squads": {
+    "version": "v3",
+    "multisig": "BWKW6EBpPYerZyzeb4vHd4P3tfkr4Ryg29cC9iMFc7KX",
+    "threshold": 3,
+    "members": 5,
+    "time_lock_seconds": null,
+    "config_authority": "n/a (v3: changes go through the multisig itself)",
+    "proof_vault_pda": "authority index 1",
+    "sane": true
+   }
+  },
+  "riptK81hDxhe5pW5jSzSM9iRA8azgEgLJ4dXkPtBS7j": {
+   "squads": {
+    "version": "v4",
+    "multisig": "BQsDWkL417U4tVE2sDnPks469pKdm6YzFgKH77doiEjF",
+    "threshold": 5,
+    "members": 13,
+    "time_lock_seconds": 86400,
+    "config_authority": "none (autonomous)",
+    "proof_vault_pda": "vault index 0",
+    "sane": true
+   }
+  },
+  "REALQqNEomY6cQGZJUGwywTBD2UmDT32rZcNnfxQ5N2": {
+   "squads": {
+    "version": "v4",
+    "multisig": "dPjB4DUfpMLnboHZpnTvgfToG1qjtvDK3CFndJXMeEK",
+    "threshold": 3,
+    "members": 6,
+    "time_lock_seconds": 0,
+    "config_authority": "none (autonomous)",
+    "proof_vault_pda": "vault index 0",
+    "sane": true
+   }
   }
  },
- "rpc_calls": 506
+ "rpc_calls": 729,
+ "reclassified_at_utc": "2026-11-16T21:03:35.624Z"
 }

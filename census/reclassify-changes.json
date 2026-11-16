@@ -1,0 +1,91 @@
+{
+ "at_utc": "2026-11-16T21:03:35.624Z",
+ "authorities_rescanned": 38,
+ "rpc_calls": 223,
+ "changed_rows": [
+  {
+   "program_id": "JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4",
+   "name": "Jupiter Swap v6",
+   "authority": "CvQZZ23qYDWF2RUpxYJ8y9K4skmuvYEEjH7fK58jtipQ",
+   "old_kind": "pda-other",
+   "new_kind": "squads-v3-vault",
+   "new_evidence": "off the curve (a PDA); transaction gbBmyPif51No... (1 of the 40 newest) invokes squads-v3 and holds the multisig 7ZyDFzet6sKgZLN4D89JLfo7chu2n7nYdkFt5RCFk8Sf whose authority index 1 derives to this authority",
+   "new_squads": {
+    "threshold": 4,
+    "members": 7,
+    "time_lock_seconds": null,
+    "multisig": "7ZyDFzet6sKgZLN4D89JLfo7chu2n7nYdkFt5RCFk8Sf"
+   }
+  },
+  {
+   "program_id": "KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD",
+   "name": "Kamino Lend",
+   "authority": "GzFgdRJXmawPhGeBsyRCDLx4jAKPsvbUqoqitzppkzkW",
+   "old_kind": "pda-other",
+   "new_kind": "squads-v4-vault",
+   "new_evidence": "off the curve (a PDA); transaction 4RRtDmCRXdBa... (2 of the 40 newest) invokes squads-v4 and holds the multisig 6hhBGCtmg7tPWUSgp3LG6X2rsmYWAc4tNsA6G4CnfQbM whose vault index 0 derives to this authority",
+   "new_squads": {
+    "threshold": 5,
+    "members": 10,
+    "time_lock_seconds": 86400,
+    "multisig": "6hhBGCtmg7tPWUSgp3LG6X2rsmYWAc4tNsA6G4CnfQbM"
+   }
+  },
+  {
+   "program_id": "KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd",
+   "name": "Kamino Vaults",
+   "authority": "GzFgdRJXmawPhGeBsyRCDLx4jAKPsvbUqoqitzppkzkW",
+   "old_kind": "pda-other",
+   "new_kind": "squads-v4-vault",
+   "new_evidence": "off the curve (a PDA); transaction 4RRtDmCRXdBa... (2 of the 40 newest) invokes squads-v4 and holds the multisig 6hhBGCtmg7tPWUSgp3LG6X2rsmYWAc4tNsA6G4CnfQbM whose vault index 0 derives to this authority",
+   "new_squads": {
+    "threshold": 5,
+    "members": 10,
+    "time_lock_seconds": 86400,
+    "multisig": "6hhBGCtmg7tPWUSgp3LG6X2rsmYWAc4tNsA6G4CnfQbM"
+   }
+  },
+  {
+   "program_id": "PhoeNiXZ8ByJGLkxNfZRnkUfjvmuYqLR89jjFHGqdXY",
+   "name": "Phoenix v1",
+   "authority": "8mv7G3fJq5a5ej7E14vgcSGeQKH79emjU9fVfuhyitEq",
+   "old_kind": "pda-other",
+   "new_kind": "squads-v3-vault",
+   "new_evidence": "off the curve (a PDA); transaction 5k9DLUjpfA1G... (2 of the 25 newest) invokes squads-v3 and holds the multisig 6x3BDkL2n7VjBWxRD95EsbQi2R2E4zxrvcz1VA6pihnK whose authority index 1 derives to this authority",
+   "new_squads": {
+    "threshold": 2,
+    "members": 3,
+    "time_lock_seconds": null,
+    "multisig": "6x3BDkL2n7VjBWxRD95EsbQi2R2E4zxrvcz1VA6pihnK"
+   }
+  },
+  {
+   "program_id": "dijkbkCAKfFTCxQg3u1pg82gVU1jJGHBBRcteD11mBu",
+   "name": null,
+   "authority": "BBvfpKqYovhzEjS4Ch1xZXFdxkaoUiXsujR9kgN1t8iR",
+   "old_kind": "pda-other",
+   "new_kind": "squads-v4-vault",
+   "new_evidence": "off the curve (a PDA); transaction 4X5mSADd1dgp... (1 of the 39 newest) invokes squads-v4 and holds the multisig 2D6zmpZbSFBWfV4auCcP4WvpxoJPXLhT5KZpN81srJ84 whose vault index 0 derives to this authority",
+   "new_squads": {
+    "threshold": 3,
+    "members": 4,
+    "time_lock_seconds": 0,
+    "multisig": "2D6zmpZbSFBWfV4auCcP4WvpxoJPXLhT5KZpN81srJ84"
+   }
+  },
+  {
+   "program_id": "goonuddtQRrWqqn5nFyczVKaie28f3kDkHWkHtURSLE",
+   "name": null,
+   "authority": "BBvfpKqYovhzEjS4Ch1xZXFdxkaoUiXsujR9kgN1t8iR",
+   "old_kind": "pda-other",
+   "new_kind": "squads-v4-vault",
+   "new_evidence": "off the curve (a PDA); transaction 4X5mSADd1dgp... (1 of the 39 newest) invokes squads-v4 and holds the multisig 2D6zmpZbSFBWfV4auCcP4WvpxoJPXLhT5KZpN81srJ84 whose vault index 0 derives to this authority",
+   "new_squads": {
+    "threshold": 3,
+    "members": 4,
+    "time_lock_seconds": 0,
+    "multisig": "2D6zmpZbSFBWfV4auCcP4WvpxoJPXLhT5KZpN81srJ84"
+   }
+  }
+ ]
+}

@@ -5,6 +5,7 @@ import fs from 'node:fs';
 import crypto from 'node:crypto';
 import anchor from '@coral-xyz/anchor';
 import bs58 from 'bs58';
+import { classifyPda } from './census-lib.mjs';
 
 const [rawFile, outFile] = process.argv.slice(2);
 const KEY = process.env.HELIUS_API_KEY; if (!KEY) throw new Error('HELIUS_API_KEY is not set');
@@ -78,36 +79,8 @@ for (const r of upg) {
     const a = await rpc('getAccountInfo', [r.programdata, { encoding: 'base64' }]);
     if (a.value) { const buf = Buffer.from(a.value.data[0], 'base64'); o.programdata_bytes = buf.length; o.security_txt = securityTxt(buf); }
   }
-  // Squads depth
-  if (/squads-v[34]-vault/.test(r.authority_kind ?? '')) {
-    const v4 = r.authority_kind.startsWith('squads-v4'); const prog = v4 ? SQ4 : SQ3;
-    const s = await rpc('getSignaturesForAddress', [r.upgrade_authority, { limit: 1 }]);
-    if (s.length) {
-      const t = await rpc('getTransaction', [s[0].signature, { encoding: 'json', maxSupportedTransactionVersion: 1 }]);
-      const keys = [...(t.transaction.message.accountKeys || t.transaction.message.staticAccountKeys || []), ...(t.meta?.loadedAddresses?.writable ?? []), ...(t.meta?.loadedAddresses?.readonly ?? [])];
-      const cand = [...new Set(keys)].slice(0, 99);
-      const accs = await rpc('getMultipleAccounts', [cand, { encoding: 'base64' }]);
-      for (let k = 0; k < cand.length; k++) {
-        const v = accs.value[k]; if (!v || v.owner !== prog) continue; const d = Buffer.from(v.data[0], 'base64');
-        const ms = cand[k]; let proof = null;
-        if (v4) { if (!d.subarray(0, 8).equals(D4)) continue; for (let i = 0; i < 4 && !proof; i++) if (pda([Buffer.from('multisig'), new PublicKey(ms).toBuffer(), Buffer.from('vault'), Buffer.from([i])], SQ4) === r.upgrade_authority) proof = `vault index ${i}`; }
-        else { if (!d.subarray(0, 8).equals(D3)) continue; for (let i = 1; i < 5 && !proof; i++) if (pda([Buffer.from('squad'), new PublicKey(ms).toBuffer(), u32(i), Buffer.from('authority')], SQ3) === r.upgrade_authority) proof = `authority index ${i}`; }
-        if (!proof) continue;
-        let m;
-        if (v4) {
-          let p = 8 + 32; const cfg = bs58.encode(d.subarray(p, p + 32)); p += 32; const threshold = d.readUInt16LE(p); p += 2; const timeLock = d.readUInt32LE(p); p += 4; p += 16;
-          const rc = d[p]; p += rc === 1 ? 33 : 1; p += 1; const n = d.readUInt32LE(p);
-          m = { version: 'v4', multisig: ms, threshold, members: n, time_lock_seconds: timeLock, config_authority: cfg === '11111111111111111111111111111111' ? 'none (autonomous)' : cfg, proof_vault_pda: proof };
-        } else {
-          let p = 8; const threshold = d.readUInt16LE(p); p += 2; p += 2 + 4 + 4 + 1 + 32 + 1; const n = d.readUInt32LE(p);
-          m = { version: 'v3', multisig: ms, threshold, members: n, time_lock_seconds: null, config_authority: 'n/a (v3: changes go through the multisig itself)', proof_vault_pda: proof };
-        }
-        m.sane = m.threshold >= 1 && m.threshold <= m.members && m.members >= 1 && m.members <= 100;
-        o.squads = m; break;
-      }
-      if (!o.squads) o.squads = { error: 'no Squads multisig account in the authority newest transaction whose vault PDA equals the authority' };
-    } else o.squads = { error: 'authority has no transactions' };
-  }
+  // Squads depth: scripts/census-lib.mjs (R42: recent transactions, accepted only when a multisig's vault PDA re-derives to the authority)
+  if (/squads-v[34]-vault/.test(r.authority_kind ?? '')) { const c = await classifyPda(rpc, r.upgrade_authority); o.squads = c.squads ?? { error: 'no Squads multisig account in the scanned transactions whose vault PDA equals the authority' }; }
   out.rows[r.program_id] = o;
   process.stderr.write(`${(r.name || r.program_id.slice(0, 8)).slice(0, 26).padEnd(26)} tx7d ${o.tx_7d}${o.tx_7d_capped ? '+' : ''} age ${o.age_days}d${o.squads ? ` squads ${o.squads.threshold ?? '?'}/${o.squads.members ?? '?'} tl ${o.squads.time_lock_seconds}` : ''}\n`);
 }

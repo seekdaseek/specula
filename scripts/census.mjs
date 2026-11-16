@@ -9,6 +9,7 @@ import path from 'node:path';
 import anchor from '@coral-xyz/anchor';
 import bs58 from 'bs58';
 import { fetchOnchainIdl } from '../dist/idl-fetch.js';
+import { classifyPda } from './census-lib.mjs';
 
 const [seedsFile, sampleFile, outDir, maxRowsArg] = process.argv.slice(2);
 if (!seedsFile || !sampleFile || !outDir) { console.error('usage: node --env-file=.env scripts/census.mjs seeds.json block-sample.json outdir [maxRows]'); process.exit(2); }
@@ -96,20 +97,7 @@ for (const id of authIds) {
   else if (a && GOVERNANCE[a.owner]) { k.kind = 'governance'; k.evidence = `the authority account is owned by ${GOVERNANCE[a.owner]}`; }
   else if (a && a.owner !== SYSTEM) { k.kind = 'program-owned'; k.evidence = `the authority account is owned by program ${a.owner}`; }
   else if (onCurve) { k.kind = 'plain-key'; k.evidence = a ? 'on the ed25519 curve, owned by the System program: an ordinary keypair wallet' : 'on the ed25519 curve, no account on chain: an ordinary keypair'; }
-  else {
-    // off the curve: a PDA, so a program controls it. Which one: the programs invoked in its newest transaction.
-    const sigs = await rpc('getSignaturesForAddress', [id, { limit: 1, commitment: 'finalized' }]);
-    if (!sigs.length) { k.kind = 'pda-unknown'; k.evidence = 'off the ed25519 curve (a PDA) and no transaction history to say which program controls it'; }
-    else {
-      const t = await rpc('getTransaction', [sigs[0].signature, { encoding: 'json', maxSupportedTransactionVersion: 1, commitment: 'finalized' }]);
-      const m = t.transaction.message; const keys = [...(m.accountKeys || m.staticAccountKeys || []), ...(t.meta?.loadedAddresses?.writable ?? []), ...(t.meta?.loadedAddresses?.readonly ?? [])];
-      const invoked = new Set([...(m.instructions || []).map((i) => keys[i.programIdIndex]), ...(t.meta?.innerInstructions || []).flatMap((x) => x.instructions.map((i) => keys[i.programIdIndex]))]);
-      const sq = [...invoked].find((p) => SQUADS[p]); const gv = [...invoked].find((p) => GOVERNANCE[p]);
-      if (sq) { k.kind = `${SQUADS[sq]}-vault`; k.evidence = `off the curve (a PDA); its newest transaction ${sigs[0].signature.slice(0, 12)}... invokes the ${SQUADS[sq]} program`; }
-      else if (gv) { k.kind = 'governance'; k.evidence = `off the curve (a PDA); its newest transaction ${sigs[0].signature.slice(0, 12)}... invokes ${GOVERNANCE[gv]}`; }
-      else { k.kind = 'pda-other'; k.evidence = `off the curve (a PDA); its newest transaction ${sigs[0].signature.slice(0, 12)}... invokes no Squads or Realms program`; }
-    }
-  }
+  else { const c = await classifyPda(rpc, id); k.kind = c.kind; k.evidence = c.evidence; }   // off the curve: a PDA; scripts/census-lib.mjs walks its recent transactions and accepts Squads only on proof (R42)
   kindOf.set(id, k);
 }
 for (const row of rows) if (row.upgrade_authority) { const k = kindOf.get(row.upgrade_authority); row.authority_kind = k.kind; row.authority_owner = k.owner; row.authority_on_curve = k.on_curve; row.authority_evidence = k.evidence; }
