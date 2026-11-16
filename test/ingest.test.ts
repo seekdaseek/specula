@@ -74,8 +74,39 @@ describe('polling with a durable per-address checkpoint', () => {
     const body = JSON.stringify([jlTx('23JuFJJdra'), jlTx('23JuFJJdra')]);
     const bad = await fetch(`http://127.0.0.1:${port}/webhook`, { method: 'POST', body, headers: { authorization: 'nope' } }); expect(bad.status).toBe(401);
     const ok = await fetch(`http://127.0.0.1:${port}/webhook`, { method: 'POST', body, headers: { authorization: 'tok' } }); expect(await ok.json()).toEqual({ processed: 2 });
+    await srv.drain();                                              // R38: processing happens after the reply
     expect(count(e)).toBe(1); expect((e.db.prepare('SELECT COUNT(*) c FROM records').get() as any).c).toBe(3);
     await pollAddress(e, fakeRpc([jlTx('23JuFJJdra')]), JL); // checkpoint at head
+    srv.close();
+  });
+  // R38: the webhook replies 200 as soon as the caller is authenticated and the body parses; processTx (and any Telegram send an alert makes) runs afterwards, off the request path.
+  it('the webhook answers 200 BEFORE processTx runs: a processTx that never returns cannot hold the reply, and the work still happens afterwards, in order', async () => {
+    const order: string[] = []; let release!: () => void; const gate = new Promise<void>((r) => { release = r; });
+    const eng = { processTx: async (tx: any) => { order.push(`start:${tx.transaction.signatures[0]}`); if (order.length === 1) await gate; order.push(`done:${tx.transaction.signatures[0]}`); } } as any;
+    const srv = webhookServer(eng, { authToken: 'tok', port: 0 });
+    await new Promise((r) => srv.on('listening', r)); const port = (srv.address() as any).port;
+    const a = jlTx('23JuFJJdra'), b = { ...jlTx('23JuFJJdra'), transaction: { ...jlTx('23JuFJJdra').transaction, signatures: ['second-sig'] } };
+    const t0 = Date.now();
+    const ok = await fetch(`http://127.0.0.1:${port}/webhook`, { method: 'POST', body: JSON.stringify([a, b]), headers: { authorization: 'tok' } });
+    expect(ok.status).toBe(200); expect(await ok.json()).toEqual({ processed: 2 });
+    expect(Date.now() - t0).toBeLessThan(2000);                     // processTx is still blocked on the gate, and the reply is already here
+    expect(order).toEqual([`start:${a.transaction.signatures[0]}`]);
+    release(); await srv.drain();
+    expect(order).toEqual([`start:${a.transaction.signatures[0]}`, `done:${a.transaction.signatures[0]}`, 'start:second-sig', 'done:second-sig']);
+    srv.close();
+  });
+  it('the webhook still verifies auth first (401, nothing processed), refuses a body that is not JSON (400, nothing processed), and a failing processTx is reported and does not stop the next one', async () => {
+    const seen: string[] = []; const errs: string[] = [];
+    const eng = { processTx: async (tx: any) => { seen.push(tx.transaction.signatures[0]); if (seen.length === 1) throw new Error('boom'); } } as any;
+    const srv = webhookServer(eng, { authToken: 'tok', port: 0, onError: (e) => errs.push((e as Error).message) });
+    await new Promise((r) => srv.on('listening', r)); const port = (srv.address() as any).port;
+    const post = (body: string, authorization: string) => fetch(`http://127.0.0.1:${port}/webhook`, { method: 'POST', body, headers: { authorization } });
+    const t = jlTx('23JuFJJdra');
+    expect((await post(JSON.stringify([t]), 'nope')).status).toBe(401);
+    expect((await post('{not json', 'tok')).status).toBe(400);
+    await srv.drain(); expect(seen).toEqual([]);
+    expect((await post(JSON.stringify([t, t]), 'tok')).status).toBe(200);
+    await srv.drain(); expect(seen).toHaveLength(2); expect(errs).toEqual(['boom']);
     srv.close();
   });
   it('normalizeWebhookTx accepts {pubkey} account keys and rejects junk', () => {

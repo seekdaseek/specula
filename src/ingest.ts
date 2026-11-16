@@ -102,8 +102,17 @@ export function normalizeWebhookTx(x: any): RawTx | null {
   return { ...x, transaction: { ...x.transaction, message: { ...x.transaction.message, accountKeys: keys } } } as RawTx;
 }
 
-export function webhookServer(engine: Engine, opts: { authToken: string; port: number; host?: string; path?: string; onRaw?: (body: string) => void; health?: () => Record<string, unknown>; pages?: Record<string, { type: string; body: string | Buffer; cache?: string }>; feed?: { path: string; authToken: string; onBody: (body: string) => void } }): http.Server {
-  return http.createServer((req, res) => {
+export function webhookServer(engine: Engine, opts: { authToken: string; port: number; host?: string; path?: string; onRaw?: (body: string) => void; health?: () => Record<string, unknown>; onError?: (e: unknown) => void; pages?: Record<string, { type: string; body: string | Buffer; cache?: string }>; feed?: { path: string; authToken: string; onBody: (body: string) => void } }): http.Server & { drain(): Promise<void> } {
+  // Transactions are processed ONE BATCH AT A TIME, in arrival order, off the request path (R38): the webhook answers 200 as soon as the caller is authenticated and the body parses, and processTx
+  // (decode, rules, and any Telegram/Discord send an alert makes) runs afterwards. Before, the reply waited for processTx, so one slow alert delivery held Helius's request open (tunnel: "Incoming
+  // request ended abruptly: context canceled") and made it time out and retry.
+  let queue: Promise<void> = Promise.resolve();
+  const enqueue = (txs: RawTx[]): void => {
+    queue = queue.then(async () => {
+      for (const tx of txs) { try { await engine.processTx(tx, 'webhook'); } catch (e) { try { opts.onError?.(e); } catch { /* logging must not stop the queue */ } } }
+    });
+  };
+  const server = http.createServer((req, res) => {
     if (opts.health && req.method === 'GET' && req.url === '/health') { res.writeHead(200, { 'content-type': 'application/json' }).end(JSON.stringify({ ok: true, ...opts.health() })); return; }
     if (opts.pages && (req.method === 'GET' || req.method === 'HEAD') && req.url && Object.prototype.hasOwnProperty.call(opts.pages, req.url)) {
       const pg = opts.pages[req.url]!;
@@ -123,15 +132,17 @@ export function webhookServer(engine: Engine, opts: { authToken: string; port: n
     if (got.length !== want.length || !timingSafeEqual(got, want)) { res.writeHead(401).end(); return; }
     const chunks: Buffer[] = [];
     req.on('data', (c) => chunks.push(c));
-    req.on('end', async () => {
+    req.on('end', () => {
+      let txs: RawTx[];
       try {
         const body = Buffer.concat(chunks).toString('utf8');
         try { opts.onRaw?.(body); } catch { /* capture must never break ingest */ }
         const arr = JSON.parse(body);
-        let n = 0;
-        for (const item of Array.isArray(arr) ? arr : [arr]) { const tx = normalizeWebhookTx(item); if (tx) { await engine.processTx(tx, 'webhook'); n++; } }
-        res.writeHead(200, { 'content-type': 'application/json' }).end(JSON.stringify({ processed: n }));
-      } catch { res.writeHead(400).end(); }
+        txs = (Array.isArray(arr) ? arr : [arr]).map(normalizeWebhookTx).filter((t): t is RawTx => t !== null);
+      } catch { res.writeHead(400).end(); return; }
+      res.writeHead(200, { 'content-type': 'application/json' }).end(JSON.stringify({ processed: txs.length }));   // the reply goes out FIRST
+      enqueue(txs);
     });
   }).listen(opts.port, opts.host ?? '127.0.0.1');
+  return Object.assign(server, { drain: () => queue });
 }

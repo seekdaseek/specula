@@ -68,6 +68,7 @@ export async function startDaemon(cfg: ServiceConfig, env: NodeJS.ProcessEnv = p
     ...(feed ? { feed } : {}),
     pages: buildPages(cfg.plans, path.join(path.dirname(cfg.dbPath), '..', 'public')), authToken: hookToken, port: cfg.port, host: '127.0.0.1', path: '/webhook/helius',
     onRaw: () => { lastHook = Date.now(); stats.deliveries++; },
+    onError: (e) => { stats.errors++; log(`webhook processTx failed: ${(e as Error).message}`); },
     health: () => ({ uptime_s: Math.round((Date.now() - startedAt) / 1000), last_webhook_s_ago: lastHook ? Math.round((Date.now() - lastHook) / 1000) : null }),
   });
 

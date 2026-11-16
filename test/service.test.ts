@@ -232,17 +232,58 @@ describe('ops', () => {
     t += 300_000; expect(await sync.tick()).toBe('edited'); expect(calls).toEqual(['create', 'edit:A,B,C']);
     expect(await sync.tick()).toBe('idle');
   });
-  it('webhook-silence alerts go to the owner: missed transactions and a dead webhook (fake clock); each fires once per window', async () => {
-    const db = openDb(':memory:'); const wire: string[] = [];
-    const f = (async (_u: any, i: any) => { wire.push(String(JSON.parse(i.body).chat_id)); return new Response(JSON.stringify({ ok: true, result: { message_id: 1 } })); }) as typeof fetch;
-    const now = Date.UTC(2026, 10, 14, 12); const env = { TELEGRAM_BOT_TOKEN: 'T' } as any;
-    for (let i = 0; i < 3; i++) db.prepare("INSERT INTO observations (signature, source, seen_at, block_time, failed) VALUES (?,?,?,?,0)").run(`s${i}`, 'poll', now - 60_000, 1);
-    const sent = await checkWebhookHealth(db, now, { telegram: { chat_id: OWNER } }, env, { programs: 1, fetchImpl: f, startedAt: now - 3600_000 });
-    expect(sent).toEqual(['webhook-missed']); expect(wire).toEqual([OWNER]);
-    expect(await checkWebhookHealth(db, now + 1000, { telegram: { chat_id: OWNER } }, env, { programs: 1, fetchImpl: f, startedAt: now - 3600_000 })).toEqual([]);   // deduped
-    const dead = await checkWebhookHealth(openDb(':memory:'), now, { telegram: { chat_id: OWNER } }, env, { programs: 2, fetchImpl: f, startedAt: now - 7 * 3600_000 });
-    expect(dead).toEqual(['webhook-silent']);
-    expect(await checkWebhookHealth(openDb(':memory:'), now, { telegram: { chat_id: OWNER } }, env, { programs: 0, fetchImpl: f, startedAt: now - 7 * 3600_000 })).toEqual([]);   // nothing watched: no alarm
+  // R38: the honest "missed" rule. A reconciler row counts only when it is older than 10 min and the webhook STILL has not delivered it; the alert needs more than 20% of the window's transactions (and at least 3),
+  // is a WARNING, and repeats at most once per 6 h. The dead-webhook alert stays CRITICAL.
+  const health = () => {
+    const db = openDb(':memory:'); const texts: string[] = [];
+    const f = (async (_u: any, i: any) => { texts.push(String(JSON.parse(i.body).text)); return new Response(JSON.stringify({ ok: true, result: { message_id: 1 } })); }) as typeof fetch;
+    const env = { TELEGRAM_BOT_TOKEN: 'T' } as any; const now = Date.UTC(2026, 10, 15, 12);
+    const obs = (sig: string, source: 'poll' | 'webhook', at: number) => db.prepare('INSERT OR IGNORE INTO observations (signature, source, seen_at, block_time, failed) VALUES (?,?,?,?,0)').run(sig, source, at, 1);
+    const run = (t: number, o: Record<string, unknown> = {}) => checkWebhookHealth(db, t, { telegram: { chat_id: OWNER } }, env, { programs: 1, fetchImpl: f, startedAt: now - 3600_000, ...o } as any);
+    return { db, texts, now, obs, run };
+  };
+  const MIN = 60_000;
+  it('a reconciler-first transaction that the webhook delivered a moment later is NOT a miss (the 14-16 Nov false alarm): no alert however many there are', async () => {
+    const h = health();
+    for (let i = 0; i < 12; i++) { h.obs(`race${i}`, 'poll', h.now - 20 * MIN + i * 1000); h.obs(`race${i}`, 'webhook', h.now - 20 * MIN + i * 1000 + 190); }   // 12 of 12 raced, delivered 190 ms later
+    for (let i = 0; i < 30; i++) h.obs(`ok${i}`, 'webhook', h.now - 25 * MIN + i * 1000);
+    expect(await h.run(h.now)).toEqual([]); expect(h.texts).toEqual([]);
+  });
+  it('a transaction younger than 10 min with no webhook yet is not counted either: it has not had its chance', async () => {
+    const h = health();
+    for (let i = 0; i < 6; i++) h.obs(`young${i}`, 'poll', h.now - 5 * MIN);      // 6 poll-only rows, 5 min old
+    expect(await h.run(h.now)).toEqual([]);
+  });
+  it('a real miss: old poll-only rows above 20% of the window fire ONE warning (not critical), and not again within 6 h', async () => {
+    const h = health();
+    for (let i = 0; i < 6; i++) h.obs(`miss${i}`, 'poll', h.now - 20 * MIN + i);        // 6 undelivered
+    for (let i = 0; i < 14; i++) h.obs(`ok${i}`, 'webhook', h.now - 22 * MIN + i);      // 14 delivered: 6 of 20 = 30%
+    expect(await h.run(h.now)).toEqual(['webhook-missed']);
+    expect(h.texts).toHaveLength(1); expect(h.texts[0]).toMatch(/^\[WARNING\] specula webhook is missing transactions/); expect(h.texts[0]).toContain('6 of 20 transactions (30%)'); expect(h.texts[0]).not.toContain('CRITICAL');
+    expect(await h.run(h.now + 30 * MIN)).toEqual([]); expect(await h.run(h.now + 5 * 3600_000 + 59 * MIN, { deadHours: 1000 })).toEqual([]);      // inside 6 h: silent (deadHours raised so the unrelated silence alert is out of the way)
+    expect(h.texts).toHaveLength(1);
+    h.db.prepare('UPDATE observations SET seen_at = seen_at + ?').run(6 * 3600_000);        // the same misses, 6 h later, still undelivered
+    expect(await h.run(h.now + 6 * 3600_000, { deadHours: 1000 })).toEqual(['webhook-missed']);
+    expect(h.texts).toHaveLength(2);
+  });
+  it('at or below 20% of the window, or fewer than 3, there is no alert (negative controls for the ratio and the count)', async () => {
+    const h = health();
+    for (let i = 0; i < 4; i++) h.obs(`miss${i}`, 'poll', h.now - 20 * MIN + i);        // 4 undelivered
+    for (let i = 0; i < 16; i++) h.obs(`ok${i}`, 'webhook', h.now - 22 * MIN + i);      // 4 of 20 = exactly 20%: not above
+    expect(await h.run(h.now)).toEqual([]);
+    const g = health();
+    for (let i = 0; i < 2; i++) g.obs(`miss${i}`, 'poll', g.now - 20 * MIN + i);        // 2 of 2 = 100% but under the 3 minimum
+    expect(await g.run(g.now)).toEqual([]);
+    const k = health();
+    for (let i = 0; i < 3; i++) k.obs(`miss${i}`, 'poll', k.now - 20 * MIN + i);        // control: 3 of 3 does fire
+    expect(await k.run(k.now)).toEqual(['webhook-missed']);
+  });
+  it('a dead webhook is still CRITICAL, once per hour bucket, and only while programs are watched; it does not need the miss rule', async () => {
+    const h = health();
+    expect(await h.run(h.now, { startedAt: h.now - 7 * 3600_000 })).toEqual(['webhook-silent']);
+    expect(h.texts[0]).toMatch(/^\[CRITICAL\] specula webhook silent/);
+    expect(await h.run(h.now + 1000, { startedAt: h.now - 7 * 3600_000 })).toEqual([]);          // same hour: deduped
+    expect(await health().run(Date.UTC(2026, 10, 15, 12), { programs: 0, startedAt: Date.UTC(2026, 10, 15, 5) })).toEqual([]);   // nothing watched: no alarm
   });
   it('daily backup uses sqlite3 .backup, is a valid database, and keeps only 7 files', () => {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'specula-bk-')); const dbFile = path.join(dir, 'x.db');
