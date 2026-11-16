@@ -55,3 +55,16 @@ order_ttl_minutes = 30
 late_order_days = 14
 
 # The Jupiter Lend operator proof tenant was removed on 14 Nov 2026 (Phase 3). Its block is kept, disabled, in deploy/fixtures/proof-tenant.disabled.toml.
+
+# R39: the free tier and the public upgrade feed.
+# [free]: a user with no paid plan and no running trial watches this many programs for upgrade and authority-change alerts only (no IDL, no rules, no expiry). Remove the section to keep the old 14-day trial.
+[free]
+max_programs = 1
+
+# [feed]: the ProgramData poll behind the free tier and the public channel. One getMultipleAccounts call (one Helius credit) per interval reads up to 100 programs.
+# Posts go to the Telegram chat id in the env var named by public_channel_env (the channel with the bot as admin); while it is unset, posts wait and nothing is lost.
+[feed]
+census_file = "census/census.json"
+interval_seconds = 60
+min_post_gap_seconds = 600           # at most one public post per program per 10 minutes
+public_channel_env = "SPECULA_PUBLIC_CHANNEL"

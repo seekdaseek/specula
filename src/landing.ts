@@ -2,13 +2,32 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import type { PlansConfig } from './plans.js';
+import type { UpgradeFeed } from './feed.js';
 
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!));
 export const BOT_URL = 'https://t.me/speculaDaBot';
 const TITLE = 'specula: Telegram alerts for your Solana program';
 const DESC = 'Alerts for your Solana program on Telegram, decoded from your IDL: upgrade and authority changes, silence, any instruction or event. Microscope-compatible rules. 14-day free trial, pay in USDC.';
 
-export function renderLanding(cfg: PlansConfig, base = 'https://specula.ochinimus.app'): string {
+export type FeedLanding = ReturnType<UpgradeFeed['landingData']>;
+const short = (a: string | null | undefined) => (a ? `${a.slice(0, 4)}...${a.slice(-4)}` : 'none');
+const KIND: Record<string, string> = { 'plain-key': 'single key', 'squads-v4-vault': 'Squads v4 multisig', 'squads-v3-vault': 'Squads v3 multisig', 'squads-v4-multisig': 'Squads v4 multisig', 'squads-v3-multisig': 'Squads v3 multisig', governance: 'governance', 'pda-other': 'program-controlled PDA', 'pda-unknown': 'PDA (controller unknown)', 'program-owned': 'program-owned', none: 'none: immutable' };
+
+/** The census section and the last 10 upgrades (R39): rendered from the census file and the feed's own tables on every request, so the page never disagrees with the feed. */
+export function renderFeedSection(f: FeedLanding): string {
+  const up = f.rows.filter((r) => r.upgradeable === true), single = up.filter((r) => r.authority_kind === 'plain-key');
+  const tr = f.rows.map((r) => `<tr><th scope="row">${esc(r.name ?? short(r.program_id))}</th><td><code title="${esc(r.authority ?? '')}">${esc(short(r.authority))}</code></td><td>${esc(KIND[r.authority_kind ?? ''] ?? (r.authority_kind ?? (r.upgradeable === false ? 'immutable' : 'unknown')))}</td><td>${r.deployed_slot ?? ''}</td></tr>`).join('');
+  const ev = f.upgrades.map((u) => `<li>${esc(u.name ?? short(u.program_id))}: ${u.action === 'upgrade' ? 'upgraded' : 'authority changed'}, ${u.block_time ? new Date(u.block_time * 1000).toISOString().replace('T', ' ').slice(0, 19) + ' UTC' : 'time unknown'} <a href="https://explorer.solana.com/tx/${esc(u.signature)}" rel="noopener">tx</a></li>`).join('');
+  const when = f.census ? `Read from mainnet RPC on ${esc(f.census.read_at_utc)}${f.census.slot_max ? ` (slot ${f.census.slot_max})` : ''}.` : '';
+  return `<h2>Who can change Solana's biggest programs</h2>
+<p><b>${single.length} of ${up.length}</b> upgradeable programs in this census are controlled by a single key; the rest sit behind a multisig, a governance account or a program-controlled address. ${when} The authority column is the live upgrade authority (refreshed every minute); the type was read from the chain when the census was made.</p>
+<table><thead><tr><th>Program</th><th>Upgrade authority</th><th>Type</th><th>Last deploy (slot)</th></tr></thead><tbody>${tr}</tbody></table>
+<h2>Last 10 upgrades</h2>
+${ev ? `<ul>${ev}</ul>` : '<p class="sub">No upgrade or authority change has been seen on these programs since the feed went live.</p>'}
+<p class="sub">Every upgrade and authority change of these programs is also posted to the public feed channel. Data as JSON: <a href="/census.json">/census.json</a>, <a href="/upgrades.json">/upgrades.json</a>.</p>`;
+}
+
+export function renderLanding(cfg: PlansConfig, base = 'https://specula.ochinimus.app', feed?: FeedLanding): string {
   const plans = Object.values(cfg.plans).filter((p) => !p.hidden).sort((a, b) => a.priceUsd - b.priceUsd);
   const rows = plans.map((p) => `<tr><th scope="row">${esc(p.name)}</th><td>$${p.priceUsd}</td><td>${p.txPerMonth.toLocaleString('en-US')}</td><td>${p.maxPrograms}</td></tr>`).join('');
   const trial = cfg.trial; const tp = cfg.plans[trial.plan]!;
@@ -34,7 +53,7 @@ footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--line);color:v
 <h1>Alerts for your Solana program, on Telegram.</h1>
 <p class="lead">Give specula a program address. It reads the program's IDL, watches the chain, and messages you when something happens. Nothing to install or host.</p>
 <a class="btn" href="${BOT_URL}">Start in Telegram</a>
-<p class="sub">${trial.days}-day free trial, ${trial.maxPrograms} program, no card. Pay in USDC on Solana inside the bot.</p>
+<p class="sub">${cfg.free ? `Free: ${cfg.free.maxPrograms} program, upgrade and authority-change alerts, no expiry, no card.` : `${trial.days}-day free trial, ${trial.maxPrograms} program, no card.`} Pay in USDC on Solana inside the bot for more.</p>
 
 <h2>What you get</h2>
 <ul>
@@ -58,7 +77,9 @@ footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--line);color:v
 
 <h2>Pricing</h2>
 <table><thead><tr><th>Plan</th><th>per ${cfg.billing.periodDays} days</th><th>tx per program / month</th><th>programs</th></tr></thead><tbody>${rows}</tbody></table>
-<p class="sub">Free trial: ${trial.days} days on ${esc(tp.name)} limits (${tp.txPerMonth.toLocaleString('en-US')} tx per month), ${trial.maxPrograms} program. Pay with <code>/upgrade</code> in the bot: a Solana Pay link in USDC, activated automatically once the payment is final. At the limit, alerts for that program pause until the next month or a higher plan.</p>
+<p class="sub">${cfg.free ? `Free, no expiry: ${cfg.free.maxPrograms} program with upgrade and authority-change alerts only (no rules, no IDL needed).` : `Free trial: ${trial.days} days on ${esc(tp.name)} limits (${tp.txPerMonth.toLocaleString('en-US')} tx per month), ${trial.maxPrograms} program.`} Pay with <code>/upgrade</code> in the bot: a Solana Pay link in USDC, activated automatically once the payment is final. At the limit, alerts for that program pause until the next month or a higher plan.</p>
+
+${feed ? renderFeedSection(feed) : ''}
 
 <a class="btn" href="${BOT_URL}">Start in Telegram</a>
 
@@ -71,8 +92,12 @@ footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--line);color:v
 }
 
 export interface Page { type: string; body: string | Buffer; cache?: string }
-export function buildPages(cfg: PlansConfig, publicDir: string): Record<string, Page> {
-  const pages: Record<string, Page> = { '/': { type: 'text/html; charset=utf-8', body: renderLanding(cfg), cache: 'public, max-age=300' } };
+export function buildPages(cfg: PlansConfig, publicDir: string, feed?: () => FeedLanding): Record<string, Page | (() => Page)> {
+  const pages: Record<string, Page | (() => Page)> = feed
+    ? { '/': () => ({ type: 'text/html; charset=utf-8', body: renderLanding(cfg, undefined, feed()), cache: 'public, max-age=60' }),
+        '/census.json': () => ({ type: 'application/json; charset=utf-8', body: JSON.stringify({ census_read_at_utc: feed().census?.read_at_utc ?? null, programs: feed().rows }, null, 1), cache: 'public, max-age=60' }),
+        '/upgrades.json': () => ({ type: 'application/json; charset=utf-8', body: JSON.stringify({ last_10: feed().upgrades }, null, 1), cache: 'public, max-age=30' }) }
+    : { '/': { type: 'text/html; charset=utf-8', body: renderLanding(cfg), cache: 'public, max-age=300' } };
   for (const [url, file, type] of [['/favicon.svg', 'favicon.svg', 'image/svg+xml'], ['/og.png', 'og.png', 'image/png']] as const) {
     try { pages[url] = { type, body: fs.readFileSync(path.join(publicDir, file)), cache: 'public, max-age=86400' }; } catch { /* asset missing: that path stays 404 */ }
   }

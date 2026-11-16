@@ -4,6 +4,9 @@ import { Rpc } from './ingest.js';
 import { fetchOnchainIdl, inspectIdl, isPubkey, MAX_IDL_BYTES, type IdlInfo } from './idl-fetch.js';
 import { parseAlertsToml, type AlertRule } from './rules.js';
 import type { Billing } from './billing.js';
+import type { UpgradeFeed } from './feed.js';
+import { LOADER } from './upgrade.js';
+import bs58 from 'bs58';
 
 export interface Button { text: string; callback_data: string }
 export interface TgApi {
@@ -68,7 +71,7 @@ export const HELP = `Commands
 /support TEXT  message the operator
 /help  this message`;
 
-export interface BotOpts { rpc: Pick<Rpc, 'account' | 'getAccountData'>; tg: TgApi; log?: (m: string) => void; onProgramsChanged?: () => void; fetchIdl?: typeof fetchOnchainIdl; billing?: Billing; ownerChatId?: string }
+export interface BotOpts { rpc: Pick<Rpc, 'account' | 'getAccountData'>; tg: TgApi; log?: (m: string) => void; onProgramsChanged?: () => void; fetchIdl?: typeof fetchOnchainIdl; billing?: Billing; ownerChatId?: string; feed?: UpgradeFeed }
 
 export class Bot {
   constructor(readonly svc: Service, readonly o: BotOpts) {}
@@ -92,6 +95,7 @@ export class Bot {
     switch (c.cmd) {
       case 'start': {
         svc.ensureUser(tid, chat);
+        if (svc.freeEnabled) return void await this.say(chat, `${this.freeIntro()}\n\n${HELP}`);
         return void await this.say(chat, `specula watches Solana programs and messages you here when something happens: an upgrade or authority change, a quiet program, or any instruction or event you pick.\n\nFree trial: ${svc.cfg.trial.days} days, ${svc.cfg.trial.maxPrograms} program, ${svc.cfg.plans[svc.cfg.trial.plan]!.txPerMonth.toLocaleString('en-US')} transactions a month. The clock starts at your first /watch.\n\n${HELP}`);
       }
       case 'help': return void await this.say(chat, HELP);
@@ -112,6 +116,7 @@ export class Bot {
     const svc = this.svc; const u = svc.ensureUser(tid, chat);
     if (!isPubkey(pid)) return void await this.say(chat, 'Usage: /watch PROGRAM_ID (a base58 program address).');
     if (!svc.watchAllowed(tid)) return void await this.say(chat, 'Slow down: at most 5 /watch per hour. Try again later.');
+    if (svc.isFree(u)) return await this.watchFree(tid, chat, u, pid);
     const lim = svc.limits(u);
     if (!lim) return void await this.say(chat, 'Your trial has ended. /plans shows the plans; /upgrade PLAN pays in USDC.');
     if (svc.engine.getEntry(u.tenant_id, pid)) return void await this.say(chat, 'You already watch that program. /rules to manage it.');
@@ -127,6 +132,31 @@ export class Bot {
     }
     svc.db.prepare('INSERT OR REPLACE INTO pending_idl (telegram_id, program_id, created_at) VALUES (?,?,?)').run(tid, pid, svc.now());
     await this.say(chat, `No usable on-chain Anchor IDL for ${pid}. Send me the IDL as a .json file (Anchor or Codama, up to 1 MB) in this chat.`);
+  }
+
+  /** Four lines: what the free tier is and what paying adds. */
+  private freeIntro(): string {
+    const f = this.svc.cfg.free!; const prices = Object.values(this.svc.cfg.plans).filter((p) => !p.hidden).map((p) => p.priceUsd); const from = prices.length ? `from $${Math.min(...prices)} per ${this.svc.cfg.billing.periodDays} days` : 'in USDC';
+    return [
+      'specula watches Solana programs and messages you here when something happens.',
+      `Free, no expiry: ${f.maxPrograms} program, alerts for upgrades and authority changes. Send /watch PROGRAM_ID.`,
+      `Paid (${from}, pay in USDC in this chat): more programs, alerts on any instruction or event, rules from your IDL, a 24 h silence alert. See /plans.`,
+      'Free alerts need no IDL and no setup; paid plans read your IDL and decode every transaction.',
+    ].join('\n');
+  }
+
+  /** Free tier /watch: an upgradeable program, one per user, watched through the shared ProgramData poll (no IDL, no webhook). */
+  private async watchFree(tid: string, chat: string, u: { tenant_id: string }, pid: string) {
+    const svc = this.svc; const feed = this.o.feed; const max = svc.cfg.free!.maxPrograms;
+    if (!feed) return void await this.say(chat, 'The free tier is not available right now. Try again later.');
+    if (feed.userWatches(u.tenant_id).some((w) => w.program_id === pid)) return void await this.say(chat, 'You already watch that program.');
+    if (feed.userWatches(u.tenant_id).length >= max) return void await this.say(chat, `The free tier watches ${max} program${max === 1 ? '' : 's'}. Stop watching it first (/remove), or see /plans for more.`);
+    let acc: { owner: string; data: Buffer } | null;
+    try { acc = await this.o.rpc.getAccountData(pid); } catch { return void await this.say(chat, 'Could not reach Solana RPC right now. Try again in a minute.'); }
+    if (!acc) return void await this.say(chat, 'That account does not exist on mainnet.');
+    if (acc.owner !== LOADER || acc.data.length < 36 || acc.data.readUInt32LE(0) !== 2) return void await this.say(chat, 'That is not an upgradeable program (it is not owned by the upgradeable loader, so it can never be upgraded). Nothing to watch for free.');
+    feed.addUserWatch(u.tenant_id, pid, bs58.encode(acc.data.subarray(4, 36)));
+    await this.say(chat, `Watching ${pid} for upgrades and authority changes (free, no expiry). You get a message here the moment one lands. Rules, silence and transaction alerts are on the paid plans: /plans.`);
   }
 
   private async onDocument(tid: string, chat: string, m: any) {
@@ -191,11 +221,14 @@ export class Bot {
   private async list(tid: string, chat: string) {
     const u = this.svc.user(tid);
     const rows = u ? this.svc.db.prepare('SELECT program_id FROM programs WHERE tenant_id=? ORDER BY created_at').all(u.tenant_id) as { program_id: string }[] : [];
+    const free = u && this.o.feed ? this.o.feed.userWatches(u.tenant_id) : [];
+    if (free.length) return void await this.say(chat, `Your programs:\n${[...rows.map((r) => `${r.program_id} (${this.svc.engine.rulesOf(u!.tenant_id, r.program_id).length} rules)`), ...free.map((w) => `${w.program_id} (free: upgrades and authority changes)`)].join('\n')}`);
     await this.say(chat, rows.length ? `Your programs:\n${rows.map((r) => `${r.program_id} (${this.svc.engine.rulesOf(u!.tenant_id, r.program_id).length} rules)`).join('\n')}` : 'You are not watching anything yet. /watch PROGRAM_ID');
   }
 
   private async remove(tid: string, chat: string, pid: string) {
     const u = this.svc.user(tid);
+    if (u && this.o.feed?.removeUserWatch(u.tenant_id, pid)) return void await this.say(chat, `Stopped watching ${pid}.`);
     if (!u || !this.svc.engine.removeProgram(u.tenant_id, pid)) return void await this.say(chat, 'You do not watch that program.');
     this.o.onProgramsChanged?.();
     await this.say(chat, `Stopped watching ${pid}.`);
@@ -203,6 +236,7 @@ export class Bot {
 
   private async rules(tid: string, chat: string, pid: string, toml: string) {
     const svc = this.svc; const u = svc.user(tid);
+    if (u && svc.isFree(u)) return void await this.say(chat, 'Rules are on the paid plans. The free tier sends upgrade and authority-change alerts only. /plans shows the plans.');
     if (!u || !svc.engine.getEntry(u.tenant_id, pid)) return void await this.say(chat, 'Usage: /rules PROGRAM_ID (a program you watch).');
     if (toml) {
       let rules: AlertRule[];
@@ -219,6 +253,7 @@ export class Bot {
   private async status(tid: string, chat: string) {
     const svc = this.svc; const u = svc.user(tid);
     if (!u) return void await this.say(chat, 'Send /start first.');
+    if (svc.isFree(u) && this.o.feed) { const w = this.o.feed.userWatches(u.tenant_id); return void await this.say(chat, `Plan: free (no expiry)\nPrograms: ${w.length} / ${svc.cfg.free!.maxPrograms}\n${w.map((x) => `${x.program_id}: upgrade and authority-change alerts`).join('\n') || 'No program yet. /watch PROGRAM_ID'}\nRules, silence and transaction alerts: /plans`); }
     const st = svc.state(u); const lim = svc.limits(u); const planName = st === 'expired' ? 'trial ended' : st === 'none' ? 'free trial (starts at your first /watch)' : st === 'trial' ? `free trial on ${lim!.plan.name} limits, ${svc.trialDaysLeft(u)} days left` : lim!.plan.name;
     const progs = svc.db.prepare('SELECT program_id FROM programs WHERE tenant_id=? ORDER BY created_at').all(u.tenant_id) as { program_id: string }[];
     const quota = lim?.plan.txPerMonth ?? 0;
@@ -230,7 +265,8 @@ export class Bot {
     const b = this.o.billing; if (!b) return void await this.say(chat, 'Billing is not enabled.');
     const days = this.svc.cfg.billing.periodDays;
     const lines = b.visiblePlans(tid).map((p) => `${p.name}: $${p.priceUsd} per ${days} days, ${p.txPerMonth.toLocaleString('en-US')} tx per program per month, up to ${p.maxPrograms} programs  ->  /upgrade ${p.id}`);
-    await this.say(chat, `Plans (pay in USDC on Solana):\n${lines.join('\n')}\n\nThe free trial is ${this.svc.cfg.trial.days} days on Starter limits with ${this.svc.cfg.trial.maxPrograms} program.`);
+    const foot = this.svc.cfg.free ? `Free, no expiry: ${this.svc.cfg.free.maxPrograms} program, upgrade and authority-change alerts only.` : `The free trial is ${this.svc.cfg.trial.days} days on Starter limits with ${this.svc.cfg.trial.maxPrograms} program.`;
+    await this.say(chat, `Plans (pay in USDC on Solana):\n${lines.join('\n')}\n\n${foot}`);
   }
 
   private async upgrade(tid: string, chat: string, planId: string) {

@@ -10,6 +10,7 @@ import { parsePlans, type PlansConfig } from './plans.js';
 import { Service } from './service.js';
 import { Bot, Tg } from './bot.js';
 import { HeliusWebhooks, WebhookSync } from './helius.js';
+import { UpgradeFeed, feedRpc, type Census } from './feed.js';
 import { Billing, RealChain } from './billing.js';
 import { buildPages } from './landing.js';
 import { backupDb, checkWebhookHealth, latestBackupAge } from './ops.js';
@@ -17,7 +18,7 @@ import type { TenantChannels } from './channels.js';
 
 export interface ServiceConfig {
   dbPath: string; port: number; publicUrl: string; pollIntervalSeconds: number; stallSeconds: number; healthIntervalSeconds: number;
-  backupDir: string; webhookMinIntervalSeconds: number; plans: PlansConfig;
+  backupDir: string; webhookMinIntervalSeconds: number; plans: PlansConfig; feed: { censusFile: string; intervalSeconds: number; minPostGapSeconds: number; publicChannelEnv: string } | null;
   tenants: Record<string, TenantChannels>; programs: ProgramSpec[];
 }
 
@@ -34,6 +35,7 @@ export function loadServiceConfig(file: string, env: NodeJS.ProcessEnv = process
     dbPath: path.resolve(base, d.db_path ?? 'data/specula.db'), port: d.port, publicUrl: d.public_url, pollIntervalSeconds: d.poll_interval_seconds ?? 300,
     stallSeconds: d.stall_seconds ?? 900, healthIntervalSeconds: d.health_interval_seconds ?? 60, backupDir: path.resolve(base, d.backup_dir ?? 'backups'),
     webhookMinIntervalSeconds: d.helius?.webhook_min_interval_seconds ?? 300, plans: parsePlans(d), tenants, programs,
+    feed: d.feed ? { censusFile: path.resolve(base, d.feed.census_file ?? 'census/census.json'), intervalSeconds: Number(d.feed.interval_seconds ?? 60), minPostGapSeconds: Number(d.feed.min_post_gap_seconds ?? 600), publicChannelEnv: String(d.feed.public_channel_env ?? 'SPECULA_PUBLIC_CHANNEL') } : null,
   };
 }
 
@@ -64,19 +66,23 @@ export async function startDaemon(cfg: ServiceConfig, env: NodeJS.ProcessEnv = p
     const arr = JSON.parse(body); const now = Date.now();
     for (const x of Array.isArray(arr) ? arr : [arr]) db.prepare('INSERT INTO feed_deliveries (received_at, signature, type, slot, body_len, raw) VALUES (?,?,?,?,?,?)').run(now, x?.signature ?? null, x?.type ?? null, x?.slot ?? null, body.length, JSON.stringify(x).slice(0, 60000));
   } } : undefined;
+  // R39: the upgrade feed (public channel + free tier): one batched ProgramData poll, no webhook, no program-id polling. Posts wait while the channel id env is unset.
+  let tgRef: Tg | undefined;
+  const upgradeFeed = cfg.feed ? new UpgradeFeed(db, feedRpc(rpc), { log, env, publicChannelEnv: cfg.feed.publicChannelEnv, minPostGapMs: cfg.feed.minPostGapSeconds * 1000, sendUser: (chat, text) => tgRef!.sendMessage(chat, text) }) : undefined;
+  if (upgradeFeed && cfg.feed) { try { log(`feed: ${upgradeFeed.loadCensus(JSON.parse(fs.readFileSync(cfg.feed.censusFile, 'utf8')) as Census)} census programs watched`); } catch (e) { log(`feed: census not loaded: ${(e as Error).message}`); } }
   const hook = webhookServer(engine, {
     ...(feed ? { feed } : {}),
-    pages: buildPages(cfg.plans, path.join(path.dirname(cfg.dbPath), '..', 'public')), authToken: hookToken, port: cfg.port, host: '127.0.0.1', path: '/webhook/helius',
+    pages: buildPages(cfg.plans, path.join(path.dirname(cfg.dbPath), '..', 'public'), upgradeFeed ? () => upgradeFeed.landingData() : undefined), authToken: hookToken, port: cfg.port, host: '127.0.0.1', path: '/webhook/helius',
     onRaw: () => { lastHook = Date.now(); stats.deliveries++; },
     onError: (e) => { stats.errors++; log(`webhook processTx failed: ${(e as Error).message}`); },
     health: () => ({ uptime_s: Math.round((Date.now() - startedAt) / 1000), last_webhook_s_ago: lastHook ? Math.round((Date.now() - lastHook) / 1000) : null }),
   });
 
   const sync = new WebhookSync(db, new HeliusWebhooks(heliusKey), { url: `${cfg.publicUrl}/webhook/helius`, auth: hookToken, desired: () => engine.programs().map((e) => e.programId), minIntervalMs: cfg.webhookMinIntervalSeconds * 1000, log });
-  const tg = new Tg(token);
+  const tg = new Tg(token); tgRef = tg;
   const bc = cfg.plans.billing;
   const billing = bc.recipient ? new Billing({ svc, cfg: bc, ownerChatId: owner, log, send: (chat, text) => tg.sendMessage(chat, text), chain: new RealChain(bc.rpcUrl ?? (bc.cluster === 'devnet' ? 'https://api.devnet.solana.com' : `https://mainnet.helius-rpc.com/?api-key=${heliusKey}`), fetch, log) }) : undefined;
-  const bot = new Bot(svc, { rpc, tg, billing, ownerChatId: owner, log, onProgramsChanged: () => { engine.resolveProgramdata(rpc).catch(() => {}); } });
+  const bot = new Bot(svc, { rpc, tg, billing, ownerChatId: owner, log, ...(upgradeFeed ? { feed: upgradeFeed } : {}), onProgramsChanged: () => { engine.resolveProgramdata(rpc).catch(() => {}); } });
 
   const pollLoop = (async () => {
     while (!stopped) {
@@ -85,6 +91,14 @@ export async function startDaemon(cfg: ServiceConfig, env: NodeJS.ProcessEnv = p
       for (let i = 0; i < cfg.pollIntervalSeconds * 10 && !stopped; i++) await new Promise((r) => setTimeout(r, 100));
     }
   })();
+  let feedBusy = false;
+  const feedTick = async () => {
+    if (!upgradeFeed || feedBusy) return; feedBusy = true;
+    try { const r = await upgradeFeed.tick(); if (r.changed || r.posted) log(`feed: ${r.checked} programdata read, ${r.changed} changed, ${r.resolved} resolved, ${r.posted} posted`); }
+    catch (e) { stats.errors++; log(`feed tick failed: ${(e as Error).message}`); } finally { feedBusy = false; }
+  };
+  const feedTimer = upgradeFeed && cfg.feed ? setInterval(() => { feedTick().catch(() => {}); }, cfg.feed.intervalSeconds * 1000) : undefined;
+  feedTick().catch(() => {});
   const healthTick = async () => {
     await engine.checkHealth().catch((e) => log(`health check failed: ${(e as Error).message}`));
     await checkWebhookHealth(db, Date.now(), { telegram: { chat_id: owner } }, env, { programs: engine.programs().length, startedAt }).catch((e) => log(`webhook health failed: ${(e as Error).message}`));
@@ -97,5 +111,5 @@ export async function startDaemon(cfg: ServiceConfig, env: NodeJS.ProcessEnv = p
   const sig = { get stopped() { return stopped; } };
   const botLoop = bot.run(sig as { stopped: boolean });
   log(`specula up on 127.0.0.1:${cfg.port}, ${engine.programs().length} programs`);
-  return { engine, svc, stats, async stop() { stopped = true; clearInterval(timer); if (billTimer) clearInterval(billTimer); hook.close(); await Promise.race([pollLoop, new Promise((r) => setTimeout(r, 3000))]); void botLoop; } };
+  return { engine, svc, stats, async stop() { stopped = true; clearInterval(timer); if (feedTimer) clearInterval(feedTimer); if (billTimer) clearInterval(billTimer); hook.close(); await Promise.race([pollLoop, new Promise((r) => setTimeout(r, 3000))]); void botLoop; } };
 }

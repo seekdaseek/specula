@@ -10,6 +10,8 @@ export interface Alert {
   signature?: string;
   explorer_url?: string;
   fields?: Record<string, unknown>;
+  /** a ready-made message: sent as it is, without the [SEVERITY] title prefix (the public feed uses it) */
+  raw?: string;
 }
 
 export interface TenantChannels {
@@ -57,5 +59,6 @@ export async function deliver(channel: string, cfg: TenantChannels, alert: Alert
 }
 
 export function format(a: Alert): string {
+  if (a.raw !== undefined) return a.raw;
   return `[${a.severity.toUpperCase()}] ${a.title}\n${a.text}${a.explorer_url ? `\n${a.explorer_url}` : ''}`;
 }

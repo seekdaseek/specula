@@ -102,7 +102,7 @@ export function normalizeWebhookTx(x: any): RawTx | null {
   return { ...x, transaction: { ...x.transaction, message: { ...x.transaction.message, accountKeys: keys } } } as RawTx;
 }
 
-export function webhookServer(engine: Engine, opts: { authToken: string; port: number; host?: string; path?: string; onRaw?: (body: string) => void; health?: () => Record<string, unknown>; onError?: (e: unknown) => void; pages?: Record<string, { type: string; body: string | Buffer; cache?: string }>; feed?: { path: string; authToken: string; onBody: (body: string) => void } }): http.Server & { drain(): Promise<void> } {
+export function webhookServer(engine: Engine, opts: { authToken: string; port: number; host?: string; path?: string; onRaw?: (body: string) => void; health?: () => Record<string, unknown>; onError?: (e: unknown) => void; pages?: Record<string, { type: string; body: string | Buffer; cache?: string } | (() => { type: string; body: string | Buffer; cache?: string })>; feed?: { path: string; authToken: string; onBody: (body: string) => void } }): http.Server & { drain(): Promise<void> } {
   // Transactions are processed ONE BATCH AT A TIME, in arrival order, off the request path (R38): the webhook answers 200 as soon as the caller is authenticated and the body parses, and processTx
   // (decode, rules, and any Telegram/Discord send an alert makes) runs afterwards. Before, the reply waited for processTx, so one slow alert delivery held Helius's request open (tunnel: "Incoming
   // request ended abruptly: context canceled") and made it time out and retry.
@@ -115,7 +115,7 @@ export function webhookServer(engine: Engine, opts: { authToken: string; port: n
   const server = http.createServer((req, res) => {
     if (opts.health && req.method === 'GET' && req.url === '/health') { res.writeHead(200, { 'content-type': 'application/json' }).end(JSON.stringify({ ok: true, ...opts.health() })); return; }
     if (opts.pages && (req.method === 'GET' || req.method === 'HEAD') && req.url && Object.prototype.hasOwnProperty.call(opts.pages, req.url)) {
-      const pg = opts.pages[req.url]!;
+      const pg0 = opts.pages[req.url]!; const pg = typeof pg0 === 'function' ? pg0() : pg0;     // a function = rendered per request (R39: the census table and the last upgrades)
       res.writeHead(200, { 'content-type': pg.type, 'cache-control': pg.cache ?? 'no-store', 'x-content-type-options': 'nosniff', 'content-security-policy': "default-src 'none'; style-src 'unsafe-inline'; img-src 'self'", 'referrer-policy': 'no-referrer' }).end(req.method === 'HEAD' ? undefined : pg.body);
       return;
     }

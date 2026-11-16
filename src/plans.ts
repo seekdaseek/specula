@@ -1,7 +1,8 @@
 // Plans live in the config file (service.toml), never in code. Defaults here are only the shape.
 export interface Plan { id: string; name: string; priceUsd: number; txPerMonth: number; maxPrograms: number; hidden: boolean }
 export interface BillingConfig { cluster: 'mainnet-beta' | 'devnet'; recipient: string; usdcMint: string; decimals: number; periodDays: number; graceDays: number; reminderDays: number; orderTtlMinutes: number; lateOrderDays: number; rpcUrl?: string }
-export interface PlansConfig { plans: Record<string, Plan>; trial: { days: number; plan: string; maxPrograms: number }; billing: BillingConfig }
+export interface FreeTier { maxPrograms: number }
+export interface PlansConfig { plans: Record<string, Plan>; trial: { days: number; plan: string; maxPrograms: number }; billing: BillingConfig; /** the free tier (R39): upgrade and authority alerts for this many programs, no rules, no expiry; null/absent = no free tier (the old trial flow) */ free?: FreeTier | null }
 
 export function parsePlans(d: any): PlansConfig {
   const plans: Record<string, Plan> = {};
@@ -17,5 +18,7 @@ export function parsePlans(d: any): PlansConfig {
     cluster: b.cluster ?? 'mainnet-beta', recipient: b.recipient ?? '', usdcMint: b.usdc_mint ?? 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', decimals: Number(b.decimals ?? 6),
     periodDays: Number(b.period_days ?? 30), graceDays: Number(b.grace_days ?? 3), reminderDays: Number(b.reminder_days ?? 3), orderTtlMinutes: Number(b.order_ttl_minutes ?? 30), lateOrderDays: Number(b.late_order_days ?? 14), ...(b.rpc_url ? { rpcUrl: String(b.rpc_url) } : {}),
   };
-  return { plans, trial, billing };
+  const f = d?.free;
+  const free: FreeTier | null = f && typeof f === 'object' ? { maxPrograms: Math.max(1, Number(f.max_programs ?? 1)) } : null;
+  return { plans, trial, billing, free };
 }

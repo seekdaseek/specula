@@ -65,6 +65,9 @@ export class Service {
     if (!u.trial_started_at) return u.paid_plan ? 'expired' : 'none';   // a lapsed paying user does not get a fresh trial
     return this.now() < (u.trial_ends_at ?? 0) ? 'trial' : 'expired';
   }
+  /** The free tier (R39): a user with no paid plan and no trial running (none yet, or ended). It watches ONE program for upgrade and authority changes: no IDL, no rules, no tx metering, no expiry. */
+  get freeEnabled(): boolean { return !!this.cfg.free; }
+  isFree(u: UserRow): boolean { if (!this.cfg.free) return false; const st = this.state(u); return st === 'none' || st === 'expired'; }
   /** paid plan state in more detail: active, grace, or null */
   paidPhase(u: UserRow): 'active' | 'grace' | null {
     if (!u.paid_plan || !this.cfg.plans[u.paid_plan]) return null;
