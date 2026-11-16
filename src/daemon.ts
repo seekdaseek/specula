@@ -78,7 +78,7 @@ export async function startDaemon(cfg: ServiceConfig, env: NodeJS.ProcessEnv = p
     health: () => ({ uptime_s: Math.round((Date.now() - startedAt) / 1000), last_webhook_s_ago: lastHook ? Math.round((Date.now() - lastHook) / 1000) : null }),
   });
 
-  const sync = new WebhookSync(db, new HeliusWebhooks(heliusKey), { url: `${cfg.publicUrl}/webhook/helius`, auth: hookToken, desired: () => engine.programs().map((e) => e.programId), minIntervalMs: cfg.webhookMinIntervalSeconds * 1000, log });
+  const sync = new WebhookSync(db, new HeliusWebhooks(heliusKey), { url: `${cfg.publicUrl}/webhook/helius`, auth: hookToken, desired: () => engine.programs().filter((e) => !svc.quotaReached(e.tenantId, e.programId)).map((e) => e.programId), minIntervalMs: cfg.webhookMinIntervalSeconds * 1000, log });
   const tg = new Tg(token); tgRef = tg;
   const bc = cfg.plans.billing;
   const billing = bc.recipient ? new Billing({ svc, cfg: bc, ownerChatId: owner, log, send: (chat, text) => tg.sendMessage(chat, text), chain: new RealChain(bc.rpcUrl ?? (bc.cluster === 'devnet' ? 'https://api.devnet.solana.com' : `https://mainnet.helius-rpc.com/?api-key=${heliusKey}`), fetch, log) }) : undefined;
@@ -86,7 +86,7 @@ export async function startDaemon(cfg: ServiceConfig, env: NodeJS.ProcessEnv = p
 
   const pollLoop = (async () => {
     while (!stopped) {
-      try { const res = await pollAll(engine, rpc, { sleepMs: 250 }); stats.polls++; for (const r of res) if (r.error) { stats.errors++; log(`poll error ${r.addr.slice(0, 8)}: ${r.error}`); } }
+      try { const res = await pollAll(engine, rpc, { sleepMs: 250, skip: svc.quotaReached }); stats.polls++; for (const r of res) if (r.error) { stats.errors++; log(`poll error ${r.addr.slice(0, 8)}: ${r.error}`); } }
       catch (e) { stats.errors++; log(`poll loop error: ${(e as Error).message}`); }
       for (let i = 0; i < cfg.pollIntervalSeconds * 10 && !stopped; i++) await new Promise((r) => setTimeout(r, 100));
     }

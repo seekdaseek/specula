@@ -108,6 +108,11 @@ export class Service {
     const u = this.userByTenant(tenantId); if (!u) return null;           // static tenants (operator proof tenant) are not metered
     const l = this.limits(u); return l ? l.plan.txPerMonth : 0;
   }
+  /** R41: true when this program may no longer cost credits: this month's quota is used up, or the user has no access. Static tenants (operator proof tenant) are never over quota. */
+  quotaReached = (tenantId: string, programId: string): boolean => {
+    const quota = this.quotaFor(tenantId); if (quota === null) return false;
+    return quota <= 0 || this.usage(tenantId, programId) >= quota;
+  };
   usage(tenantId: string, programId: string): number {
     return ((this.db.prepare('SELECT tx_count n FROM usage WHERE tenant_id=? AND program_id=? AND month=?').get(tenantId, programId, monthKey(this.now())) as { n: number } | undefined)?.n) ?? 0;
   }

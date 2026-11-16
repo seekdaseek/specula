@@ -1,23 +1,20 @@
-# Plan margins at Helius paid pricing (read live 16 Nov 2026 from https://www.helius.dev/pricing; no plan was changed)
+# Plan margins at Helius paid pricing (R41, 16 Nov 2026; no live plan was changed before the deploy of this commit)
 
-Helius, read live: a webhook push = **1 credit**; plans Free $0 = 1M credits, Developer $49 = 10M, Business $499 = 100M, Professional $999 = 200M; additional credits **$5 per million** on every paid plan. Cost below = credits x $5 per million (Developer's own rate is $4.90 per million, so this is slightly pessimistic).
+Helius, read live on 16 Nov 2026 from https://www.helius.dev/pricing: a webhook push = **1 credit**; additional credits **$5 per million**; Developer $49 = 10M credits. Cost = credits x $5 per million.
 
-Credits per program per month, measured 16 Nov 2026 (usage endpoint before/after, scripts in LOG.md):
-- webhook: 1 per transaction on the watched program id (a busy program is thousands a day: KLend was 59,572 a day);
-- reconciler (src/ingest.ts pollAll, every 5 min, program id + programdata): 2 x 288 x 30 = 17,280 getSignaturesForAddress, plus about 2,400 getTransaction (the reconciler fetches the few transactions it sees before the webhook): about **19,700**;
-- upgrade-only watch (free tier, public feed): ProgramData state in one getMultipleAccounts call a minute shared by up to 100 programs = **432 per program per month** ($0.002).
+Caps (decided in R41): a plan's TOTAL webhook transactions per month, across all its programs, may not exceed price x 100,000, which costs exactly half the price at $5 per million: Starter $9 -> 900,000, Growth $39 -> 3,900,000, Scale $149 -> 14,900,000. They are set as programs x transactions per program: 3 x 300,000, 10 x 390,000, 25 x 596,000 (test/plans-margin.test.ts enforces it from deploy/service.example.toml).
 
-Worst case = the customer's programs all sit at their transaction quota every month.
+Quota safety (R41): a program that reaches its monthly quota is taken off the Helius webhook address list (the webhook is deleted when none is left), is not polled by the reconciler, and returns on the 1st or when the user upgrades (test/quota.test.ts). So the worst case below is a real ceiling, not a hope.
 
-| plan | price | programs | quota per program | webhook credits (quota x programs) | reconciler credits | total credits | cost at $5/M | margin | margin % |
-|---|---|---|---|---|---|---|---|---|---|
-| Starter | $9 | 3 | 100,000 | 300,000 | 59,100 | 359,100 | $1.80 | **+$7.20** | 80% |
-| Growth | $39 | 10 | 1,000,000 | 10,000,000 | 197,000 | 10,197,000 | $50.99 | **-$11.99** | -31% |
-| Scale | $149 | 25 | 5,000,000 | 125,000,000 | 492,500 | 125,492,500 | $627.46 | **-$478.46** | -321% |
-| Free tier | $0 | 1 | upgrade-only | 0 | 432 | 432 | $0.002 | -$0.002 | n/a |
+Reconciler overhead, measured 16 Nov 2026: about 19,700 credits per program per month (2 x 288 getSignaturesForAddress a day for the program id and its programdata, plus about 2,400 getTransaction for transactions the reconciler sees before the webhook).
 
-Break-even transactions per program per month at full programs: Growth about 0.77M of its 1M quota; Scale about 1.2M of its 5M.
+| plan | price | programs | tx per program | max tx / month, all programs | webhook credits | reconciler credits | total credits | cost at $5/M | margin | margin % |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Starter | $9 | 3 | 300,000 | 900,000 | 900,000 | 59,100 | 959,100 | $4.80 | **+$4.20** | 46.7% |
+| Growth | $39 | 10 | 390,000 | 3,900,000 | 3,900,000 | 197,000 | 4,097,000 | $20.49 | **+$18.51** | 47.5% |
+| Scale | $149 | 25 | 596,000 | 14,900,000 | 14,900,000 | 492,500 | 15,392,500 | $76.96 | **+$72.04** | 48.3% |
+| Free tier | $0 | 1 | upgrade-only | 0 | 0 | 432 | 432 | $0.002 | -$0.002 | n/a |
 
-Two things this table does not say, both matter:
-1. **Quota does not cap the bill.** At 100% of quota alerts pause (src/service.ts onTx), but the webhook keeps pushing and Helius bills every push. A program with 64k transactions a day (KLend) costs about 1.9M credits ($9.6) a month against a Starter price of $9, whatever the quota says. The fix that makes the table true is to take a program off the webhook address list when its quota is reached (WebhookSync edit, 100 credits) and put it back on the 1st; not done.
-2. Growth and Scale lose money only if customers actually use their quota; Starter is positive even at 100%. Real usage is unknown: the only customer program ever watched was our own.
+On the webhook credits alone (1 credit per transaction, the rule the caps were set from) every plan is exactly 50%. Counting the reconciler, the worst-case margin is 46.7% to 48.3%, a little under 50%. To hold 50% including the reconciler the totals would have to be 840,900 (Starter), 3,703,000 (Growth) and 14,407,500 (Scale) transactions; or the reconciler for paid programs could poll every 15 minutes instead of every 5 (a third of its cost). Not applied: the caps above are the ones asked for.
+
+Before this change (same method): Starter +$7.20 on 300,000 worst-case, Growth -$11.99 on 10M, Scale -$478.46 on 125M, and quota did not stop webhook billing.

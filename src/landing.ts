@@ -16,12 +16,13 @@ const KIND: Record<string, string> = { 'plain-key': 'single key', 'squads-v4-vau
 /** The census section and the last 10 upgrades (R39): rendered from the census file and the feed's own tables on every request, so the page never disagrees with the feed. */
 export function renderFeedSection(f: FeedLanding): string {
   const up = f.rows.filter((r) => r.upgradeable === true), single = up.filter((r) => r.authority_kind === 'plain-key');
-  const tr = f.rows.map((r) => `<tr><th scope="row">${esc(r.name ?? short(r.program_id))}</th><td><code title="${esc(r.authority ?? '')}">${esc(short(r.authority))}</code></td><td>${esc(KIND[r.authority_kind ?? ''] ?? (r.authority_kind ?? (r.upgradeable === false ? 'immutable' : 'unknown')))}</td><td>${r.deployed_slot ?? ''}</td></tr>`).join('');
+  const tl = (s: number | null | undefined) => (s === undefined || s === null ? (s === null ? 'n/a (v3)' : '') : s === 0 ? 'none' : s % 3600 === 0 ? `${s / 3600} h` : `${s} s`);
+  const tr = f.rows.map((r) => `<tr><th scope="row">${esc(r.name ?? `other watched program ${short(r.program_id)}`)}</th><td><code title="${esc(r.authority ?? '')}">${esc(short(r.authority))}</code></td><td>${esc(KIND[r.authority_kind ?? ''] ?? (r.authority_kind ?? (r.upgradeable === false ? 'immutable' : 'unknown')))}</td><td>${r.threshold !== null ? `${r.threshold} of ${r.members}` : ''}</td><td>${tl(r.time_lock_seconds)}</td><td>${r.deployed_slot ?? ''}</td></tr>`).join('');
   const ev = f.upgrades.map((u) => `<li>${esc(u.name ?? short(u.program_id))}: ${u.action === 'upgrade' ? 'upgraded' : 'authority changed'}, ${u.block_time ? new Date(u.block_time * 1000).toISOString().replace('T', ' ').slice(0, 19) + ' UTC' : 'time unknown'} <a href="https://explorer.solana.com/tx/${esc(u.signature)}" rel="noopener">tx</a></li>`).join('');
   const when = f.census ? `Read from mainnet RPC on ${esc(f.census.read_at_utc)}${f.census.slot_max ? ` (slot ${f.census.slot_max})` : ''}.` : '';
-  return `<h2>Who can change Solana's biggest programs</h2>
-<p><b>${single.length} of ${up.length}</b> upgradeable programs in this census are controlled by a single key; the rest sit behind a multisig, a governance account or a program-controlled address. ${when} The authority column is the live upgrade authority (refreshed every minute); the type was read from the chain when the census was made.</p>
-<table><thead><tr><th>Program</th><th>Upgrade authority</th><th>Type</th><th>Last deploy (slot)</th></tr></thead><tbody>${tr}</tbody></table>
+  return `<h2>Who can upgrade the programs we watch</h2>
+<p><b>${single.length} of ${up.length}</b> upgradeable programs in this census are controlled by a single key (${f.rows.filter((r) => r.name).length} named programs and ${f.rows.filter((r) => !r.name).length} other watched programs, chosen by how many sampled transactions used them, not by importance); the rest sit behind a multisig, a governance account or a program-controlled address. ${when} The authority column is the live upgrade authority (refreshed every minute); the type was read from the chain when the census was made.</p>
+<table><thead><tr><th>Program</th><th>Upgrade authority</th><th>Type</th><th>Signers needed</th><th>Time lock</th><th>Last deploy (slot)</th></tr></thead><tbody>${tr}</tbody></table>
 <h2>Last 10 upgrades</h2>
 ${ev ? `<ul>${ev}</ul>` : '<p class="sub">No upgrade or authority change has been seen on these programs since the feed went live.</p>'}
 <p class="sub">Every upgrade and authority change of these programs is also posted to the public feed channel. Data as JSON: <a href="/census.json">/census.json</a>, <a href="/upgrades.json">/upgrades.json</a>.</p>`;
@@ -29,7 +30,7 @@ ${ev ? `<ul>${ev}</ul>` : '<p class="sub">No upgrade or authority change has bee
 
 export function renderLanding(cfg: PlansConfig, base = 'https://specula.ochinimus.app', feed?: FeedLanding): string {
   const plans = Object.values(cfg.plans).filter((p) => !p.hidden).sort((a, b) => a.priceUsd - b.priceUsd);
-  const rows = plans.map((p) => `<tr><th scope="row">${esc(p.name)}</th><td>$${p.priceUsd}</td><td>${p.txPerMonth.toLocaleString('en-US')}</td><td>${p.maxPrograms}</td></tr>`).join('');
+  const rows = plans.map((p) => `<tr><th scope="row">${esc(p.name)}</th><td>$${p.priceUsd}</td><td>${p.txPerMonth.toLocaleString('en-US')}</td><td>${p.maxPrograms}</td><td>${(p.txPerMonth * p.maxPrograms).toLocaleString('en-US')}</td></tr>`).join('');
   const trial = cfg.trial; const tp = cfg.plans[trial.plan]!;
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -76,8 +77,8 @@ footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--line);color:v
 <p class="sub">These come from our own test runs on 14 Nov 2026, not from a third-party audit. Limits: one hour on two programs; Codama IDLs need numeric u8 instruction discriminators; multisig alerts are not in v0.</p>
 
 <h2>Pricing</h2>
-<table><thead><tr><th>Plan</th><th>per ${cfg.billing.periodDays} days</th><th>tx per program / month</th><th>programs</th></tr></thead><tbody>${rows}</tbody></table>
-<p class="sub">${cfg.free ? `Free, no expiry: ${cfg.free.maxPrograms} program with upgrade and authority-change alerts only (no rules, no IDL needed).` : `Free trial: ${trial.days} days on ${esc(tp.name)} limits (${tp.txPerMonth.toLocaleString('en-US')} tx per month), ${trial.maxPrograms} program.`} Pay with <code>/upgrade</code> in the bot: a Solana Pay link in USDC, activated automatically once the payment is final. At the limit, alerts for that program pause until the next month or a higher plan.</p>
+<table><thead><tr><th>Plan</th><th>per ${cfg.billing.periodDays} days</th><th>tx per program / month</th><th>programs</th><th>tx / month, all programs</th></tr></thead><tbody>${rows}</tbody></table>
+<p class="sub">${cfg.free ? `Free, no expiry: ${cfg.free.maxPrograms} program with upgrade and authority-change alerts only (no rules, no IDL needed).` : `Free trial: ${trial.days} days on ${esc(tp.name)} limits (${tp.txPerMonth.toLocaleString('en-US')} tx per month), ${trial.maxPrograms} program.`} Pay with <code>/upgrade</code> in the bot: a Solana Pay link in USDC, activated automatically once the payment is final. At the limit, alerts for that program pause and it is taken off the watch list until the next month or a higher plan.</p>
 
 ${feed ? renderFeedSection(feed) : ''}
 

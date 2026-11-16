@@ -32,7 +32,7 @@ export class Rpc {
   }
 }
 
-export interface PollOpts { maxPages?: number; backfill?: number; sleepMs?: number }
+export interface PollOpts { maxPages?: number; backfill?: number; sleepMs?: number; /** R41: true = this tenant program is over its quota or has no access: it is not polled (no credits) */ skip?: (tenantId: string, programId: string) => boolean }
 
 /**
  * Poll one watched address (program id or its programdata). Durable checkpoint = newest fully
@@ -86,7 +86,7 @@ export async function pollAddress(engine: Engine, rpc: Rpc, address: string, o: 
 /** Poll every watched address of every registered program (program id + programdata). */
 export async function pollAll(engine: Engine, rpc: Rpc, o: PollOpts = {}): Promise<{ addr: string; error?: string; fetched?: number; processed?: number; skipped?: number; stuck?: boolean }[]> {
   const addrs = new Set<string>();
-  for (const e of engine.programs()) { addrs.add(e.programId); if (e.programdata && e.upgradeAlerts !== false) addrs.add(e.programdata); }
+  for (const e of engine.programs()) { if (o.skip?.(e.tenantId, e.programId)) continue; addrs.add(e.programId); if (e.programdata && e.upgradeAlerts !== false) addrs.add(e.programdata); }
   const out = [];
   for (const a of addrs) {
     try { out.push({ addr: a, ...(await pollAddress(engine, rpc, a, o)) }); }

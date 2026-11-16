@@ -39,7 +39,7 @@ export interface FeedRpc {
   tx(sig: string): Promise<RawTx | null>;
 }
 
-export interface CensusRow { program_id: string; name: string | null; protocol?: string | null; loader: string; upgradeable?: boolean | null; programdata?: string; upgrade_authority?: string | null; authority_kind?: string; deployed_slot?: number; authority_evidence?: string }
+export interface CensusRow { program_id: string; name: string | null; protocol?: string | null; loader: string; upgradeable?: boolean | null; programdata?: string; upgrade_authority?: string | null; authority_kind?: string; deployed_slot?: number; authority_evidence?: string; depth?: { verdict?: string | null; tx_7d?: number; squads?: { threshold?: number; members?: number; time_lock_seconds?: number | null; sane?: boolean } } }
 export interface Census { read_at_utc: string; slot_min?: number; slot_max?: number; rows: CensusRow[] }
 
 export interface FeedOpts {
@@ -201,11 +201,11 @@ export class UpgradeFeed {
   }
 
   // ---- what the landing page shows
-  landingData(): { census: Census | null; rows: { program_id: string; name: string | null; protocol: string | null; authority: string | null; authority_kind: string | null; deployed_slot: number | null; upgradeable: boolean | null; loader: string }[]; upgrades: { name: string | null; program_id: string; action: string; signature: string; block_time: number | null; old_authority: string | null; new_authority: string | null }[] } {
+  landingData(): { census: Census | null; rows: { program_id: string; name: string | null; protocol: string | null; authority: string | null; authority_kind: string | null; deployed_slot: number | null; upgradeable: boolean | null; loader: string; threshold: number | null; members: number | null; time_lock_seconds: number | null | undefined; verdict: string | null }[]; upgrades: { name: string | null; program_id: string; action: string; signature: string; block_time: number | null; old_authority: string | null; new_authority: string | null }[] } {
     const state = new Map((this.db.prepare('SELECT programdata, deployed_slot, authority FROM upgrade_state').all() as { programdata: string; deployed_slot: number; authority: string | null }[]).map((s) => [s.programdata, s]));
     const rows = (this.census?.rows ?? []).map((r) => {
       const s = r.programdata ? state.get(r.programdata) : undefined;
-      return { program_id: r.program_id, name: r.name ?? null, protocol: r.protocol ?? null, authority: s ? s.authority : (r.upgrade_authority ?? null), authority_kind: r.authority_kind ?? null, deployed_slot: s ? s.deployed_slot : (r.deployed_slot ?? null), upgradeable: r.upgradeable ?? null, loader: r.loader };
+      return { program_id: r.program_id, name: r.name ?? null, protocol: r.protocol ?? null, authority: s ? s.authority : (r.upgrade_authority ?? null), authority_kind: r.authority_kind ?? null, deployed_slot: s ? s.deployed_slot : (r.deployed_slot ?? null), upgradeable: r.upgradeable ?? null, loader: r.loader, threshold: r.depth?.squads?.sane ? (r.depth.squads.threshold ?? null) : null, members: r.depth?.squads?.sane ? (r.depth.squads.members ?? null) : null, time_lock_seconds: r.depth?.squads?.sane ? r.depth.squads.time_lock_seconds : undefined, verdict: r.depth?.verdict ?? null };
     });
     const upgrades = this.db.prepare(`SELECT (SELECT name FROM upgrade_watch w WHERE w.kind='public' AND w.programdata=e.programdata LIMIT 1) name, e.program_id, e.action, e.signature, e.block_time, e.old_authority, e.new_authority
       FROM upgrade_events e WHERE EXISTS (SELECT 1 FROM upgrade_watch w WHERE w.kind='public' AND w.programdata=e.programdata) ORDER BY COALESCE(e.block_time, e.created_at/1000) DESC, e.id DESC LIMIT 10`).all() as any[];

@@ -19,19 +19,19 @@ max_programs = 1
 [plans.starter]
 name = "Starter"
 price_usd = 9
-tx_per_month = 100000
+tx_per_month = 300000
 max_programs = 3
 
 [plans.growth]
 name = "Growth"
 price_usd = 39
-tx_per_month = 1000000
+tx_per_month = 390000
 max_programs = 10
 
 [plans.scale]
 name = "Scale"
 price_usd = 149
-tx_per_month = 5000000
+tx_per_month = 596000
 max_programs = 25
 
 # Hidden plan for the live billing proof: only OWNER_CHAT_ID sees it in /plans and can /upgrade it.

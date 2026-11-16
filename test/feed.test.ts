@@ -230,7 +230,7 @@ describe('landing page sections and the feed RPC', () => {
     for (let i = 0; i < 12; i++) { s.rpc.upgrade(PD1, PROG1, { sig: `UP${String(i).padStart(2, '0')}`, slot: 700 + i, time: 1794800000 + i * 60, authority: AUTH_A }); await s.feed.tick(); }
     const plans = parsePlans({ plans: { starter: { name: 'Starter', price_usd: 9, tx_per_month: 5000, max_programs: 1 } }, trial: { days: 14, plan: 'starter', max_programs: 1 }, free: { max_programs: 1 } });
     const html = renderLanding(plans, undefined, s.feed.landingData());
-    expect(html).toContain('Who can change Solana&#39;s biggest programs'.replace('&#39;', "'")); expect(html).toContain('<b>1 of 2</b> upgradeable programs'); expect(html).toContain('Alpha Swap'); expect(html).toContain('single key'); expect(html).toContain('Squads v4 multisig');
+    expect(html).toContain('Who can upgrade the programs we watch'); expect(html).toContain('<b>1 of 2</b> upgradeable programs'); expect(html).toContain('Alpha Swap'); expect(html).toContain('single key'); expect(html).toContain('Squads v4 multisig');
     expect((html.match(/>tx<\/a>/g) ?? []).length).toBe(10); expect(html).toContain('UP11'); expect(html).not.toContain('UP01"');          // the newest 10 only
     expect(html).toContain('Free: 1 program, upgrade and authority-change alerts, no expiry');
     const pages = buildPages(plans, '/nonexistent', () => s.feed.landingData());

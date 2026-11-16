@@ -18,12 +18,21 @@ const kvGet = (db: DB, k: string) => (db.prepare('SELECT v FROM kv WHERE k=?').g
 const kvSet = (db: DB, k: string, v: string) => { db.prepare('INSERT INTO kv (k, v) VALUES (?,?) ON CONFLICT(k) DO UPDATE SET v=excluded.v').run(k, v); };
 
 export class WebhookSync {
-  constructor(private db: DB, private api: Pick<HeliusWebhooks, 'create' | 'get' | 'edit'>, private o: { url: string; auth: string; desired: () => string[]; now?: () => number; minIntervalMs?: number; log?: (m: string) => void }) {}
+  constructor(private db: DB, private api: Pick<HeliusWebhooks, 'create' | 'get' | 'edit'> & { remove?: HeliusWebhooks['remove'] }, private o: { url: string; auth: string; desired: () => string[]; now?: () => number; minIntervalMs?: number; log?: (m: string) => void }) {}
   private now() { return (this.o.now ?? Date.now)(); }
   /** Create the webhook if there is none (and at least one address); otherwise apply a changed address list at most once per minInterval. */
-  async tick(): Promise<'created' | 'edited' | 'idle' | 'wait'> {
+  async tick(): Promise<'created' | 'edited' | 'idle' | 'wait' | 'removed'> {
     const desired = [...new Set(this.o.desired())].sort();
-    if (desired.length === 0) return 'idle';
+    if (desired.length === 0) {
+      // R41: nothing is left to bill (every program is over its quota, or none is watched): an existing webhook is DELETED, not left with its old address list. It is created again (100 credits) when a program is back.
+      const old = kvGet(this.db, 'wh_id');
+      if (old && this.api.remove) {
+        await this.api.remove(old);
+        this.db.prepare("DELETE FROM kv WHERE k IN ('wh_id','wh_addresses','wh_last_edit')").run();
+        return 'removed';
+      }
+      return 'idle';
+    }
     let id = kvGet(this.db, 'wh_id');
     if (id && !(await this.api.get(id))) { this.o.log?.('webhook id no longer exists at Helius; recreating'); id = undefined; }
     if (!id) {

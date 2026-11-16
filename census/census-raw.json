@@ -654,7 +654,7 @@
   {
    "program_id": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
    "protocol": null,
-   "name": null,
+   "name": "Phoenix: Eternal",
    "id_source": "block sample: invoked by 4.59% of 12257 sampled transactions",
    "usage_rank": 11,
    "usage_share_pct": 4.59,
@@ -671,7 +671,8 @@
    "programdata_history_complete": true,
    "programdata_first_seen_utc": "2025-09-23T00:49:40.000Z",
    "programdata_tx_per_day": 0.532,
-   "programdata_last_tx_utc": "2026-11-12T18:33:27.000Z"
+   "programdata_last_tx_utc": "2026-11-12T18:33:27.000Z",
+   "name_source": "security.txt in the program ELF (project_url https://phoenix.trade/)"
   },
   {
    "program_id": "ojh19ojaKduoJZuaJADhcVGp4xt1TcdAvZmpVsCorch",
@@ -809,7 +810,7 @@
   {
    "program_id": "RouterBmuRBkPUbgEDMtdvTZ75GBdSREZR5uGUxxxpb",
    "protocol": null,
-   "name": null,
+   "name": "Jito's MEV Tip Distribution NCN Program",
    "id_source": "block sample: invoked by 1.79% of 12257 sampled transactions",
    "usage_rank": 22,
    "usage_share_pct": 1.79,
@@ -826,7 +827,8 @@
    "programdata_history_complete": true,
    "programdata_first_seen_utc": "2025-01-25T00:26:22.000Z",
    "programdata_tx_per_day": 0.021,
-   "programdata_last_tx_utc": "2026-07-29T18:40:46.000Z"
+   "programdata_last_tx_utc": "2026-07-29T18:40:46.000Z",
+   "name_source": "security.txt in the program ELF (project_url https://jito.network/)"
   },
   {
    "program_id": "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr",
@@ -928,7 +930,7 @@
   {
    "program_id": "Archer8kgiavM61GyusMzaaS2ft5sALtNsD1HxkUPMhy",
    "protocol": null,
-   "name": null,
+   "name": "Archer Exchange",
    "id_source": "block sample: invoked by 1.16% of 12257 sampled transactions",
    "usage_rank": 28,
    "usage_share_pct": 1.16,
@@ -945,7 +947,8 @@
    "programdata_history_complete": true,
    "programdata_first_seen_utc": "2026-02-16T10:19:21.000Z",
    "programdata_tx_per_day": 0.191,
-   "programdata_last_tx_utc": "2026-10-26T09:22:13.000Z"
+   "programdata_last_tx_utc": "2026-10-26T09:22:13.000Z",
+   "name_source": "security.txt in the program ELF (project_url https://archer.exchange)"
   },
   {
    "program_id": "CZqFPJ35PQT1Jx2o3QAirY8pdTQp7tErJsiQm2GD6xw5",

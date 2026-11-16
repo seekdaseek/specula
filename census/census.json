@@ -1,5 +1,6 @@
 {
  "read_at_utc": "2026-11-16T06:28:39.592Z",
+ "depth_read_at_utc": "2026-11-16T11:10:21.042Z",
  "commitment": "finalized",
  "slot_min": 470030419,
  "slot_max": 470030423,
@@ -11,6 +12,8 @@
   "to": "2026-11-16T06:20:11.000Z"
  },
  "n_upgradeable_watched": 50,
+ "n_named": 29,
+ "n_other_watched": 21,
  "n_immutable_listed": 7,
  "single_key_upgradeable": 18,
  "authority_kinds_upgradeable": {
@@ -21,7 +24,26 @@
   "governance": 1,
   "plain-key": 18
  },
- "rpc_calls_made": 407,
+ "squads_all": {
+  "decoded": 21,
+  "one_of_n": 0,
+  "time_lock_0": 12,
+  "time_lock_known": 15,
+  "v3_no_time_lock_field": 6,
+  "with_time_lock": 3,
+  "median_threshold": 3
+ },
+ "squads_named": {
+  "decoded": 19,
+  "one_of_n": 0,
+  "time_lock_0": 10,
+  "time_lock_known": 13,
+  "v3_no_time_lock_field": 6,
+  "with_time_lock": 3,
+  "median_threshold": 4
+ },
+ "activity_threshold_tx_7d": 100,
+ "rpc_calls_made": 913,
  "rows": [
   {
    "program_id": "pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA",
@@ -44,7 +66,29 @@
    "programdata_first_seen_utc": "2026-11-04T10:45:40.000Z",
    "programdata_tx_per_day": 84.601,
    "programdata_last_tx_utc": "2026-11-16T06:25:37.000Z",
-   "name_source": "docs or GitHub page (id_source)"
+   "name_source": "docs or GitHub page (id_source)",
+   "group": "named",
+   "depth": {
+    "last_deploy_utc": "2026-11-15T17:20:20.000Z",
+    "first_programdata_tx_utc": "2025-02-20T16:32:29.000Z",
+    "age_days": 634,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": null,
+    "authority_last_signed_utc": null,
+    "squads": {
+     "version": "v4",
+     "multisig": "2yMoQqQrtbhq3nQ3wFoQQawWS65qcqUXcwHEYha4rshW",
+     "threshold": 3,
+     "members": 4,
+     "time_lock_seconds": 0,
+     "config_authority": "none (autonomous)",
+     "proof_vault_pda": "vault index 0",
+     "sane": true
+    },
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P",
@@ -67,7 +111,29 @@
    "programdata_first_seen_utc": "2026-11-11T10:46:00.000Z",
    "programdata_tx_per_day": 207.468,
    "programdata_last_tx_utc": "2026-11-15T23:50:17.000Z",
-   "name_source": "docs or GitHub page (id_source)"
+   "name_source": "docs or GitHub page (id_source)",
+   "group": "named",
+   "depth": {
+    "last_deploy_utc": "2026-11-15T17:20:10.000Z",
+    "first_programdata_tx_utc": "2024-01-14T12:47:22.000Z",
+    "age_days": 1037,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": null,
+    "authority_last_signed_utc": null,
+    "squads": {
+     "version": "v4",
+     "multisig": "2yMoQqQrtbhq3nQ3wFoQQawWS65qcqUXcwHEYha4rshW",
+     "threshold": 3,
+     "members": 4,
+     "time_lock_seconds": 0,
+     "config_authority": "none (autonomous)",
+     "proof_vault_pda": "vault index 0",
+     "sane": true
+    },
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "cpamdpZCGKUy5JxQXB4dcpGPiikHawvSWAd6mEn1sGG",
@@ -90,7 +156,29 @@
    "programdata_first_seen_utc": "2026-11-04T05:15:23.000Z",
    "programdata_tx_per_day": 82.99,
    "programdata_last_tx_utc": "2026-11-11T10:06:16.000Z",
-   "name_source": "docs or GitHub page (id_source)"
+   "name_source": "docs or GitHub page (id_source)",
+   "group": "named",
+   "depth": {
+    "last_deploy_utc": "2026-10-15T03:00:13.000Z",
+    "first_programdata_tx_utc": "2025-04-08T03:53:42.000Z",
+    "age_days": 587,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": null,
+    "authority_last_signed_utc": null,
+    "squads": {
+     "version": "v3",
+     "multisig": "CoEsykatDegLB7pcMJia79JSriDdi71nPnjgeSfw623k",
+     "threshold": 4,
+     "members": 7,
+     "time_lock_seconds": null,
+     "config_authority": "n/a (v3: changes go through the multisig itself)",
+     "proof_vault_pda": "authority index 1",
+     "sane": true
+    },
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4",
@@ -113,7 +201,19 @@
    "programdata_first_seen_utc": "2023-07-04T15:01:16.000Z",
    "programdata_tx_per_day": 0.236,
    "programdata_last_tx_utc": "2026-11-13T00:46:42.000Z",
-   "name_source": "docs or GitHub page (id_source)"
+   "name_source": "docs or GitHub page (id_source)",
+   "group": "named",
+   "depth": {
+    "last_deploy_utc": "2026-11-11T06:31:04.000Z",
+    "first_programdata_tx_utc": "2023-07-04T15:01:16.000Z",
+    "age_days": 1231,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": null,
+    "authority_last_signed_utc": null,
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo",
@@ -136,7 +236,29 @@
    "programdata_first_seen_utc": "2026-11-03T09:18:40.000Z",
    "programdata_tx_per_day": 77.636,
    "programdata_last_tx_utc": "2026-11-16T06:26:48.000Z",
-   "name_source": "docs or GitHub page (id_source)"
+   "name_source": "docs or GitHub page (id_source)",
+   "group": "named",
+   "depth": {
+    "last_deploy_utc": "2026-06-03T07:03:07.000Z",
+    "first_programdata_tx_utc": "2023-11-07T05:02:58.000Z",
+    "age_days": 1105,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": null,
+    "authority_last_signed_utc": null,
+    "squads": {
+     "version": "v3",
+     "multisig": "CoEsykatDegLB7pcMJia79JSriDdi71nPnjgeSfw623k",
+     "threshold": 4,
+     "members": 7,
+     "time_lock_seconds": null,
+     "config_authority": "n/a (v3: changes go through the multisig itself)",
+     "proof_vault_pda": "authority index 1",
+     "sane": true
+    },
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc",
@@ -159,7 +281,29 @@
    "programdata_first_seen_utc": "2026-11-04T07:15:41.000Z",
    "programdata_tx_per_day": 83.57,
    "programdata_last_tx_utc": "2026-11-16T06:26:48.000Z",
-   "name_source": "docs or GitHub page (id_source)"
+   "name_source": "docs or GitHub page (id_source)",
+   "group": "named",
+   "depth": {
+    "last_deploy_utc": "2026-10-15T07:22:05.000Z",
+    "first_programdata_tx_utc": "2026-10-10T20:34:34.000Z",
+    "age_days": 37,
+    "age_is_lower_bound": true,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": null,
+    "authority_last_signed_utc": null,
+    "squads": {
+     "version": "v4",
+     "multisig": "BQsDWkL417U4tVE2sDnPks469pKdm6YzFgKH77doiEjF",
+     "threshold": 5,
+     "members": 13,
+     "time_lock_seconds": 86400,
+     "config_authority": "none (autonomous)",
+     "proof_vault_pda": "vault index 0",
+     "sane": true
+    },
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "CAMMCzo5YL8w4VFF8KVHrK22GGUsp5VTaW7grrKgrWqK",
@@ -182,7 +326,29 @@
    "programdata_first_seen_utc": "2026-11-03T05:35:48.000Z",
    "programdata_tx_per_day": 76.714,
    "programdata_last_tx_utc": "2026-11-16T06:14:32.000Z",
-   "name_source": "docs or GitHub page (id_source)"
+   "name_source": "docs or GitHub page (id_source)",
+   "group": "named",
+   "depth": {
+    "last_deploy_utc": "2026-10-22T06:24:28.000Z",
+    "first_programdata_tx_utc": "2022-08-17T04:07:49.000Z",
+    "age_days": 1552,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": null,
+    "authority_last_signed_utc": null,
+    "squads": {
+     "version": "v4",
+     "multisig": "tr8rgazUrZzgdkfc6Q622nVJHMMzh29trdBE2uBHb4u",
+     "threshold": 3,
+     "members": 4,
+     "time_lock_seconds": 0,
+     "config_authority": "none (autonomous)",
+     "proof_vault_pda": "vault index 0",
+     "sane": true
+    },
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "dbcij3LWUppWqq96dh6gJWwBifmcGfLSB5D4DuSMaqN",
@@ -205,7 +371,29 @@
    "programdata_first_seen_utc": "2025-04-23T02:25:37.000Z",
    "programdata_tx_per_day": 1.091,
    "programdata_last_tx_utc": "2026-10-16T04:23:38.000Z",
-   "name_source": "docs or GitHub page (id_source)"
+   "name_source": "docs or GitHub page (id_source)",
+   "group": "named",
+   "depth": {
+    "last_deploy_utc": "2026-10-16T04:23:38.000Z",
+    "first_programdata_tx_utc": "2025-04-23T02:25:37.000Z",
+    "age_days": 572,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": null,
+    "authority_last_signed_utc": null,
+    "squads": {
+     "version": "v3",
+     "multisig": "CoEsykatDegLB7pcMJia79JSriDdi71nPnjgeSfw623k",
+     "threshold": 4,
+     "members": 7,
+     "time_lock_seconds": null,
+     "config_authority": "n/a (v3: changes go through the multisig itself)",
+     "proof_vault_pda": "authority index 1",
+     "sane": true
+    },
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8",
@@ -228,7 +416,29 @@
    "programdata_first_seen_utc": "2026-10-31T23:29:56.000Z",
    "programdata_tx_per_day": 65.404,
    "programdata_last_tx_utc": "2026-11-15T22:30:58.000Z",
-   "name_source": "docs or GitHub page (id_source)"
+   "name_source": "docs or GitHub page (id_source)",
+   "group": "named",
+   "depth": {
+    "last_deploy_utc": "2026-09-10T01:52:56.000Z",
+    "first_programdata_tx_utc": "2021-03-21T06:58:22.000Z",
+    "age_days": 2066,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": null,
+    "authority_last_signed_utc": null,
+    "squads": {
+     "version": "v4",
+     "multisig": "tr8rgazUrZzgdkfc6Q622nVJHMMzh29trdBE2uBHb4u",
+     "threshold": 3,
+     "members": 4,
+     "time_lock_seconds": 0,
+     "config_authority": "none (autonomous)",
+     "proof_vault_pda": "vault index 0",
+     "sane": true
+    },
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "CPMMoo8L3F4NbTegBCKVNunggL7H1ZpdTHKxQB5qKP1C",
@@ -251,7 +461,29 @@
    "programdata_first_seen_utc": "2026-11-01T23:06:20.000Z",
    "programdata_tx_per_day": 69.901,
    "programdata_last_tx_utc": "2026-11-15T22:30:58.000Z",
-   "name_source": "docs or GitHub page (id_source)"
+   "name_source": "docs or GitHub page (id_source)",
+   "group": "named",
+   "depth": {
+    "last_deploy_utc": "2026-10-31T02:37:24.000Z",
+    "first_programdata_tx_utc": "2024-04-12T06:40:57.000Z",
+    "age_days": 948,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": null,
+    "authority_last_signed_utc": null,
+    "squads": {
+     "version": "v4",
+     "multisig": "tr8rgazUrZzgdkfc6Q622nVJHMMzh29trdBE2uBHb4u",
+     "threshold": 3,
+     "members": 4,
+     "time_lock_seconds": 0,
+     "config_authority": "none (autonomous)",
+     "proof_vault_pda": "vault index 0",
+     "sane": true
+    },
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "Eo7WjKq67rjJQSZxS6z3YkapzY3eMj6Xy8X5EQVn5UaB",
@@ -274,7 +506,29 @@
    "programdata_first_seen_utc": "2022-07-14T07:37:57.000Z",
    "programdata_tx_per_day": 0.088,
    "programdata_last_tx_utc": "2026-11-13T03:50:43.000Z",
-   "name_source": "docs or GitHub page (id_source)"
+   "name_source": "docs or GitHub page (id_source)",
+   "group": "named",
+   "depth": {
+    "last_deploy_utc": "2026-11-13T03:50:43.000Z",
+    "first_programdata_tx_utc": "2022-07-14T07:37:57.000Z",
+    "age_days": 1586,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": null,
+    "authority_last_signed_utc": null,
+    "squads": {
+     "version": "v3",
+     "multisig": "CoEsykatDegLB7pcMJia79JSriDdi71nPnjgeSfw623k",
+     "threshold": 4,
+     "members": 7,
+     "time_lock_seconds": null,
+     "config_authority": "n/a (v3: changes go through the multisig itself)",
+     "proof_vault_pda": "authority index 1",
+     "sane": true
+    },
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD",
@@ -297,7 +551,19 @@
    "programdata_first_seen_utc": "2023-03-15T15:46:23.000Z",
    "programdata_tx_per_day": 0.485,
    "programdata_last_tx_utc": "2026-11-10T18:30:32.000Z",
-   "name_source": "docs or GitHub page (id_source)"
+   "name_source": "docs or GitHub page (id_source)",
+   "group": "named",
+   "depth": {
+    "last_deploy_utc": "2026-10-26T17:11:59.000Z",
+    "first_programdata_tx_utc": "2023-03-15T15:46:23.000Z",
+    "age_days": 1342,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": null,
+    "authority_last_signed_utc": null,
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd",
@@ -320,7 +586,19 @@
    "programdata_first_seen_utc": "2025-03-18T21:53:34.000Z",
    "programdata_tx_per_day": 0.049,
    "programdata_last_tx_utc": "2026-11-05T11:08:52.000Z",
-   "name_source": "docs or GitHub page (id_source)"
+   "name_source": "docs or GitHub page (id_source)",
+   "group": "named",
+   "depth": {
+    "last_deploy_utc": "2026-10-26T12:14:12.000Z",
+    "first_programdata_tx_utc": "2025-03-18T21:53:34.000Z",
+    "age_days": 608,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": null,
+    "authority_last_signed_utc": null,
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
@@ -343,7 +621,29 @@
    "programdata_first_seen_utc": "2023-03-09T13:41:32.000Z",
    "programdata_tx_per_day": 0.029,
    "programdata_last_tx_utc": "2026-09-03T18:04:39.000Z",
-   "name_source": "docs or GitHub page (id_source)"
+   "name_source": "docs or GitHub page (id_source)",
+   "group": "named",
+   "depth": {
+    "last_deploy_utc": "2026-09-03T18:04:39.000Z",
+    "first_programdata_tx_utc": "2023-03-09T13:41:32.000Z",
+    "age_days": 1348,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": null,
+    "authority_last_signed_utc": null,
+    "squads": {
+     "version": "v4",
+     "multisig": "5HzXCm7omo3M7sX5nC4XcAxcTXEC22UHegB1hQiRvbfk",
+     "threshold": 5,
+     "members": 10,
+     "time_lock_seconds": 86400,
+     "config_authority": "none (autonomous)",
+     "proof_vault_pda": "vault index 0",
+     "sane": true
+    },
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "dRiftyHA39MWEi3m9aunc5MzRF1JYuBsbn6VPcn33UH",
@@ -366,7 +666,29 @@
    "programdata_first_seen_utc": "2022-11-04T14:27:49.000Z",
    "programdata_tx_per_day": 0.181,
    "programdata_last_tx_utc": "2026-11-10T18:30:32.000Z",
-   "name_source": "docs or GitHub page (id_source)"
+   "name_source": "docs or GitHub page (id_source)",
+   "group": "named",
+   "depth": {
+    "last_deploy_utc": "2026-06-29T19:57:01.000Z",
+    "first_programdata_tx_utc": "2022-11-04T14:27:49.000Z",
+    "age_days": 1473,
+    "age_is_lower_bound": false,
+    "tx_7d": 4,
+    "tx_7d_capped": false,
+    "authority_signed_30d": null,
+    "authority_last_signed_utc": null,
+    "squads": {
+     "version": "v4",
+     "multisig": "7qipzLR9j1JcvdxE1XJEFgvoyFmgBpgw5hMdHBMPcJtM",
+     "threshold": 4,
+     "members": 6,
+     "time_lock_seconds": 3600,
+     "config_authority": "none (autonomous)",
+     "proof_vault_pda": "vault index 0",
+     "sane": true
+    },
+    "verdict": "low-activity"
+   }
   },
   {
    "program_id": "MFv2hWf31Z9kbCa1snEPYctwafyhdvnV7FZnsebVacA",
@@ -389,7 +711,29 @@
    "programdata_first_seen_utc": "2023-02-07T13:45:58.000Z",
    "programdata_tx_per_day": 0.093,
    "programdata_last_tx_utc": "2026-11-11T13:11:42.000Z",
-   "name_source": "docs or GitHub page (id_source)"
+   "name_source": "docs or GitHub page (id_source)",
+   "group": "named",
+   "depth": {
+    "last_deploy_utc": "2026-11-04T16:02:21.000Z",
+    "first_programdata_tx_utc": "2023-02-07T13:45:58.000Z",
+    "age_days": 1378,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": null,
+    "authority_last_signed_utc": null,
+    "squads": {
+     "version": "v4",
+     "multisig": "7FCPipJWVbPbdHymVt1gJYwKciakkJz5GahdQySemvHk",
+     "threshold": 7,
+     "members": 14,
+     "time_lock_seconds": 0,
+     "config_authority": "none (autonomous)",
+     "proof_vault_pda": "vault index 0",
+     "sane": true
+    },
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "MarBmsSgKXdrN1egZf5sqe1TMai9K1rChYNDJgjq7aD",
@@ -412,7 +756,19 @@
    "programdata_first_seen_utc": "2026-10-17T05:29:41.000Z",
    "programdata_tx_per_day": 33.289,
    "programdata_last_tx_utc": "2026-11-16T05:50:01.000Z",
-   "name_source": "docs or GitHub page (id_source)"
+   "name_source": "docs or GitHub page (id_source)",
+   "group": "named",
+   "depth": {
+    "last_deploy_utc": "2026-07-16T14:33:16.000Z",
+    "first_programdata_tx_utc": "2026-02-01T15:21:27.000Z",
+    "age_days": 288,
+    "age_is_lower_bound": true,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": null,
+    "authority_last_signed_utc": null,
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "CoREENxT6tW1HoK8ypY1SxRMZTcVPm7R94rH4PZNhX7d",
@@ -435,7 +791,29 @@
    "programdata_first_seen_utc": "2024-03-28T01:57:16.000Z",
    "programdata_tx_per_day": 0.04,
    "programdata_last_tx_utc": "2026-10-09T21:21:18.000Z",
-   "name_source": "docs or GitHub page (id_source)"
+   "name_source": "docs or GitHub page (id_source)",
+   "group": "named",
+   "depth": {
+    "last_deploy_utc": "2026-10-09T21:21:18.000Z",
+    "first_programdata_tx_utc": "2024-03-28T01:57:16.000Z",
+    "age_days": 963,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": null,
+    "authority_last_signed_utc": null,
+    "squads": {
+     "version": "v3",
+     "multisig": "EADFTJ9b6yPAqyRjhz1scirvWhggMSWTt1BgBjKgm5wT",
+     "threshold": 2,
+     "members": 5,
+     "time_lock_seconds": null,
+     "config_authority": "n/a (v3: changes go through the multisig itself)",
+     "proof_vault_pda": "authority index 1",
+     "sane": true
+    },
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s",
@@ -456,7 +834,8 @@
    "programdata_first_seen_utc": "2021-06-02T14:45:45.000Z",
    "programdata_tx_per_day": 0.071,
    "programdata_last_tx_utc": "2026-02-10T19:43:16.000Z",
-   "name_source": "docs or GitHub page (id_source)"
+   "name_source": "docs or GitHub page (id_source)",
+   "group": "named"
   },
   {
    "program_id": "4MangoMjqJ2firMokCjjGgoK8d4MXcrgL7XJaL3w6fVg",
@@ -479,7 +858,19 @@
    "programdata_first_seen_utc": "2022-08-09T13:13:41.000Z",
    "programdata_tx_per_day": 0.041,
    "programdata_last_tx_utc": "2025-03-29T19:13:44.000Z",
-   "name_source": "docs or GitHub page (id_source)"
+   "name_source": "docs or GitHub page (id_source)",
+   "group": "named",
+   "depth": {
+    "last_deploy_utc": "2025-03-29T19:13:44.000Z",
+    "first_programdata_tx_utc": "2022-08-09T13:13:41.000Z",
+    "age_days": 1560,
+    "age_is_lower_bound": false,
+    "tx_7d": 13,
+    "tx_7d_capped": false,
+    "authority_signed_30d": null,
+    "authority_last_signed_utc": null,
+    "verdict": "low-activity"
+   }
   },
   {
    "program_id": "rec5EKMGg6MxZYaMdyBfgwp4d5rB9T1VQH5pJv5LtFJ",
@@ -502,7 +893,19 @@
    "programdata_first_seen_utc": "2024-03-06T20:13:18.000Z",
    "programdata_tx_per_day": 0.05,
    "programdata_last_tx_utc": "2025-03-16T02:45:56.000Z",
-   "name_source": "docs or GitHub page (id_source)"
+   "name_source": "docs or GitHub page (id_source)",
+   "group": "named",
+   "depth": {
+    "last_deploy_utc": "2025-03-16T02:45:56.000Z",
+    "first_programdata_tx_utc": "2024-03-06T20:13:18.000Z",
+    "age_days": 985,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": null,
+    "authority_last_signed_utc": null,
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf",
@@ -523,7 +926,8 @@
    "programdata_first_seen_utc": "2023-03-20T17:14:36.000Z",
    "programdata_tx_per_day": 0.018,
    "programdata_last_tx_utc": "2026-11-09T22:20:43.000Z",
-   "name_source": "docs or GitHub page (id_source)"
+   "name_source": "docs or GitHub page (id_source)",
+   "group": "named"
   },
   {
    "program_id": "SMPLecH534NA9acpos4G6x7uf3LWbCAwZQE9e8ZekMu",
@@ -544,7 +948,8 @@
    "programdata_first_seen_utc": "2022-08-03T13:29:49.000Z",
    "programdata_tx_per_day": 0.01,
    "programdata_last_tx_utc": "2026-09-26T16:20:15.000Z",
-   "name_source": "docs or GitHub page (id_source)"
+   "name_source": "docs or GitHub page (id_source)",
+   "group": "named"
   },
   {
    "program_id": "PhoeNiXZ8ByJGLkxNfZRnkUfjvmuYqLR89jjFHGqdXY",
@@ -567,7 +972,19 @@
    "programdata_first_seen_utc": "2023-02-15T02:19:39.000Z",
    "programdata_tx_per_day": 0.008,
    "programdata_last_tx_utc": "2023-11-21T21:12:23.000Z",
-   "name_source": "docs or GitHub page (id_source)"
+   "name_source": "docs or GitHub page (id_source)",
+   "group": "named",
+   "depth": {
+    "last_deploy_utc": "2023-11-21T21:12:23.000Z",
+    "first_programdata_tx_utc": "2023-02-15T02:19:39.000Z",
+    "age_days": 1370,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": null,
+    "authority_last_signed_utc": null,
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "opnb2LAfJYbRMAHHvqjCwQxanZn7ReEHp1k81EohpZb",
@@ -590,7 +1007,19 @@
    "programdata_first_seen_utc": "2023-10-25T09:37:24.000Z",
    "programdata_tx_per_day": 0.013,
    "programdata_last_tx_utc": "2024-12-10T15:27:21.000Z",
-   "name_source": "docs or GitHub page (id_source)"
+   "name_source": "docs or GitHub page (id_source)",
+   "group": "named",
+   "depth": {
+    "last_deploy_utc": "2024-02-27T22:02:06.000Z",
+    "first_programdata_tx_utc": "2023-10-25T09:37:24.000Z",
+    "age_days": 1118,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": null,
+    "authority_last_signed_utc": null,
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
@@ -611,7 +1040,8 @@
    "programdata_first_seen_utc": "2026-10-25T00:09:01.000Z",
    "programdata_tx_per_day": 44.919,
    "programdata_last_tx_utc": "2026-11-02T17:29:43.000Z",
-   "name_source": null
+   "name_source": null,
+   "group": "other watched"
   },
   {
    "program_id": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
@@ -634,7 +1064,29 @@
    "programdata_first_seen_utc": "2026-10-24T16:44:09.000Z",
    "programdata_tx_per_day": 44.304,
    "programdata_last_tx_utc": "2026-11-11T10:06:16.000Z",
-   "name_source": "OtterSec verify registry, verified build: https://github.com/solana-program/token-2022/tree/8867f751c0f69367ba03af4f85510b5611989491 (verify.osec.io/status-all/<id>, read 16 Nov 2026)"
+   "name_source": "OtterSec verify registry, verified build: https://github.com/solana-program/token-2022/tree/8867f751c0f69367ba03af4f85510b5611989491 (verify.osec.io/status-all/<id>, read 16 Nov 2026)",
+   "group": "named",
+   "depth": {
+    "last_deploy_utc": "2026-10-23T15:39:54.000Z",
+    "first_programdata_tx_utc": "2022-06-01T15:00:44.000Z",
+    "age_days": 1629,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": null,
+    "authority_last_signed_utc": null,
+    "squads": {
+     "version": "v3",
+     "multisig": "BnD53519LK7QM4ERBGvLedZDe1VoTPgtiBkGPWAACiMZ",
+     "threshold": 4,
+     "members": 6,
+     "time_lock_seconds": null,
+     "config_authority": "n/a (v3: changes go through the multisig itself)",
+     "proof_vault_pda": "authority index 1",
+     "sane": true
+    },
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
@@ -644,7 +1096,8 @@
    "usage_rank": 5,
    "usage_share_pct": 25.78,
    "loader": "bpf-loader-2 (immutable)",
-   "name_source": null
+   "name_source": null,
+   "group": "other watched"
   },
   {
    "program_id": "pfeeUxB6jkeY1Hxd7CsFCAjcbHA9rWtchMGdZ6VojVZ",
@@ -667,7 +1120,29 @@
    "programdata_first_seen_utc": "2026-10-02T01:18:10.000Z",
    "programdata_tx_per_day": 22.117,
    "programdata_last_tx_utc": "2026-11-15T22:30:58.000Z",
-   "name_source": "on-chain IDL"
+   "name_source": "on-chain IDL",
+   "group": "named",
+   "depth": {
+    "last_deploy_utc": "2026-10-12T17:40:24.000Z",
+    "first_programdata_tx_utc": "2025-08-28T16:05:47.000Z",
+    "age_days": 445,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": null,
+    "authority_last_signed_utc": null,
+    "squads": {
+     "version": "v4",
+     "multisig": "2yMoQqQrtbhq3nQ3wFoQQawWS65qcqUXcwHEYha4rshW",
+     "threshold": 3,
+     "members": 4,
+     "time_lock_seconds": 0,
+     "config_authority": "none (autonomous)",
+     "proof_vault_pda": "vault index 0",
+     "sane": true
+    },
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "L2TExMFKdjpN9kozasaurPirfHy9P8sbXoAN1qA3S95",
@@ -688,12 +1163,13 @@
    "programdata_first_seen_utc": "2024-10-07T05:28:28.000Z",
    "programdata_tx_per_day": 0.017,
    "programdata_last_tx_utc": "2026-10-18T21:21:40.000Z",
-   "name_source": null
+   "name_source": null,
+   "group": "other watched"
   },
   {
    "program_id": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
    "protocol": null,
-   "name": null,
+   "name": "Phoenix: Eternal",
    "id_source": "block sample: invoked by 4.59% of 12257 sampled transactions",
    "usage_rank": 11,
    "usage_share_pct": 4.59,
@@ -711,7 +1187,39 @@
    "programdata_first_seen_utc": "2025-09-23T00:49:40.000Z",
    "programdata_tx_per_day": 0.532,
    "programdata_last_tx_utc": "2026-11-12T18:33:27.000Z",
-   "name_source": null
+   "name_source": "security.txt in the program ELF (project_url https://phoenix.trade/)",
+   "group": "named",
+   "depth": {
+    "last_deploy_utc": "2026-11-12T17:40:49.000Z",
+    "first_programdata_tx_utc": "2025-09-23T00:49:40.000Z",
+    "age_days": 419,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": null,
+    "authority_last_signed_utc": null,
+    "programdata_bytes": 3624093,
+    "security_txt": {
+     "name": "Phoenix: Eternal",
+     "project_url": "https://phoenix.trade/",
+     "contacts": "link:https://bounty.phoenix.trade/,email:maintainers@ellipsislabs.xyz",
+     "policy": "https://bounty.phoenix.trade/",
+     "preferred_languages": "en",
+     "source_code": "https://github.com/Ellipsis-Labs/phoenix",
+     "auditors": "contact@asymmetric.re"
+    },
+    "squads": {
+     "version": "v4",
+     "multisig": "Eq2cke33VYoMpunvbMdeCi44PLX7RLzttgFibvvUjvpc",
+     "threshold": 3,
+     "members": 9,
+     "time_lock_seconds": 0,
+     "config_authority": "none (autonomous)",
+     "proof_vault_pda": "vault index 0",
+     "sane": true
+    },
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "ojh19ojaKduoJZuaJADhcVGp4xt1TcdAvZmpVsCorch",
@@ -734,7 +1242,22 @@
    "programdata_first_seen_utc": "2025-11-28T14:14:40.000Z",
    "programdata_tx_per_day": 0.102,
    "programdata_last_tx_utc": "2026-11-15T16:52:39.000Z",
-   "name_source": null
+   "name_source": null,
+   "group": "other watched",
+   "depth": {
+    "last_deploy_utc": "2026-11-11T09:51:41.000Z",
+    "first_programdata_tx_utc": "2025-11-28T14:14:40.000Z",
+    "age_days": 353,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": true,
+    "authority_last_signed_utc": "2026-11-11T09:51:41.000Z",
+    "authority_tx_seen": 10,
+    "programdata_bytes": 139773,
+    "security_txt": null,
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "BiSoNHVpsVZW2F7rx2eQ59yQwKxzU5NvBcmKshCSUypi",
@@ -757,7 +1280,22 @@
    "programdata_first_seen_utc": "2026-11-13T02:52:52.000Z",
    "programdata_tx_per_day": 317.604,
    "programdata_last_tx_utc": "2026-11-16T06:26:48.000Z",
-   "name_source": null
+   "name_source": null,
+   "group": "other watched",
+   "depth": {
+    "last_deploy_utc": "2026-11-02T16:31:26.000Z",
+    "first_programdata_tx_utc": "2026-10-08T15:16:19.000Z",
+    "age_days": 39,
+    "age_is_lower_bound": true,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": true,
+    "authority_last_signed_utc": "2026-11-02T16:31:26.000Z",
+    "authority_tx_seen": 10,
+    "programdata_bytes": 252597,
+    "security_txt": null,
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "Tri3NG4HkZ6DddYPKoX2ehgkqFtDuej9Aspw5BmvSo4",
@@ -780,7 +1318,22 @@
    "programdata_first_seen_utc": "2026-07-09T00:51:39.000Z",
    "programdata_tx_per_day": 0.154,
    "programdata_last_tx_utc": "2026-10-02T19:14:10.000Z",
-   "name_source": null
+   "name_source": null,
+   "group": "other watched",
+   "depth": {
+    "last_deploy_utc": "2026-10-02T19:14:10.000Z",
+    "first_programdata_tx_utc": "2026-07-09T00:51:39.000Z",
+    "age_days": 130,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": false,
+    "authority_last_signed_utc": "2026-10-02T19:14:10.000Z",
+    "authority_tx_seen": 10,
+    "programdata_bytes": 107541,
+    "security_txt": null,
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "dijkbkCAKfFTCxQg3u1pg82gVU1jJGHBBRcteD11mBu",
@@ -803,7 +1356,21 @@
    "programdata_first_seen_utc": "2025-12-11T15:53:24.000Z",
    "programdata_tx_per_day": 0.015,
    "programdata_last_tx_utc": "2026-11-06T13:02:40.000Z",
-   "name_source": null
+   "name_source": null,
+   "group": "other watched",
+   "depth": {
+    "last_deploy_utc": "2026-11-06T13:02:40.000Z",
+    "first_programdata_tx_utc": "2025-12-11T15:53:24.000Z",
+    "age_days": 340,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": null,
+    "authority_last_signed_utc": null,
+    "programdata_bytes": 557,
+    "security_txt": null,
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "tickUcsEQegChaAuo9VYQQztB4ZGApY6ZT4FkULWY6N",
@@ -826,7 +1393,22 @@
    "programdata_first_seen_utc": "2026-08-05T18:51:57.000Z",
    "programdata_tx_per_day": 0.039,
    "programdata_last_tx_utc": "2026-08-06T20:31:25.000Z",
-   "name_source": null
+   "name_source": null,
+   "group": "other watched",
+   "depth": {
+    "last_deploy_utc": "2026-08-05T18:51:57.000Z",
+    "first_programdata_tx_utc": "2026-08-05T18:51:57.000Z",
+    "age_days": 103,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": false,
+    "authority_last_signed_utc": null,
+    "authority_tx_seen": 1,
+    "programdata_bytes": 148413,
+    "security_txt": null,
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "4R3gSG8BpU4t19KYj8CfnbtRpnT8gtk4dvTHxVRwc2r7",
@@ -849,12 +1431,24 @@
    "programdata_first_seen_utc": "2022-10-25T15:53:44.000Z",
    "programdata_tx_per_day": 0.01,
    "programdata_last_tx_utc": "2026-03-01T21:43:57.000Z",
-   "name_source": "on-chain IDL"
+   "name_source": "on-chain IDL",
+   "group": "named",
+   "depth": {
+    "last_deploy_utc": "2026-03-01T21:43:57.000Z",
+    "first_programdata_tx_utc": "2022-10-25T15:53:44.000Z",
+    "age_days": 1483,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": null,
+    "authority_last_signed_utc": null,
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "RouterBmuRBkPUbgEDMtdvTZ75GBdSREZR5uGUxxxpb",
    "protocol": null,
-   "name": null,
+   "name": "Jito's MEV Tip Distribution NCN Program",
    "id_source": "block sample: invoked by 1.79% of 12257 sampled transactions",
    "usage_rank": 22,
    "usage_share_pct": 1.79,
@@ -872,7 +1466,37 @@
    "programdata_first_seen_utc": "2025-01-25T00:26:22.000Z",
    "programdata_tx_per_day": 0.021,
    "programdata_last_tx_utc": "2026-07-29T18:40:46.000Z",
-   "name_source": null
+   "name_source": "security.txt in the program ELF (project_url https://jito.network/)",
+   "group": "named",
+   "depth": {
+    "last_deploy_utc": "2026-07-29T18:40:46.000Z",
+    "first_programdata_tx_utc": "2025-01-25T00:26:22.000Z",
+    "age_days": 660,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": null,
+    "authority_last_signed_utc": null,
+    "programdata_bytes": 725578,
+    "security_txt": {
+     "name": "Jito's MEV Tip Distribution NCN Program",
+     "project_url": "https://jito.network/",
+     "contacts": "email:team@jito.network",
+     "policy": "https://github.com/jito-foundation/jito-tip-router",
+     "": "en"
+    },
+    "squads": {
+     "version": "v4",
+     "multisig": "AJVQRHk9rg25HzE2TompdcjfvQGuZdytPXhU1SgxUxBa",
+     "threshold": 4,
+     "members": 7,
+     "time_lock_seconds": 0,
+     "config_authority": "DG76d6Akr3pzGUkE8gc3anBrSJUzH6EiXmqoX3P7ontL",
+     "proof_vault_pda": "vault index 0",
+     "sane": true
+    },
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr",
@@ -882,7 +1506,8 @@
    "usage_rank": 23,
    "usage_share_pct": 1.77,
    "loader": "bpf-loader-2 (immutable)",
-   "name_source": null
+   "name_source": null,
+   "group": "other watched"
   },
   {
    "program_id": "DiabLokxisGR8P4Qqp2QL6PmBhhVsdzPstCE4WoLxc5z",
@@ -905,7 +1530,22 @@
    "programdata_first_seen_utc": "2026-10-03T19:32:03.000Z",
    "programdata_tx_per_day": 0.207,
    "programdata_last_tx_utc": "2026-10-26T06:50:47.000Z",
-   "name_source": null
+   "name_source": null,
+   "group": "other watched",
+   "depth": {
+    "last_deploy_utc": "2026-10-26T06:50:47.000Z",
+    "first_programdata_tx_utc": "2026-10-03T19:32:03.000Z",
+    "age_days": 44,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": true,
+    "authority_last_signed_utc": "2026-11-16T11:10:37.000Z",
+    "authority_tx_seen": 10,
+    "programdata_bytes": 561849,
+    "security_txt": null,
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "orafZ4BdfzikRRg498P23vG3EdEyMR7bYoYcD2zcwiD",
@@ -928,7 +1568,31 @@
    "programdata_first_seen_utc": "2026-06-03T18:00:32.000Z",
    "programdata_tx_per_day": 0.054,
    "programdata_last_tx_utc": "2026-10-15T16:01:10.000Z",
-   "name_source": null
+   "name_source": null,
+   "group": "other watched",
+   "depth": {
+    "last_deploy_utc": "2026-10-15T16:01:10.000Z",
+    "first_programdata_tx_utc": "2026-06-03T18:00:32.000Z",
+    "age_days": 166,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": null,
+    "authority_last_signed_utc": null,
+    "programdata_bytes": 38389,
+    "security_txt": null,
+    "squads": {
+     "version": "v4",
+     "multisig": "EX8Yout2u5avwqiUXzPFBZuj5vUp7WvSZ2SKFfz5MPog",
+     "threshold": 2,
+     "members": 2,
+     "time_lock_seconds": 0,
+     "config_authority": "none (autonomous)",
+     "proof_vault_pda": "vault index 0",
+     "sane": true
+    },
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "2DNbzPochEcyCcWMbL4d9S3u9QqQEj5bbe6cSZFvKsbh",
@@ -951,7 +1615,22 @@
    "programdata_first_seen_utc": "2026-03-19T18:06:22.000Z",
    "programdata_tx_per_day": 0.298,
    "programdata_last_tx_utc": "2026-10-12T20:03:05.000Z",
-   "name_source": null
+   "name_source": null,
+   "group": "other watched",
+   "depth": {
+    "last_deploy_utc": "2026-10-12T20:03:05.000Z",
+    "first_programdata_tx_utc": "2026-03-19T18:06:22.000Z",
+    "age_days": 242,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": true,
+    "authority_last_signed_utc": "2026-11-02T16:31:26.000Z",
+    "authority_tx_seen": 10,
+    "programdata_bytes": 190381,
+    "security_txt": null,
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "8NDj9qLWYzvW7KXaetseTDvTFCZ5NSi3SmoSjFNMMt9m",
@@ -974,12 +1653,27 @@
    "programdata_first_seen_utc": "2026-11-05T09:25:45.000Z",
    "programdata_tx_per_day": 0.092,
    "programdata_last_tx_utc": "2026-11-05T09:25:45.000Z",
-   "name_source": null
+   "name_source": null,
+   "group": "other watched",
+   "depth": {
+    "last_deploy_utc": "2026-11-05T09:25:45.000Z",
+    "first_programdata_tx_utc": "2026-11-05T09:25:45.000Z",
+    "age_days": 11,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": true,
+    "authority_last_signed_utc": "2026-11-05T09:26:17.000Z",
+    "authority_tx_seen": 10,
+    "programdata_bytes": 9413,
+    "security_txt": null,
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "Archer8kgiavM61GyusMzaaS2ft5sALtNsD1HxkUPMhy",
    "protocol": null,
-   "name": null,
+   "name": "Archer Exchange",
    "id_source": "block sample: invoked by 1.16% of 12257 sampled transactions",
    "usage_rank": 28,
    "usage_share_pct": 1.16,
@@ -997,7 +1691,32 @@
    "programdata_first_seen_utc": "2026-02-16T10:19:21.000Z",
    "programdata_tx_per_day": 0.191,
    "programdata_last_tx_utc": "2026-10-26T09:22:13.000Z",
-   "name_source": null
+   "name_source": "security.txt in the program ELF (project_url https://archer.exchange)",
+   "group": "named",
+   "depth": {
+    "last_deploy_utc": "2026-10-23T16:38:50.000Z",
+    "first_programdata_tx_utc": "2026-02-16T10:19:21.000Z",
+    "age_days": 273,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": null,
+    "authority_last_signed_utc": null,
+    "programdata_bytes": 379349,
+    "security_txt": {
+     "name": "Archer Exchange",
+     "project_url": "https://archer.exchange",
+     "contacts": "email:dhrumil@archer.exchange",
+     "policy": "https://github.com/ballista-tech/archer-sdk/blob/master/SECURITY.md",
+     "preferred_languages": "en,de",
+     "source_code": "https://github.com/ballista-tech/archer-sdk",
+     "auditors": "contact@osec.io"
+    },
+    "squads": {
+     "error": "no Squads multisig account in the authority newest transaction whose vault PDA equals the authority"
+    },
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "CZqFPJ35PQT1Jx2o3QAirY8pdTQp7tErJsiQm2GD6xw5",
@@ -1020,7 +1739,22 @@
    "programdata_first_seen_utc": "2026-10-27T08:35:10.000Z",
    "programdata_tx_per_day": 0.151,
    "programdata_last_tx_utc": "2026-10-27T12:47:24.000Z",
-   "name_source": null
+   "name_source": null,
+   "group": "other watched",
+   "depth": {
+    "last_deploy_utc": "2026-10-27T12:47:24.000Z",
+    "first_programdata_tx_utc": "2026-10-27T08:35:10.000Z",
+    "age_days": 20,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": true,
+    "authority_last_signed_utc": "2026-10-29T04:28:29.000Z",
+    "authority_tx_seen": 10,
+    "programdata_bytes": 148133,
+    "security_txt": null,
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "7JwTi9ambvCTYwZbNQEZA8hzpG3ymPWRZpAxgKPJ94ZG",
@@ -1043,7 +1777,22 @@
    "programdata_first_seen_utc": "2026-05-31T22:34:10.000Z",
    "programdata_tx_per_day": 0.291,
    "programdata_last_tx_utc": "2026-11-11T16:44:24.000Z",
-   "name_source": null
+   "name_source": null,
+   "group": "other watched",
+   "depth": {
+    "last_deploy_utc": "2026-11-11T16:44:24.000Z",
+    "first_programdata_tx_utc": "2026-05-31T22:34:10.000Z",
+    "age_days": 169,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": true,
+    "authority_last_signed_utc": "2026-11-11T16:48:29.000Z",
+    "authority_tx_seen": 10,
+    "programdata_bytes": 88789,
+    "security_txt": null,
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "W1LDCARDa67SPBG7TFpQivHnEZXRtxCFP13ysEd1bWR",
@@ -1066,7 +1815,22 @@
    "programdata_first_seen_utc": "2026-05-22T13:26:53.000Z",
    "programdata_tx_per_day": 0.208,
    "programdata_last_tx_utc": "2026-11-02T17:14:07.000Z",
-   "name_source": null
+   "name_source": null,
+   "group": "other watched",
+   "depth": {
+    "last_deploy_utc": "2026-11-02T17:14:07.000Z",
+    "first_programdata_tx_utc": "2026-05-22T13:26:53.000Z",
+    "age_days": 178,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": true,
+    "authority_last_signed_utc": "2026-11-02T17:14:07.000Z",
+    "authority_tx_seen": 10,
+    "programdata_bytes": 3514,
+    "security_txt": null,
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "BevFQ2LKT3riywRANkmWWKE5dksoTkpCtn7B1uzp56A3",
@@ -1089,7 +1853,22 @@
    "programdata_first_seen_utc": "2026-07-30T17:25:03.000Z",
    "programdata_tx_per_day": 9.213,
    "programdata_last_tx_utc": "2026-10-08T14:58:03.000Z",
-   "name_source": null
+   "name_source": null,
+   "group": "other watched",
+   "depth": {
+    "last_deploy_utc": "2026-10-08T14:58:03.000Z",
+    "first_programdata_tx_utc": "2026-06-15T07:38:26.000Z",
+    "age_days": 154,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": false,
+    "authority_last_signed_utc": "2026-10-09T08:17:53.000Z",
+    "authority_tx_seen": 10,
+    "programdata_bytes": 89685,
+    "security_txt": null,
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "DhpyNWkdxFh3DRPsBrwRwrK3TYC5t7Q4arnSvf3t84HY",
@@ -1112,7 +1891,22 @@
    "programdata_first_seen_utc": "2026-07-23T18:55:23.000Z",
    "programdata_tx_per_day": 0.182,
    "programdata_last_tx_utc": "2026-10-09T08:32:48.000Z",
-   "name_source": null
+   "name_source": null,
+   "group": "other watched",
+   "depth": {
+    "last_deploy_utc": "2026-10-09T08:32:48.000Z",
+    "first_programdata_tx_utc": "2026-07-23T18:55:23.000Z",
+    "age_days": 116,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": true,
+    "authority_last_signed_utc": "2026-11-16T11:11:28.000Z",
+    "authority_tx_seen": 10,
+    "programdata_bytes": 88413,
+    "security_txt": null,
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "ERfhoTm5C4cQ1U7M2K5R83nnCzWMqZr9Df21Nzx4sm5e",
@@ -1135,7 +1929,22 @@
    "programdata_first_seen_utc": "2026-08-31T03:29:08.000Z",
    "programdata_tx_per_day": 0.039,
    "programdata_last_tx_utc": "2026-10-29T04:28:29.000Z",
-   "name_source": null
+   "name_source": null,
+   "group": "other watched",
+   "depth": {
+    "last_deploy_utc": "2026-10-29T04:28:29.000Z",
+    "first_programdata_tx_utc": "2026-08-31T03:29:08.000Z",
+    "age_days": 77,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": true,
+    "authority_last_signed_utc": "2026-10-29T04:28:29.000Z",
+    "authority_tx_seen": 10,
+    "programdata_bytes": 91301,
+    "security_txt": null,
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "SCoRcH8c2dpjvcJD6FiPbCSQyQgu3PcUAWj2Xxx3mqn",
@@ -1158,7 +1967,22 @@
    "programdata_first_seen_utc": "2025-11-28T10:47:23.000Z",
    "programdata_tx_per_day": 0.068,
    "programdata_last_tx_utc": "2026-11-15T16:52:39.000Z",
-   "name_source": null
+   "name_source": null,
+   "group": "other watched",
+   "depth": {
+    "last_deploy_utc": "2026-11-02T10:33:58.000Z",
+    "first_programdata_tx_utc": "2025-11-28T10:47:23.000Z",
+    "age_days": 353,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": true,
+    "authority_last_signed_utc": "2026-11-02T10:33:58.000Z",
+    "authority_tx_seen": 10,
+    "programdata_bytes": 221749,
+    "security_txt": null,
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "9mnwcoqeBRLdRx9khMXF7FyWxVu8JnXD7yjTcUJKVKH5",
@@ -1181,7 +2005,22 @@
    "programdata_first_seen_utc": "2026-10-31T20:21:43.000Z",
    "programdata_tx_per_day": 0.713,
    "programdata_last_tx_utc": "2026-11-10T15:14:33.000Z",
-   "name_source": null
+   "name_source": null,
+   "group": "other watched",
+   "depth": {
+    "last_deploy_utc": "2026-11-10T15:14:33.000Z",
+    "first_programdata_tx_utc": "2026-10-31T20:21:43.000Z",
+    "age_days": 16,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": true,
+    "authority_last_signed_utc": "2026-11-10T15:14:33.000Z",
+    "authority_tx_seen": 10,
+    "programdata_bytes": 27741,
+    "security_txt": null,
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "3hNtuoujqHmPUCDu9r1HSQgK7mVrBN46qDXPPwD4dGba",
@@ -1204,7 +2043,22 @@
    "programdata_first_seen_utc": "2026-10-15T09:58:03.000Z",
    "programdata_tx_per_day": 0.283,
    "programdata_last_tx_utc": "2026-11-01T04:26:47.000Z",
-   "name_source": null
+   "name_source": null,
+   "group": "other watched",
+   "depth": {
+    "last_deploy_utc": "2026-11-01T04:26:47.000Z",
+    "first_programdata_tx_utc": "2026-10-15T09:58:03.000Z",
+    "age_days": 32,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": true,
+    "authority_last_signed_utc": "2026-11-01T04:47:08.000Z",
+    "authority_tx_seen": 10,
+    "programdata_bytes": 117357,
+    "security_txt": null,
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "MAyhSmzXzV1pTf7LsNkrNwkWKTo4ougAJ1PPg47MD4e",
@@ -1227,7 +2081,31 @@
    "programdata_first_seen_utc": "2025-11-08T08:10:41.000Z",
    "programdata_tx_per_day": 0.04,
    "programdata_last_tx_utc": "2026-10-02T15:47:53.000Z",
-   "name_source": null
+   "name_source": null,
+   "group": "other watched",
+   "depth": {
+    "last_deploy_utc": "2026-10-02T15:47:53.000Z",
+    "first_programdata_tx_utc": "2025-11-08T08:10:41.000Z",
+    "age_days": 373,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": null,
+    "authority_last_signed_utc": null,
+    "programdata_bytes": 777453,
+    "security_txt": null,
+    "squads": {
+     "version": "v4",
+     "multisig": "2yMoQqQrtbhq3nQ3wFoQQawWS65qcqUXcwHEYha4rshW",
+     "threshold": 3,
+     "members": 4,
+     "time_lock_seconds": 0,
+     "config_authority": "none (autonomous)",
+     "proof_vault_pda": "vault index 0",
+     "sane": true
+    },
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "FLASHX8DrLbgeR8FcfNV1F5krxYcYMUdBkrP1EPBtxB9",
@@ -1250,7 +2128,22 @@
    "programdata_first_seen_utc": "2025-11-29T23:23:30.000Z",
    "programdata_tx_per_day": 0.194,
    "programdata_last_tx_utc": "2026-11-10T18:43:32.000Z",
-   "name_source": null
+   "name_source": null,
+   "group": "other watched",
+   "depth": {
+    "last_deploy_utc": "2026-11-10T18:43:32.000Z",
+    "first_programdata_tx_utc": "2025-11-29T23:23:30.000Z",
+    "age_days": 351,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": true,
+    "authority_last_signed_utc": "2026-11-10T18:43:32.000Z",
+    "authority_tx_seen": 10,
+    "programdata_bytes": 211405,
+    "security_txt": null,
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "Em9BQtEaBVkoAtx6kxqJAMFTQoHoxJR41pwPXEPAf1Rs",
@@ -1273,7 +2166,22 @@
    "programdata_first_seen_utc": "2026-11-15T17:58:23.000Z",
    "programdata_tx_per_day": 1.924,
    "programdata_last_tx_utc": "2026-11-15T17:58:23.000Z",
-   "name_source": null
+   "name_source": null,
+   "group": "other watched",
+   "depth": {
+    "last_deploy_utc": "2026-11-15T17:58:23.000Z",
+    "first_programdata_tx_utc": "2026-11-15T17:58:23.000Z",
+    "age_days": 1,
+    "age_is_lower_bound": false,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": true,
+    "authority_last_signed_utc": "2026-11-16T11:11:51.000Z",
+    "authority_tx_seen": 10,
+    "programdata_bytes": 23837,
+    "security_txt": null,
+    "verdict": "real active protocol"
+   }
   },
   {
    "program_id": "DF1ow4tspfHX9JwWJsAb9epbkA8hmpSEAtxXy1V27QBH",
@@ -1296,7 +2204,29 @@
    "programdata_first_seen_utc": "2026-11-13T02:53:21.000Z",
    "programdata_tx_per_day": 317.638,
    "programdata_last_tx_utc": "2026-11-16T06:26:48.000Z",
-   "name_source": "on-chain IDL"
+   "name_source": "on-chain IDL",
+   "group": "named",
+   "depth": {
+    "last_deploy_utc": "2026-11-13T17:54:57.000Z",
+    "first_programdata_tx_utc": "2026-10-08T15:16:55.000Z",
+    "age_days": 39,
+    "age_is_lower_bound": true,
+    "tx_7d": 1000,
+    "tx_7d_capped": true,
+    "authority_signed_30d": null,
+    "authority_last_signed_utc": null,
+    "squads": {
+     "version": "v4",
+     "multisig": "EBMvMMdJHB4JR8K1pG8UgnnAR16jhrLFfNfuTZwUjtcZ",
+     "threshold": 2,
+     "members": 2,
+     "time_lock_seconds": 0,
+     "config_authority": "none (autonomous)",
+     "proof_vault_pda": "vault index 0",
+     "sane": true
+    },
+    "verdict": "real active protocol"
+   }
   }
  ]
 }

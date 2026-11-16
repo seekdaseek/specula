@@ -264,7 +264,7 @@ export class Bot {
   private async plans(tid: string, chat: string) {
     const b = this.o.billing; if (!b) return void await this.say(chat, 'Billing is not enabled.');
     const days = this.svc.cfg.billing.periodDays;
-    const lines = b.visiblePlans(tid).map((p) => `${p.name}: $${p.priceUsd} per ${days} days, ${p.txPerMonth.toLocaleString('en-US')} tx per program per month, up to ${p.maxPrograms} programs  ->  /upgrade ${p.id}`);
+    const lines = b.visiblePlans(tid).map((p) => `${p.name}: $${p.priceUsd} per ${days} days, ${p.txPerMonth.toLocaleString('en-US')} tx per program per month, up to ${p.maxPrograms} programs (at most ${(p.txPerMonth * p.maxPrograms).toLocaleString('en-US')} tx a month in total)  ->  /upgrade ${p.id}`);
     const foot = this.svc.cfg.free ? `Free, no expiry: ${this.svc.cfg.free.maxPrograms} program, upgrade and authority-change alerts only.` : `The free trial is ${this.svc.cfg.trial.days} days on Starter limits with ${this.svc.cfg.trial.maxPrograms} program.`;
     await this.say(chat, `Plans (pay in USDC on Solana):\n${lines.join('\n')}\n\n${foot}`);
   }
