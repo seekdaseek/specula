@@ -579,7 +579,7 @@
   {
    "program_id": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
    "protocol": null,
-   "name": null,
+   "name": "token-2022 (SPL Token-2022)",
    "id_source": "block sample: invoked by 28.42% of 12257 sampled transactions",
    "usage_rank": 4,
    "usage_share_pct": 28.42,
@@ -596,7 +596,8 @@
    "programdata_history_complete": false,
    "programdata_first_seen_utc": "2026-10-24T16:44:09.000Z",
    "programdata_tx_per_day": 44.304,
-   "programdata_last_tx_utc": "2026-11-11T10:06:16.000Z"
+   "programdata_last_tx_utc": "2026-11-11T10:06:16.000Z",
+   "name_source": "OtterSec verify registry, verified build: https://github.com/solana-program/token-2022/tree/8867f751c0f69367ba03af4f85510b5611989491 (verify.osec.io/status-all/<id>, read 16 Nov 2026)"
   },
   {
    "program_id": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",

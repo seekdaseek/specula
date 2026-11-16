@@ -41,7 +41,7 @@ Reading a type: "single key" = the authority is on the ed25519 curve and owned b
 | 24 | Phoenix v1 | `PhoeNiXZ8ByJGLkxNfZRnkUfjvmuYqLR89jjFHGqdXY` | `8mv7G3fJq5a5ej7E14vgcSGeQKH79emjU9fVfuhyitEq` | PDA, controller not Squads or Realms | 231433470 | docs or GitHub page (id_source) | 0.008 |
 | 25 | OpenBook v2 | `opnb2LAfJYbRMAHHvqjCwQxanZn7ReEHp1k81EohpZb` | `CZoAmQErbMwhSNA5WtbWLcwGE1mhXEv4hTvyvvHXGkrr` | governance | 250859864 | docs or GitHub page (id_source) | 0.013 |
 | 26 | unlabelled Toke...Q5DA | `TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA` | none | immutable | 419472000 | none found | 44.919 |
-| 27 | unlabelled Toke...xuEb | `TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb` | `AeLmXCbPaQHGWRLr2saFsEVfmMNuKnxRAbWCT9P5twgz` | Squads v3 vault (PDA) | 460497271 | none found | 44.304 |
+| 27 | token-2022 (SPL Token-2022) | `TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb` | `AeLmXCbPaQHGWRLr2saFsEVfmMNuKnxRAbWCT9P5twgz` | Squads v3 vault (PDA) | 460497271 | OtterSec verify registry, verified build: https://github.com/solana-program/token-2022/tree/8867f751c0f69367ba03af4f85510b5611989491 (verify.osec.io/status-all/<id>, read 16 Nov 2026) | 44.304 |
 | 28 | unlabelled ATok...8knL | `ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL` | none | bpf-loader-2 (immutable) |  | none found |  |
 | 29 | pump_fees | `pfeeUxB6jkeY1Hxd7CsFCAjcbHA9rWtchMGdZ6VojVZ` | `7gZufwwAo17y5kg8FMyJy2phgpvv9RSdzWtdXiWHjFr8` | Squads v4 vault (PDA) | 456132171 | on-chain IDL | 22.117 |
 | 30 | unlabelled L2TE...3S95 | `L2TExMFKdjpN9kozasaurPirfHy9P8sbXoAN1qA3S95` | none | immutable | 294179293 | none found | 0.017 |
@@ -80,3 +80,6 @@ Reading a type: "single key" = the authority is on the ed25519 curve and owned b
 - Measured per call (usage endpoint before and after): getMultipleAccounts of 60 addresses = 1 credit; getSignaturesForAddress = 1; getTransaction = 1; one webhook event = 1.
 - Watching a ProgramData address with a webhook plus a 5-minute reconcile would cost about 318 credits per address per day on average (events: mean 30.0, max 317.638 a day, plus 288 polls): about 22 programs would fit the 30%.
 - Reading the 50 ProgramData accounts as state in ONE getMultipleAccounts call every 60 s costs 1,440 credits a day for all of them (28.8 per program per day), 32,731 credits to the end of the cycle = 20% of the 30% budget. That is what the feed does.
+
+## Labelling attempt, 16 Nov 2026 (the 28 programs that had no name)
+Sources tried for every one: on-chain Anchor IDL (3 had one: pump_fees, jito_tip_distribution, swap_orchestrator), the OtterSec verify registry (verify.osec.io/status-all/<id>), SolanaFM (API answered 502), Solscan (403), Solana Explorer (429), a web search per id (blocked by a bot challenge). Result: **1 more label** (the Token-2022 program: OtterSec verified build of github.com/solana-program/token-2022, cited in its Name source cell) and **24 programs stay unlabelled** because no source I could read names them. They keep their program id, authority and type, all read from the chain.
